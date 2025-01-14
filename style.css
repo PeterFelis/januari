@@ -1,0 +1,227 @@
+/*algemene opmaak*/
+
+
+:root {
+    --geel: #F2C76E;
+    --licht: #ffffff;
+    --groen: #6b9080;
+    --heeldonker: #3d5248;
+    --rood: #D7594D;
+    --paars: #ba5ce9;
+    --achtergrond: #F8F6F2;
+    --oranje: #F5B06F;
+    --accent:#ffffff;
+    --lichtgroen: #bce046;
+    --noglichtergroen:#daf18e;
+  }
+
+ *{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;}
+
+  html{
+    font-size: 62.5%;
+  }
+  
+  body {
+    font-family: "Varela Round", sans-serif;
+    font-size: 2rem;
+    line-height: 2.6rem;
+    width:100vw;
+    height: 100vh;
+    position: relative;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Raleway", sans-serif;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+  }
+  
+  h1 {
+    font-size: 5rem;
+  }
+  
+  h3 {
+    font-size: 2.5rem;
+  }
+  
+ a{
+  text-decoration: none;
+ }
+
+
+
+/*header*/
+
+
+header{
+width:100vw;
+background-color: var(--noglichtergroen);
+font-size: 1.6rem;
+}
+
+
+header .logo{
+  height: auto;
+  width: 20vw;  
+  position: absolute;
+  left:5rem;
+  top:1rem;
+  z-index: 10;
+}
+
+header .logo img{
+  width: 100%;
+  object-fit: contain;
+  display: block; 
+}
+ 
+
+header .logo::after{
+  content: '';
+  display: block;
+  width: 120%;
+  height: 250%;
+  background: var(--accent);
+  position: absolute;
+  z-index: -1;
+  top: -100%;
+  left: -10%;
+  transform: rotate(-15deg);
+  border-radius: 0% 0% 20% 20%;
+}
+
+header.logo::before{
+  content: '';
+  display: block;
+  width: 25vw;
+  height: 10vh;
+  background:var(--accent);
+  position: absolute;
+  z-index: -1;
+  top: -4rem;
+  left: -7rem;
+  transform: rotate(-5deg);
+  border-radius: 0% 0% 20% 20%;
+}
+
+
+header nav{
+  display:flex;
+  justify-content: space-around;
+  align-items: center; 
+  height: 100%;
+  width:70vw;
+  margin-left:30vw;
+}
+
+header nav a{
+  color:var(--paars);
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-left-color: transparent;
+  padding-left: 6px;
+}
+header nav a:visited{
+  color:var(--paars);
+} 
+
+header nav a:hover{
+  border-left-color:var(--paars)
+  
+}
+
+
+
+/*utilities*/
+.pdf{
+  text-decoration: none;
+  color:var(--paars);
+  position: relative;
+  line-height: 2;
+  font-size: 2rem;
+}
+
+.pdf::before {
+  content: '';
+  display: inline-block; /* Zodat het SVG-gebied zichtbaar is */
+  position: absolute; /* Zodat je het kan positioneren */
+  top: 0; /* Midden van de tekst */
+  left: 0; /* Start bij de linkerkant */
+  transform: translatex(-150%) translateY(50%); /* Zet het SVG-bestand naar links en in het midden */
+  height: 2rem; /* Hoogte van de SVG */
+  width: 2rem;
+  background: url('/afbeeldingen/pdf.svg') no-repeat center; /* Je SVG-bestand */
+  background-size: contain; /* Zorgt dat de SVG netjes schaalt */
+}
+
+.eenpagina {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.indexPaginaKleur{
+  background-color: var(--lichtgroen);
+}
+
+
+/*per pagina*/
+
+.index{
+  height:auto;
+  width:100%;
+  max-width: 1000px;
+  margin: 0 auto;  
+}
+
+.index .frontcontainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Links en rechts verhouding */
+    height: 100%; /* Vul de volledige hoogte van de pagina */
+    width: 100%; /* Vul de volledige breedte van de pagina */
+}
+
+.index .frontcontainer .links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.index .frontcontainer .links div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem;
+}
+
+.index .frontcontainer .rechts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Zorgt dat niets buiten de container valt */
+}
+
+.index .frontcontainer .rechts img {
+    height: 100%; /* Vul de hoogte van de container */
+    width: auto; /* Pas breedte aan om verhoudingen te behouden */
+    max-width: 100%; /* Zorg dat het niet breder wordt dan de container */
+    object-fit: contain; /* Zorg dat de afbeelding volledig zichtbaar blijft */
+}
+
+.indexfooter {
+    position: absolute;
+    bottom: 2rem;
+    left: 5rem;
+    text-align: left;
+
+}
+
