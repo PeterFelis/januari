@@ -8,11 +8,15 @@
     --heeldonker: #3d5248;
     --rood: #D7594D;
     --paars: #ba5ce9;
+    --lichtpaarts: #B497D6;
+    --heellichtpaars: #E1E2EF;
+    --oxfortblue: #05204A;
     --achtergrond: #F8F6F2;
     --oranje: #F5B06F;
     --accent:#ffffff;
     --lichtgroen: #bce046;
     --noglichtergroen:#daf18e;
+
   }
 
  *{
@@ -62,7 +66,7 @@
 
 header{
 width:100vw;
-background-color: var(--noglichtergroen);
+background-color: var(--heellichtpaars);
 font-size: 1.6rem;
 }
 
@@ -142,7 +146,7 @@ header nav a:hover{
 /*utilities*/
 .pdf{
   text-decoration: none;
-  color:var(--paars);
+  color:var(--oxfortblue);
   position: relative;
   line-height: 2;
   font-size: 2rem;
@@ -168,7 +172,7 @@ header nav a:hover{
 }
 
 .indexPaginaKleur{
-  background-color: var(--lichtgroen);
+  background-color: var(--heellichtpaars);
 }
 
 
