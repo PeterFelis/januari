@@ -36,6 +36,18 @@
             .hidden {
                 display: none;
             }
+
+            .ql-toolbar,
+            #omschrijving {
+                width: 80%;
+                max-width: 800px;
+                box-sizing: border-box;
+            }
+
+            #omschrijving {
+                height: 12rem;
+                margin-bottom: 2rem
+            }
         </style>
         <script>
             let isEditingNewProduct = false; // Bepaalt of we een nieuw product maken
@@ -205,7 +217,7 @@
                     <label for="aantal_per_doos">Aantal per doos:</label>
                     <input type="number" id="aantal_per_doos" required><br><br>
                     <label for="USP">USP:</label>
-                    <textarea <textarea rows="6" cols="30" id="USP"></textarea><br><br>
+                    <textarea rows="6" cols="30" id="USP"></textarea><br><br>
                     <button class="hidden" type="button" id="save-button">Bewaren</button>
                     <button type="button" id="new-button">Leegmaken</button>
                 </form>

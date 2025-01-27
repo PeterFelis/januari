@@ -10,12 +10,13 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Haal het producttype op aan de hand van de productnaam
-    $stmt = $pdo->prepare("SELECT TypeNummer, USP, omschrijving FROM products WHERE TypeNummer = ?");
+    $stmt = $pdo->prepare("SELECT TypeNummer, USP, omschrijving, prijsstaffel FROM products WHERE TypeNummer = ?");
     $stmt->execute([$TypeNummer]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
     $productType = $product ? $product['TypeNummer'] : 'Onbekend type';
     $USP = $product ? $product['USP'] : 'Onbekende USP';
     $omschrijving = $product ? $product['omschrijving'] : 'Onbekende omschrijving';
+    $prijsstaffel = $product ? $product['prijsstaffel'] : 'Onbekende prijsstaffel';
 } catch (PDOException $e) {
     $productType = 'Fout bij ophalen producttype';
 }
@@ -26,13 +27,13 @@ try {
         padding: 4rem;
         display: grid;
         grid-template-areas:
-            "een een een vier vier vier"
             "titel titel twee twee twee twee"
+            "een een twee twee twee twee"
             "usp usp twee twee twee twee"
-            "drie drie drie vijf vijf vijf"
-            "zes zes zes zeven zeven zeven";
+            "drie drie vier vijf vijf vijf"
+            "zes zes zeven zeven zeven zeven";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr 1fr 2fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1r;
         height: 200vh;
         gap: 20px;
     }
@@ -77,6 +78,12 @@ try {
     .usp {
         grid-area: usp;
         background-color: #2E5266;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: left;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 
 
@@ -103,11 +110,11 @@ try {
     .grid-container>.zeven {
         grid-area: zeven;
         background-color: #E2C044;
-        font-size: 12pt;
+        font-size: 18;
         padding: 2rem;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
         /* Zorgt dat de inhoud bovenaan blijft */
         align-items: flex-start;
         /* Zorgt dat de inhoud links uitgelijnd wordt */
@@ -138,7 +145,11 @@ try {
         <?php endforeach; ?>
     </div>
     <div class="drie">
-        drie
+        <?php
+        foreach (explode("\n", $prijsstaffel) as $prijsstaffel) : ?>
+            <?php echo htmlspecialchars($prijsstaffel); ?>
+            <br>
+        <?php endforeach; ?>
     </div>
     <div class="vier">
         <img class='hoog' src="hp-136 zijaanzicht.png" alt='hp-136 hoofdtelefoon'>
