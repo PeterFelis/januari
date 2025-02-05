@@ -1,4 +1,5 @@
 <?php
+//file: login.php
 session_start(); // Start een sessie
 
 

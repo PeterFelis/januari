@@ -28,7 +28,7 @@ if (isset($statusbalk)): ?>
             }
 
             100% {
-                transform: translateY(6rem)
+                transform: translateY(10rem)
             }
         }
     </style>

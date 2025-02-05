@@ -3,6 +3,7 @@
     <a href="logout.php">Logout</a>
     <a href="dashboard.php">Dashboard</a>
     <a href="producten_beheer.php">Productenbeheer</a>
+    <a href="product_sticker.php">Sticker Afdrukken</a>
     <a href="registratie.php">Registreren</a>
 
 </div>

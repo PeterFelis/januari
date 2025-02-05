@@ -4,8 +4,6 @@ $statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $eenpagina = true;
 include_once __dir__ . '/incs/top.php';
 include_once __dir__ . '/incs/statusbalk.php';
-
-
 ?>
 
 

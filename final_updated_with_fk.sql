@@ -1,9 +1,18 @@
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS `crm_notes`;
+DROP TABLE IF EXISTS `klanten`;
+DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `order_items`;
+DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `settings`;
+DROP TABLE IF EXISTS `users`;
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 14 jan 2025 om 16:37
+-- Gegenereerd op: 03 feb 2025 om 10:55
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -20,6 +29,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `fetum`
 --
+CREATE DATABASE IF NOT EXISTS `fetum` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `fetum`;
 
 -- --------------------------------------------------------
 
@@ -100,7 +111,8 @@ CREATE TABLE `products` (
   `prijsstaffel` text NOT NULL,
   `aantal_per_doos` int NOT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `USP` text
+  `USP` text,
+  `sticker_text` TEXT DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -284,3 +296,5 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+SET FOREIGN_KEY_CHECKS=1;

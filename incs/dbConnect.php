@@ -12,3 +12,9 @@ $password = '';
 //$dbname = 'fetum';
 //$user = 'peter';
 //$password = 'bafSmd3qwB';
+
+
+//toegestane login
+$toegestane_login = array(
+    'peter' => 'Joop',
+);

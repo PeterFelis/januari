@@ -1,6 +1,8 @@
 <?php
 $title = 'leveringsvoorwaarden - hele kleine lettertjes';
-include_once __dir__ . '/incs/header.php';
+include_once __dir__ . '/incs/top.php';
+include_once __dir__ . '/incs/statusbalk.php';
+include_once __dir__ . '/incs/login&mandje.php';
 ?>
 
 <div class="pag">
@@ -116,4 +118,4 @@ include_once __dir__ . '/incs/header.php';
 
 
 <?php
-include_once __dir__ . '/incs/footer.php';
+include_once __dir__ . '/incs/bottom.php';

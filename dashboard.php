@@ -1,7 +1,12 @@
 <?php
+//file: dashboard.php
 session_start();
 
-include_once  __DIR__ . '/incs/menutijd.php';
+
+$title = 'Le Dashboard';
+include_once __dir__ . '/incs/top.php';
+
+include_once  __DIR__ . '/incs/menuBeheer.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: loginForm.php"); // Terug naar login als niet ingelogd

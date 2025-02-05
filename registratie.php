@@ -1,5 +1,5 @@
 <?php
-include_once  __DIR__ . '/incs/menutijd.php';
+include_once  __DIR__ . '/incs/menuBeheer.php';
 ?>
 
 

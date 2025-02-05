@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="nl">
+<?php
+//file: loginForm.php
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
+$title = 'Login';
+include_once __dir__ . '/incs/top.php';
+?>
 
 <body>
     <h2>Inloggen</h2>
-    <?php include_once  __DIR__ . '/incs/menutijd.php'; ?>
+    <?php include_once  __DIR__ . '/incs/menuBeheer.php'; ?>
     <form action="login.php" method="POST">
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" required><br><br>
