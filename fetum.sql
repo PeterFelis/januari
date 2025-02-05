@@ -35,6 +35,7 @@ USE `fetum`;
 -- --------------------------------------------------------
 
 --
+--
 -- Tabelstructuur voor tabel `crm_notes`
 --
 
@@ -65,7 +66,8 @@ CREATE TABLE `klanten` (
 --
 
 INSERT INTO `klanten` (`id`, `naam`, `adres`, `contact_email`, `telefoonnummer`, `aangemaakt_op`) VALUES
-(1, 'Fetum', 'Grote Waard 36', 'verkoop@fetum.nl', '0656653', '2025-01-06 11:55:06');
+(1, 'Fetum', 'Grote Waard 36', 'verkoop@fetum.nl', '0656653', '2025-01-06 11:55:06'),
+(2, 'Dinges', 'straat', 'dinges@dinges.nl', '0123', '2025-02-05 14:51:07');
 
 -- --------------------------------------------------------
 
@@ -112,17 +114,21 @@ CREATE TABLE `products` (
   `aantal_per_doos` int NOT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `USP` text,
-  `sticker_text` TEXT DEFAULT NULL
+  `sticker_text` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `products`
 --
 
-INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschrijving`, `prijsstaffel`, `aantal_per_doos`, `aangemaakt_op`, `USP`) VALUES
-(1, 'Hoofdtelefoons', 'Degelijk', 'HP-136 S', '<p>Degelijke</p>', '0 500\n1 400\n3 200', 32, '2024-12-27 15:59:45', 'Versterkt afneembaar snoer\nZachte oorschelpen\nVerstelbaar\nIn bewaartas\nMet naam sticker\n'),
-(2, 'Hoofdtelefoons', 'comfort', 'HP-305', '<p><br></p>', '0 2\n2 4', 100, '2024-12-27 16:01:05', ''),
-(3, 'Hoofdtelefoons', 'Nekband', 'HP-122', '<p><br></p>', '0 2,00\n1 4,00', 32, '2025-01-06 13:26:28', '');
+INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschrijving`, `prijsstaffel`, `aantal_per_doos`, `aangemaakt_op`, `USP`, `sticker_text`) VALUES
+(1, 'Hoofdtelefoons', 'Degelijk', 'HP-136 S', '<p>Onze oude vertrouwde degelijk HP-136.</p><p><br></p><p>Nu met afneembaar snoer, met een bewaartas en een naamsticker. Zodat iedereen weet welke hoofdtelefoon van wie is.</p><p><br></p><p>Metalen met stof beklede hoofdband, verstelbare zachte beklede oorschelpen. Het maximale volume is begrensd tot 85 dB.</p><p>De hoofdtelefoon draagt comfortabel en kan uren probleemloos gebruik worden.</p><p><br></p><p>Verpakking: per stuk in een zakje, per 32 in een overdoos</p><p>Snoer: Enkelzijdig, afneembaar en vervangbaar snoer van 1,2 meter</p><p><br></p><p>Type: half open</p><p><br></p>', '32 7,86\n64 7,64\n128 7,24\n256 6.95', 32, '2024-12-27 15:59:45', 'Versterkt afneembaar snoer\nZachte oorschelpen\nVerstelbaar\nIn bewaartas\nMet naam sticker\n', '<p>Afneembaar 1,2 meter snoer,</p><p>Met naam sticker en bewaartas</p><p>Zachte hoofdband</p><p>Verstelbare zachte oorschelpen</p><p>max volume 85dB </p>'),
+(2, 'Hoofdtelefoons', 'comfort', 'HP-305', '<p><br></p>', '0 2\n2 4', 100, '2024-12-27 16:01:05', '', '<p><strong>Comfort hoofdtelefoon</strong></p><p>2 meter snoer</p><p>Enkelzijdig snoer</p><p>Draaibare oorschelpen</p><p>Verstelbare hoofdband</p>'),
+(3, 'Hoofdtelefoons', 'Nekband', 'HP-122', '<p><br></p>', '0 2,00\n1 4,00', 32, '2025-01-06 13:26:28', '', '<p><br></p>'),
+(4, 'Hoofdtelefoons', 'Comfort', 'HP-316 ultrasound', '<p>Ultrasound Hoofdtelefoon</p><p>1,8 meter enkelzijdig snoer</p><p>Draaibare oorschelpen</p>', '1', 50, '2025-02-03 14:32:21', 'Ultrasound Hoofdtelefoon\n1,8 meter enkelzijdig snoer\nDraaibare oorschelpen', '<p><strong>Ultrasound Hoofdtelefoon</strong></p><p>1,8 meter snoer</p><p>Enkelzijdig snoer</p><p>Draaibare oorschelpen</p><p>Verstelbare hoofdband</p>'),
+(5, 'Hoofdtelefoons', 'Budget', 'HP-2706', '<p>Budget hoofdtelefoon</p><p><br></p>', '1', 125, '2025-02-03 14:32:21', 'Budget hoofdtelefoon\n2 meter snoer, stereo stekker\nGeen blister verpakking', '<p>Budget hoofdtelefoon</p><p>2 meter snoer, stereo stekker</p><p>Geen blister verpakking</p>'),
+(6, 'Hoofdtelefoons', 'Budget', 'HP-2710', '<p>kleurtjes		</p>', '1', 125, '2025-02-03 14:40:37', 'budget', '<p>Budget hoofdtelefoon</p><p>4 verschillende vrolijke kleuren</p><p>rood - wit - blauw en zwart</p>'),
+(7, 'Oortjes', 'Microfoon en hoesje', 'i-900 N', '<p><br></p>', '1', 125, '2025-02-03 14:40:37', 'budget', '<p>Witte oortjes</p><p>Verstevigd snoer</p><p>Met microfoon</p><p><strong>Met bewaartasje</strong></p>');
 
 -- --------------------------------------------------------
 
@@ -160,7 +166,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`) VALUES
-(1, 'Peter', 'Peter@felis.nl', '$2y$10$z36pvzx9NTjzJ3kXV5pSpOuAUE2mwmEoczgg9ycNlFqEX3P4EVTI2', 'klant', NULL, NULL, 1, '2025-01-06 11:55:06');
+(1, 'Peter', 'Peter@felis.nl', '$2y$10$z36pvzx9NTjzJ3kXV5pSpOuAUE2mwmEoczgg9ycNlFqEX3P4EVTI2', 'admin', NULL, NULL, 1, '2025-01-06 11:55:06'),
+(2, 'Titus', 'Titus@titus.nl', '$2y$10$XwRMxqbCcwxCBMtYIDhQaOMOw2WPMyExsRO9GcoA31gPrRZfnM9HK', 'klant', NULL, NULL, 2, '2025-02-05 14:51:07');
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -230,7 +237,7 @@ ALTER TABLE `crm_notes`
 -- AUTO_INCREMENT voor een tabel `klanten`
 --
 ALTER TABLE `klanten`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT voor een tabel `orders`
@@ -248,7 +255,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT voor een tabel `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT voor een tabel `settings`
@@ -260,7 +267,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
@@ -296,5 +303,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-SET FOREIGN_KEY_CHECKS=1;
