@@ -140,49 +140,52 @@ try {
     }
 </style>
 
-<body class='grid-container'>
-    <div class="een">
-        <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-    </div>
-    <div class="twee">
-        <img class='breed' src="305 met beest samen.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-    </div>
+<body>
+    <?php include_once __DIR__ . '/../../incs/product_selector.php'; ?>
 
-    <div class="titel">
-        <h1> <?php echo htmlspecialchars($productType); ?></h1>
-    </div>
+    <article class='grid-container'>
+        <div class="een">
+            <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
+        <div class="twee">
+            <img class='breed' src="305 met beest samen.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
 
-    <div class="usp">
-        <?php
-        foreach (explode("\n", $USP) as $usp) : ?>
-            <?php echo htmlspecialchars($usp); ?>
-            <br>
-        <?php endforeach; ?>
-    </div>
-    <div class="drie">
-        <?php
-        foreach (explode("\n", $prijsstaffel) as $prijsstaffel) : ?>
-            <?php echo htmlspecialchars($prijsstaffel); ?>
-            <br>
-        <?php endforeach; ?>
-    </div>
-    <div class="vier">
-        <img class='hoog' src="3052.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-    </div>
-    <div class="vijf"> <img class='hoog' src="3053.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
-    <div class="zes"><img class='hoog' src="3054.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+        <div class="titel">
+            <h1> <?php echo htmlspecialchars($productType); ?></h1>
+        </div>
 
-    <div class="zeven">
-        <?php echo $omschrijving; ?>
-    </div>
+        <div class="usp">
+            <?php
+            foreach (explode("\n", $USP) as $usp) : ?>
+                <?php echo htmlspecialchars($usp); ?>
+                <br>
+            <?php endforeach; ?>
+        </div>
+        <div class="drie">
+            <?php
+            foreach (explode("\n", $prijsstaffel) as $prijsstaffel) : ?>
+                <?php echo htmlspecialchars($prijsstaffel); ?>
+                <br>
+            <?php endforeach; ?>
+        </div>
+        <div class="vier">
+            <img class='hoog' src="3052.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
+        <div class="vijf"> <img class='hoog' src="3053.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+        <div class="zes"><img class='hoog' src="3054.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
-    <div class="acht">
-        <img class='hoog' src="3055.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-    </div>
-    <div class="negen">
-        <img class='hoog' src="hp-305 hangend uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-    </div>
+        <div class="zeven">
+            <?php echo $omschrijving; ?>
+        </div>
 
+        <div class="acht">
+            <img class='hoog' src="3055.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
+        <div class="negen">
+            <img class='hoog' src="hp-305 hangend uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
+    </article>
 
 </body>
 <?php
