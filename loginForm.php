@@ -7,7 +7,6 @@ include_once __dir__ . '/incs/top.php';
 
 <body>
     <h2>Inloggen</h2>
-    <?php include_once  __DIR__ . '/incs/menuBeheer.php'; ?>
     <form action="login.php" method="POST">
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" required><br><br>

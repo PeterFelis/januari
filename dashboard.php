@@ -5,7 +5,6 @@ session_start();
 
 $title = 'Le Dashboard';
 include_once __dir__ . '/incs/top.php';
-
 include_once  __DIR__ . '/incs/menuBeheer.php';
 
 if (!isset($_SESSION['user_id'])) {

@@ -1,5 +1,9 @@
 <div class='menu'>
-    <a href="loginform.php">Inloggen</a>
+    <?php
+    if (!isset($_SESSION['user_id'])) { ?>
+        <a href="loginform.php">Inloggen</a>
+    <?php } ?>
+
     <a href="logout.php">Logout</a>
     <a href="dashboard.php">Dashboard</a>
     <a href="producten_beheer.php">Productenbeheer</a>

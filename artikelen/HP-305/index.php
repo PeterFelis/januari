@@ -1,19 +1,41 @@
 <?php
 $title = "HP-305 comfort hoofdtelefoon";
+$TypeNummer = "HP-305";
 include dirname(__DIR__, 2) . "/incs/top.php";
+include dirname(__DIR__, 2) . "/incs/dbConnect.php";
+
+// Database query om producttype op te halen
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Haal het producttype op aan de hand van de productnaam
+    $stmt = $pdo->prepare("SELECT TypeNummer, USP, omschrijving, prijsstaffel FROM products WHERE TypeNummer = ?");
+    $stmt->execute([$TypeNummer]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    $productType = $product ? $product['TypeNummer'] : 'Onbekend type';
+    $USP = $product ? $product['USP'] : 'Onbekende USP';
+    $omschrijving = $product ? $product['omschrijving'] : 'Onbekende omschrijving';
+    $prijsstaffel = $product ? $product['prijsstaffel'] : 'Onbekende prijsstaffel';
+} catch (PDOException $e) {
+    $productType = 'Fout bij ophalen producttype';
+}
 ?>
-<link rel="stylesheet" href="prod.css">
+<link rel="stylesheet" href="../prod.css">
 <style>
     .grid-container {
         padding: 4rem;
         display: grid;
         grid-template-areas:
-            "een een een een twee twee"
-            "drie drie vier vier vijf vijf"
-            "zes zes zes zeven zeven zeven";
+            "titel titel twee twee twee twee"
+            "een een twee twee twee twee"
+            "usp usp twee twee twee twee"
+            "vier vier vijf vijf zes zes"
+            "drie drie zeven zeven zeven zeven"
+            "acht acht acht acht negen negen";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 2fr 1fr 2fr;
-        height: 100vh;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 3fr;
+        height: 200vh;
         gap: 20px;
     }
 
@@ -24,17 +46,52 @@ include dirname(__DIR__, 2) . "/incs/top.php";
         font-size: 20px;
         color: white;
         border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .grid-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .grid-container .hoog {
+        width: auto;
+        max-height: 100%;
+    }
+
+    .grid-container .breed {
+        max-width: 100%;
+        max-height: auto;
     }
 
     .een {
         grid-area: een;
-        background-color: #2E5266;
+        background-color: white;
     }
 
     .twee {
         grid-area: twee;
-        background-color: #6E8898;
+        background-color: white;
     }
+
+    .titel {
+        grid-area: titel;
+        background-color: #EC7D10;
+
+    }
+
+    .usp {
+        grid-area: usp;
+        background-color: #2E5266;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: left;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
 
     .drie {
         grid-area: drie;
@@ -43,7 +100,7 @@ include dirname(__DIR__, 2) . "/incs/top.php";
 
     .vier {
         grid-area: vier;
-        background-color: #93A7B3;
+        background-color: white
     }
 
     .vijf {
@@ -56,21 +113,75 @@ include dirname(__DIR__, 2) . "/incs/top.php";
         background-color: #D3D0CB;
     }
 
-    .zeven {
+    .grid-container>.zeven {
         grid-area: zeven;
         background-color: #E2C044;
+        font-size: 18;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Zorgt dat de inhoud bovenaan blijft */
+        align-items: flex-start;
+        /* Zorgt dat de inhoud links uitgelijnd wordt */
+        text-align: left;
+        /* Zorgt dat de tekst links uitgelijnd is */
+        line-height: 1.2;
+    }
+
+    .acht {
+        grid-area: acht;
+        background-color: #D3D0CB;
+    }
+
+    .negen {
+        grid-area: negen;
+        background-color: #D3D0CB;
     }
 </style>
 
 <body class='grid-container'>
-    <div class="een">een</div>
-    <div class="twee">twee</div>
-    <div class="drie">drie</div>
-    <div class="vier">vier</div>
-    <div class="vijf">vijf</div>
-    <div class="zes">zes</div>
-    <div class="zeven">zeven</div>
+    <div class="een">
+        <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+    </div>
+    <div class="twee">
+        <img class='breed' src="305 met beest samen.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+    </div>
 
+    <div class="titel">
+        <h1> <?php echo htmlspecialchars($productType); ?></h1>
+    </div>
+
+    <div class="usp">
+        <?php
+        foreach (explode("\n", $USP) as $usp) : ?>
+            <?php echo htmlspecialchars($usp); ?>
+            <br>
+        <?php endforeach; ?>
+    </div>
+    <div class="drie">
+        <?php
+        foreach (explode("\n", $prijsstaffel) as $prijsstaffel) : ?>
+            <?php echo htmlspecialchars($prijsstaffel); ?>
+            <br>
+        <?php endforeach; ?>
+    </div>
+    <div class="vier">
+        <img class='hoog' src="3052.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+    </div>
+    <div class="vijf"> <img class='hoog' src="3053.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+    <div class="zes"><img class='hoog' src="3054.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+
+    <div class="zeven">
+        <?php echo $omschrijving; ?>
+    </div>
+
+    <div class="acht">
+        <img class='hoog' src="3055.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+    </div>
+    <div class="negen">
+        <img class='hoog' src="hp-305 hangend uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+    </div>
 
 
 </body>
