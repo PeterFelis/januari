@@ -6,12 +6,10 @@ include_once __dir__ . '/incs/top.php';
 include_once __dir__ . '/incs/statusbalk.php';
 ?>
 
-
-<body class='eenpagina indexPaginaKleur'>
+<body class='indexPaginaKleur'>
     <?php include_once __dir__ . '/incs/menu.php'; ?>
 
     <div class='index'>
-
         <div class='frontcontainer'>
             <div class="links">
                 <div>

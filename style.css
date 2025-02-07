@@ -35,13 +35,14 @@
     max-width:100vw;
     height: 100vh;
     position: relative;
+    margin: 0 auto;
   }
   
   h1,
   h2,
   h3,
   h4 {
-    font-family: "Raleway", sans-serif;
+    font-family: "Poppins", sans-serif;
     line-height: 1.6;
     padding: 0;
     margin: 0;
@@ -165,11 +166,6 @@ header nav a:hover{
   background-size: contain; /* Zorgt dat de SVG netjes schaalt */
 }
 
-.eenpagina {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
 
 .indexPaginaKleur{
   background-color: var(--heellichtpaars);

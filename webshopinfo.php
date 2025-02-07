@@ -2,9 +2,9 @@
 $title = 'leveringsvoorwaarden - hele kleine lettertjes';
 include_once __dir__ . '/incs/top.php';
 include_once __dir__ . '/incs/statusbalk.php';
-include_once __dir__ . '/incs/login&mandje.php';
 ?>
 
+<
 <div class="pag">
     <div class='koplijn'>
         <div>
