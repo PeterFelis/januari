@@ -56,15 +56,17 @@ body{
     background-color: #EC7D10;
 }
 
-.usp {
+#usp {
     grid-area: usp;
     background-color: #2E5266;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .drie {
@@ -93,11 +95,9 @@ body{
     background-color: #E2C044;
     font-size: 18px;
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
+    display:block;
+    columns: 2;
+    column-gap: 40px;
     line-height: 1.2;
 }
 

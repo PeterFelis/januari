@@ -58,7 +58,6 @@ $jsonData = json_encode($products);
             padding-right: 10rem;
         }
 
-
         .header-left img {
             height: 50px;
             margin-right: 15px;
@@ -150,14 +149,23 @@ $jsonData = json_encode($products);
             </div>
         </div>
     </header>
-
-
     <script>
         // Alle producten uit PHP beschikbaar als JavaScript-object
         const allProducts = <?php echo $jsonData; ?>;
         let selectedCategory = null;
         let selectedSubcategory = null;
         let selectedProduct = null;
+
+        // Lees eventuele GET-parameters voor behoud van selectie
+        let urlParams = new URLSearchParams(window.location.search);
+        let initialCategory = urlParams.get('category');
+        let initialSubcategory = urlParams.get('subcategory');
+        let initialProductParam = urlParams.get('product');
+
+        // Helper-functie om de huidige path te normaliseren (zonder trailing slash)
+        function getNormalizedPath() {
+            return window.location.pathname.replace(/\/$/, '');
+        }
 
         // Highlight de geselecteerde knop in een rij
         function highlightSelectedBtn(parentElement, clickedButton) {
@@ -183,6 +191,15 @@ $jsonData = json_encode($products);
                 };
                 categoryRow.appendChild(btn);
             });
+            // Als er een initialCategory is, klik dan automatisch op de juiste knop
+            if (initialCategory) {
+                const btn = Array.from(categoryRow.children).find(button => button.textContent === initialCategory);
+                if (btn) {
+                    setTimeout(() => {
+                        btn.click();
+                    }, 0);
+                }
+            }
             // Maak subcategorie- en productrij leeg
             document.getElementById('selectorSubcategory').innerHTML = '';
             document.getElementById('selectorProduct').innerHTML = '';
@@ -205,6 +222,15 @@ $jsonData = json_encode($products);
                 };
                 subcatRow.appendChild(btn);
             });
+            // Als er een initialSubcategory is, klik dan automatisch op de juiste knop
+            if (initialSubcategory) {
+                const btn = Array.from(subcatRow.children).find(button => button.textContent === initialSubcategory);
+                if (btn) {
+                    setTimeout(() => {
+                        btn.click();
+                    }, 0);
+                }
+            }
             // Maak de productrij leeg
             document.getElementById('selectorProduct').innerHTML = '';
         }
@@ -222,11 +248,32 @@ $jsonData = json_encode($products);
                 btn.onclick = () => {
                     selectedProduct = product;
                     highlightSelectedBtn(productRow, btn);
-                    // Navigatie naar de SEO-vriendelijke productpagina (/artikelen/typenaam)
-                    window.location.href = `/artikelen/${product.TypeNummer}`;
+                    // Bouw de SEO-vriendelijke URL met behoud van de GET parameters
+                    const newUrl = `/artikelen/${product.TypeNummer}?category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}&product=${encodeURIComponent(product.TypeNummer)}`;
+                    // Alleen navigeren als we nog niet op de juiste pagina zitten (met normalisatie)
+                    if (getNormalizedPath() !== `/artikelen/${product.TypeNummer}`) {
+                        window.location.href = newUrl;
+                    }
                 };
                 productRow.appendChild(btn);
             });
+            // Automatisch de juiste productknop selecteren
+            if (initialProductParam) {
+                const btn = Array.from(productRow.children).find(button => button.textContent === initialProductParam);
+                if (btn) {
+                    // Als we op de productpagina zitten, dus als window.isProductPage true is,
+                    // of als de huidige URL al overeenkomt, dan alleen highlighten, geen redirect.
+                    if (window.isProductPage || getNormalizedPath() === `/artikelen/${initialProductParam}`) {
+                        highlightSelectedBtn(productRow, btn);
+                        initialProductParam = null; // voorkom herhaalde actie
+                    } else {
+                        setTimeout(() => {
+                            btn.click();
+                            initialProductParam = null;
+                        }, 0);
+                    }
+                }
+            }
         }
 
         document.addEventListener('DOMContentLoaded', showCategories);

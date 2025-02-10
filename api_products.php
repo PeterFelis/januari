@@ -26,8 +26,8 @@ if ($method === 'GET') {
         $stmt->execute([$_GET['TypeNummer']]);
         echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     } else {
-        // Haal alle producten op
-        $stmt = $pdo->query("SELECT id, TypeNummer FROM products ORDER BY TypeNummer");
+        // Haal alle producten op (met alle benodigde velden)
+        $stmt = $pdo->query("SELECT id, categorie, subcategorie, TypeNummer, omschrijving, sticker_text, prijsstaffel, aantal_per_doos, USP FROM products ORDER BY TypeNummer");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 } elseif ($method === 'POST') {
@@ -43,7 +43,7 @@ if ($method === 'GET') {
         $data['prijsstaffel'],
         $data['aantal_per_doos'],
         $data['USP'],
-        $data['sticker_text'] ?? '' // Voeg sticker_text toe (standaard leeg als niet meegegeven)
+        $data['sticker_text'] ?? ''
     ]);
     echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
 } elseif ($method === 'PUT') {
@@ -59,10 +59,20 @@ if ($method === 'GET') {
         $data['prijsstaffel'],
         $data['aantal_per_doos'],
         $data['USP'],
-        $data['sticker_text'] ?? '', // Voeg sticker_text toe (standaard leeg als niet meegegeven)
+        $data['sticker_text'] ?? '',
         intval($data['id'])
     ]);
     echo json_encode(['success' => true]);
+} elseif ($method === 'DELETE') {
+    // Verwijder product
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['id'])) {
+        $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+        $stmt->execute([intval($data['id'])]);
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['error' => 'Geen product id opgegeven']);
+    }
 } else {
     echo json_encode(['error' => 'Ongeldige methode']);
 }

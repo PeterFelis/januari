@@ -19,7 +19,9 @@ include "../artikelkop.php";
         height: 200vh;
     }
 </style>
-
+<script>
+    window.isProductPage = true;
+</script>
 <body>
     <?php include_once __DIR__ . '/../../incs/product_selector.php'; ?>
 
