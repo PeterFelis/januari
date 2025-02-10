@@ -62,60 +62,6 @@
 
 
 
-/*header*/
-
-
-header{
-width:100vw;
-background-color: var(--heellichtpaars);
-font-size: 1.6rem;
-}
-
-
-header .logo{
-  height: auto;
-  width: 20vw;  
-  position: absolute;
-  left:5rem;
-  top:1rem;
-  z-index: 10;
-}
-
-header .logo img{
-  width: 100%;
-  object-fit: contain;
-  display: block; 
-}
- 
-
-header .logo::after{
-  content: '';
-  display: block;
-  width: 120%;
-  height: 250%;
-  background: var(--accent);
-  position: absolute;
-  z-index: -1;
-  top: -100%;
-  left: -10%;
-  transform: rotate(-15deg);
-  border-radius: 0% 0% 20% 20%;
-}
-
-header.logo::before{
-  content: '';
-  display: block;
-  width: 25vw;
-  height: 10vh;
-  background:var(--accent);
-  position: absolute;
-  z-index: -1;
-  top: -4rem;
-  left: -7rem;
-  transform: rotate(-5deg);
-  border-radius: 0% 0% 20% 20%;
-}
-
 
 header nav{
   display:flex;
@@ -124,6 +70,7 @@ header nav{
   height: 100%;
   width:70vw;
   margin-left:30vw;
+  position: relative;
 }
 
 header nav a{

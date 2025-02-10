@@ -16,129 +16,118 @@ $stmt = $pdo->query($query);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $jsonData = json_encode($products);
 ?>
-<!DOCTYPE html>
-<html lang="nl">
+<style>
+    /* Algemene styling */
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Selector</title>
-    <!-- Google Fonts voor Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Algemene styling */
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+    /* Header als grid: links logo & titel, rechts productselector */
+    header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: var(--heellichtpaars);
+        gap: 20px;
+        height: 12vh;
+        max-height: 12vh;
+        position: relative;
+    }
 
-        /* Header als grid: links logo & titel, rechts productselector */
+    .header-left,
+    header-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-right {
+        padding-right: 10rem;
+    }
+
+
+
+    /* Styling voor de productselector in de header */
+    #productSelectorContainer {
+        height: 10vh;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        max-height: 15vh;
+        overflow-y: auto;
+        border: 1px solid white;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #007BFF;
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    button:active {
+        background-color: #003f7f;
+        transform: translateY(0);
+    }
+
+    .selected {
+        background-color: #ffcc66;
+        color: #000;
+        font-weight: bold;
+    }
+
+    /* Extra content onder de header */
+    .main-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Responsive: onder een bepaalde breedte onder elkaar stapelen */
+    @media (max-width: 768px) {
         header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            padding: 15px 20px;
-            background-color: #B497D6;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            gap: 20px;
-            height: 12vh;
-            max-height: 12vh;
+            grid-template-columns: 1fr;
+            text-align: center;
         }
 
-        .header-left,
-        header-right {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header-right {
-            padding-right: 10rem;
-        }
-
-        .header-left img {
-            height: 50px;
-            margin-right: 15px;
-        }
-
-        .header-left h1 {
-            margin: 0;
-            color: #fff;
-            font-size: 24px;
-        }
-
-        /* Styling voor de productselector in de header */
         #productSelectorContainer {
-            background-color: #fff;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            max-height: 15vh;
-            overflow-y: auto;
+            margin-top: 15px;
         }
-
-        .button-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 5px;
-        }
-
-        button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 10px;
-            background-color: #007BFF;
-            color: #fff;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        button:active {
-            background-color: #003f7f;
-            transform: translateY(0);
-        }
-
-        .selected {
-            background-color: #ffcc66;
-            color: #000;
-            font-weight: bold;
-        }
-
-        /* Extra content onder de header */
-        .main-container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Responsive: onder een bepaalde breedte onder elkaar stapelen */
-        @media (max-width: 768px) {
-            header {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            #productSelectorContainer {
-                margin-top: 15px;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
     <header>
         <!-- Links: Logo en titel -->
         <div class="header-left">
-            <img src="/afbeeldingen/fetumlogo.png" alt="Logo">
+            <?php
+            $kleur = 'paars';
+            $logo = 'logoklein';
+            include_once '../../incs/logo.php';
+            ?>
         </div>
         <!-- Rechts: De productselector -->
         <div class="header-right">

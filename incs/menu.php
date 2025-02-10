@@ -1,3 +1,8 @@
+<?php
+//file: incs/menu.php
+// maakt een menu aan met rechts de verschillende pagina's en links het logo
+?>
+
 <header>
     <nav>
         <a href="/">Home</a>
@@ -9,8 +14,23 @@
         <a href="registratie.php">Wordt klant</a>
 
     </nav>
-
-    <div class="logo">
-        <img src="afbeeldingen/fetumlogo.png" alt="Fetum logo" />
+    <?php
+    $logo = 'logo';
+    $kleur = "paars";
+    include_once 'logo.php';
+    ?>
 
 </header>
+
+<style>
+    header {
+        width: 100vw;
+        background-color: var(--heellichtpaars);
+        font-size: 1.6rem;
+        position: relative;
+    }
+
+    header nav {
+        position: relative;
+    }
+</style>

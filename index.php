@@ -7,7 +7,8 @@ include_once __dir__ . '/incs/statusbalk.php';
 ?>
 
 <body class='indexPaginaKleur'>
-    <?php include_once __dir__ . '/incs/menu.php'; ?>
+    <?php include_once __dir__ . '/incs/menu.php';
+    ?>
 
     <div class='index'>
         <div class='frontcontainer'>

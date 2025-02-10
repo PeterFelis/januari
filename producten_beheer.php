@@ -36,12 +36,13 @@ include_once __DIR__ . '/incs/top.php';
 
     /* Styling voor de hiërarchische productselector links */
     #productSelectorContainer {
-        background-color: #fff;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 8px;
         max-height: 80vh;
         overflow-y: auto;
+        border: 1px solid white;
+        border-radius: 8px;
     }
 
     .selector-group {
@@ -615,7 +616,8 @@ include_once __DIR__ . '/incs/top.php';
 </head>
 
 <body>
-    <?php include_once __DIR__ . '/incs/menuBeheer.php'; ?>
+    <?php include_once __DIR__ . '/incs/menuBeheer.php';
+    ?>
 
     <!-- Snackbar element -->
     <div id="snackbar"></div>
