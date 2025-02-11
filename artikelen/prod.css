@@ -58,20 +58,20 @@ body{
 
 #usp {
     grid-area: usp;
-    background-color: #2E5266;
+    background-color: #EC7D10;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 26px;
 }
 
 .drie {
     grid-area: drie;
-    background-color: #879DAA;
+    background-color: #EC7D10;
     flex-direction: column;
 }
 
@@ -82,19 +82,19 @@ body{
 
 .vijf {
     grid-area: vijf;
-    background-color: #9FB1BC;
+    background-color: white;
 }
 
 .zes {
     grid-area: zes;
-    background-color: #D3D0CB;
+    background-color:white
 }
 
 .grid-container > .zeven {
     grid-area: zeven;
-    background-color: #E2C044;
+    background-color: #EC7D10;
     font-size: 18px;
-    padding: 2rem;
+    padding: 4rem;
     display:block;
     columns: 2;
     column-gap: 40px;
@@ -103,10 +103,40 @@ body{
 
 .acht {
     grid-area: acht;
-    background-color: #D3D0CB;
+    background-color: white;
 }
 
 .negen {
     grid-area: negen;
-    background-color: #D3D0CB;
+    background-color: white;
 }
+
+.tien {
+    grid-area: tien;
+    background-color: white;
+}
+
+.hero {
+    grid-area: hero;
+    background-color: white;
+}
+
+.elf {
+    grid-area: elf;
+    background-color: white;
+}
+
+.twaalf {
+    grid-area: twaalf;
+    background-color: white;
+}
+
+.dertien {
+    grid-area: dertien;
+    background-color: white;
+}
+
+.veertien {
+    grid-area: veertien;
+    background-color: white;
+}   

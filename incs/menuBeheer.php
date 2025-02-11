@@ -22,6 +22,9 @@
         <a href="producten_beheer.php">Productenbeheer</a>
         <a href="product_sticker.php">Sticker Afdrukken</a>
         <a href="registratie.php">Registreren</a>
+        <a href="contact.php">Contact</a>
+        <a href="leveringsvoorwaarden.php">Leveringsvoorwaarden</a>
+        <a href="webshopinfo.php">Webshopinfo</a>
     </nav>
 
 

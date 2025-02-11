@@ -48,7 +48,9 @@ include "../artikelkop.php";
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
         <div class="drie">
-            <?php include '../prijs_component.php'; ?>
+            <p>[bestel blok]
+            <p> <br>
+                <?php include '../prijs_component.php'; ?>
         </div>
 
 

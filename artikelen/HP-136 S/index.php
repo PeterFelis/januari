@@ -22,6 +22,7 @@ include "../artikelkop.php";
 <script>
     window.isProductPage = true;
 </script>
+
 <body>
     <?php include_once __DIR__ . '/../../incs/product_selector.php'; ?>
 
@@ -38,7 +39,7 @@ include "../artikelkop.php";
             <h1> <?php echo htmlspecialchars($productType); ?></h1>
         </div>
 
-        <div class="usp">
+        <div id="usp">
             <?php
             foreach (explode("\n", $USP) as $usp) : ?>
                 <?php echo htmlspecialchars($usp); ?>
@@ -47,7 +48,9 @@ include "../artikelkop.php";
         </div>
 
         <div class="drie">
-            <?php include '../prijs_component.php'; ?>
+            <p>[bestel blok]
+            <p> <br>
+                <?php include '../prijs_component.php'; ?>
         </div>
 
         <div class="vier">

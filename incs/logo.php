@@ -25,11 +25,11 @@
     }
 
     .logoklein {
-        height: calc(100% - 6rem);
+        height: 80%;
         width: auto;
         position: absolute;
         left: 10rem;
-        top: 3rem;
+        top: 1rem;
         z-index: 10;
     }
 
