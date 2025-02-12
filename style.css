@@ -27,6 +27,17 @@
   html{
     font-size: 62.5%;
   }
+
+
+  ::selection {
+    background: #f0f0f0; /* een lichte grijze tint */
+  }
+  
+  ::-webkit-selection {
+    background: #f0f0f0;
+  }
+  
+
   
   body {
     font-family: 'Poppins', sans-serif;
@@ -90,7 +101,7 @@ input[type="password"]:focus {
 }
 
 button {
-  width: 100%;
+  width: auto;
   padding: 10px;
   border: none;
   background-color: #007bff;
@@ -104,7 +115,6 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
 
 
 
@@ -136,6 +146,48 @@ button:hover {
 }
 
 
+/*css voor de text/foto bovenaan sommige paginas bijv. leveringsvoorwaarden*/
+.bovenlicht {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* linkerkolom past zich aan de breedte van de afbeelding aan, rechter neemt de rest */
+  align-items: center;
+  /* centreert de content verticaal */
+  width: 100%;
+  background-color: var(--heellichtpaars);
+  /* voorbeeld achtergrondkleur, kan je aanpassen */
+  height: auto;
+  width: 100vw;
+
+}
+
+/* Zorgt dat de afbeelding netjes binnen zijn container past */
+.bovenlicht__image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+/* Extra marge of padding voor de tekst (optioneel) */
+.bovenlicht__text {
+  padding: 20px;
+  color: var(--paars);
+}
+
+
+.tekst_links{
+  text-align: left;
+}
+
+.tekst_rechts{
+  text-align: right;
+}
+
+.tekst_center{
+  text-align: center;
+}
 /*per pagina*/
 
 .index{

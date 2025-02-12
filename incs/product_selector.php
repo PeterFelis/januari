@@ -18,12 +18,6 @@ $jsonData = json_encode($products);
 ?>
 <style>
     /* Algemene styling */
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
-    }
 
     /* Header als grid: links logo & titel, rechts productselector */
     header {
@@ -33,8 +27,8 @@ $jsonData = json_encode($products);
         padding: 15px 20px;
         background-color: var(--heellichtpaars);
         gap: 20px;
-        height: 12vh;
-        max-height: 12vh;
+        height: 25vh;
+        max-height: 25vh;
         position: relative;
     }
 
@@ -124,7 +118,7 @@ $jsonData = json_encode($products);
         <?php
         $kleur = 'paars';
         $logo = 'logoklein';
-        include_once '../../incs/logo.php';
+        //include_once '../../incs/logo.php';
         ?>
     </div>
     <!-- Rechts: De productselector -->

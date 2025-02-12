@@ -79,8 +79,6 @@ include_once __dir__ . '/incs/top.php';
             cursor: pointer;
             transition: background-color 0.2s ease-in-out,
                 transform 0.2s ease-in-out;
-            width: auto;
-            ;
         }
 
         button:hover {

@@ -1,5 +1,6 @@
 <?php
 // file: producten_beheer.php
+$menu = "beheer";
 session_start();
 
 // 1) Is de gebruiker wel ingelogd?
@@ -613,133 +614,133 @@ include_once __DIR__ . '/incs/top.php';
         document.getElementById('new-button').addEventListener('click', resetForm);
     });
 </script>
-</head>
 
-<body>
-    <?php include_once __DIR__ . '/incs/menuBeheer.php';
-    ?>
+<body class='indexPaginaKleur'>
+    <?php include_once __dir__ . '/incs/menu.php'; ?>
 
-    <!-- Snackbar element -->
-    <div id="snackbar"></div>
+    <main>
+        <!-- Snackbar element -->
+        <div id="snackbar"></div>
 
-    <!-- Custom confirm modal -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content">
-            <p id="confirmMessage"></p>
-            <button id="confirmYes">Ja</button>
-            <button id="confirmNo">Nee</button>
-        </div>
-    </div>
-
-    <div class="container">
-        <!-- Linkerpaneel: productselector -->
-        <div id="left-pane">
-            <h2>Producten</h2>
-            <div id="productSelectorContainer">
-                <div class="selector-group">
-                    <strong>Categorie</strong>
-                    <div id="selectorCategory" class="button-row"></div>
-                </div>
-                <div class="selector-group">
-                    <strong>Subcategorie</strong>
-                    <div id="selectorSubcategory" class="button-row"></div>
-                </div>
-                <div class="selector-group">
-                    <strong>Product</strong>
-                    <div id="selectorProduct" class="button-row"></div>
-                </div>
+        <!-- Custom confirm modal -->
+        <div id="confirmModal" class="modal">
+            <div class="modal-content">
+                <p id="confirmMessage"></p>
+                <button id="confirmYes">Ja</button>
+                <button id="confirmNo">Nee</button>
             </div>
         </div>
 
-        <!-- Rechterpaneel: bewerkformulier -->
-        <div id="right-pane">
-            <h2>Product Beheren</h2>
-            <form>
-                <input type="hidden" id="product-id">
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="categorie">Categorie:</label>
-                        <input type="text" id="categorie">
+        <div class="container">
+            <!-- Linkerpaneel: productselector -->
+            <div id="left-pane">
+                <h2>Producten</h2>
+                <div id="productSelectorContainer">
+                    <div class="selector-group">
+                        <strong>Categorie</strong>
+                        <div id="selectorCategory" class="button-row"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="subcategorie">Subcategorie:</label>
-                        <input type="text" id="subcategorie">
+                    <div class="selector-group">
+                        <strong>Subcategorie</strong>
+                        <div id="selectorSubcategory" class="button-row"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="TypeNummer">TypeNummer:</label>
-                        <input type="text" id="TypeNummer" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="aantal_per_doos">Aantal per doos:</label>
-                        <input type="number" id="aantal_per_doos" required>
+                    <div class="selector-group">
+                        <strong>Product</strong>
+                        <div id="selectorProduct" class="button-row"></div>
                     </div>
                 </div>
-                <div id="omschrijvingveld">
-                    <label for="omschrijving">Omschrijving:</label>
-                    <div id="omschrijving"></div>
-                </div>
-                <div class="sticker-prijs-container">
-                    <div>
-                        <label for="sticker_text">Sticker Tekst:</label>
-                        <div id="sticker_text"></div>
-                    </div>
-                    <div>
-                        <label for="prijsstaffel">Prijsstaffel:</label>
-                        <textarea id="prijsstaffel" rows="4"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="USP">USP</label>
-                    <textarea rows="6" cols="30" id="USP"></textarea>
-                </div>
-                <br>
-                <button class="hidden" type="button" id="save-button">Bewaren</button>
-                <button type="button" id="new-button">Leegmaken</button>
-                <button type="button" id="copy-button">Kopieer</button>
-                <button type="button" id="delete-button">Verwijder</button>
-            </form>
-        </div>
-    </div>
+            </div>
 
-    <script>
-        // Initialiseer de Quill editors
-        var quill = new Quill('#omschrijving', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{
-                        'header': [1, 2, false]
-                    }],
-                    ['bold', 'italic', 'underline'],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['link', 'blockquote', 'code-block'],
-                    [{
-                        'color': []
-                    }, {
-                        'background': []
-                    }]
-                ]
-            }
-        });
-        var quillSticker = new Quill('#sticker_text', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline'],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['link']
-                ]
-            }
-        });
-    </script>
+            <!-- Rechterpaneel: bewerkformulier -->
+            <div id="right-pane">
+                <h2>Product Beheren</h2>
+                <form>
+                    <input type="hidden" id="product-id">
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label for="categorie">Categorie:</label>
+                            <input type="text" id="categorie">
+                        </div>
+                        <div class="form-group">
+                            <label for="subcategorie">Subcategorie:</label>
+                            <input type="text" id="subcategorie">
+                        </div>
+                        <div class="form-group">
+                            <label for="TypeNummer">TypeNummer:</label>
+                            <input type="text" id="TypeNummer" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aantal_per_doos">Aantal per doos:</label>
+                            <input type="number" id="aantal_per_doos" required>
+                        </div>
+                    </div>
+                    <div id="omschrijvingveld">
+                        <label for="omschrijving">Omschrijving:</label>
+                        <div id="omschrijving"></div>
+                    </div>
+                    <div class="sticker-prijs-container">
+                        <div>
+                            <label for="sticker_text">Sticker Tekst:</label>
+                            <div id="sticker_text"></div>
+                        </div>
+                        <div>
+                            <label for="prijsstaffel">Prijsstaffel:</label>
+                            <textarea id="prijsstaffel" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="USP">USP</label>
+                        <textarea rows="6" cols="30" id="USP"></textarea>
+                    </div>
+                    <br>
+                    <button class="hidden" type="button" id="save-button">Bewaren</button>
+                    <button type="button" id="new-button">Leegmaken</button>
+                    <button type="button" id="copy-button">Kopieer</button>
+                    <button type="button" id="delete-button">Verwijder</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Initialiseer de Quill editors
+            var quill = new Quill('#omschrijving', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{
+                            'header': [1, 2, false]
+                        }],
+                        ['bold', 'italic', 'underline'],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        ['link', 'blockquote', 'code-block'],
+                        [{
+                            'color': []
+                        }, {
+                            'background': []
+                        }]
+                    ]
+                }
+            });
+            var quillSticker = new Quill('#sticker_text', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        ['link']
+                    ]
+                }
+            });
+        </script>
+    </main>
 </body>
 
 </html>

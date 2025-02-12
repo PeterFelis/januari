@@ -31,7 +31,7 @@ if ($menu == 'normal') { ?>
             <?php } ?>
             <a href="logout.php">Logout</a>
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'dashboard') echo '<a href="dashboard.php">Dashboard</a>'; ?>
-            <a href="producten_beheer.php">Productenbeheer</a>
+            <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'producten_beheer') echo '<a href="producten_beheer.php">Productenbeheer</a>'; ?>
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'product_sticker') echo '<a href="product_sticker.php">Sticker Afdrukken</a>'; ?>
             <a href="registratie.php">Registreren</a>
             <a href="contact.php">Contact</a>
@@ -86,6 +86,7 @@ if ($menu == 'normal') { ?>
         height: 100%;
         width: auto;
         z-index: 10;
+        position: relative;
     }
 
     .logo::after {
@@ -95,7 +96,7 @@ if ($menu == 'normal') { ?>
         height: 250%;
         background: var(--accent);
         position: absolute;
-        z-index: -1;
+        z-index: 5;
         top: -100%;
         left: -10%;
         transform: rotate(-15deg);
