@@ -1,9 +1,15 @@
 <?php
-$title = 'leveringsvoorwaarden - hele kleine lettertjes';
-include_once('header.php');
-include_once('menu.php'); ?>
+$title = "Leveringsvoorwaarden - hele kleine lettertjes";
+$statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
+$menu = 'normaal';
+include_once __dir__ . '/incs/top.php';
+include_once __dir__ . '/incs/statusbalk.php';
+?>
 
-<body class="leveringsvoorwaarden container hoog2">
+<body class='indexPaginaKleur'>
+    <?php include_once __dir__ . '/incs/menu.php';
+    ?>
+
     <div class='section grid2col'>
         <div class='gridcenter tc'>
             <img class='img-back' src="afbeeldingen/hp-136.jpg" alt='muisje' />

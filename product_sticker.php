@@ -16,366 +16,374 @@ if ($_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-include_once  __DIR__ . '/incs/menuBeheer.php';
-include_once __DIR__ . '/incs/dbConnect.php';
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die('Databaseverbinding mislukt: ' . $e->getMessage());
-}
-
-// Haal ook aantal_per_doos op
-$query = "SELECT id, categorie, subcategorie, TypeNummer, sticker_text, aantal_per_doos 
-          FROM products";
-$stmt = $pdo->query($query);
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Zet alle data om naar JSON
-$jsonData = json_encode($result);
-
-
-$title = 'Stickers afdrukken';
+$title = "Product stikker maken";
+$menu = 'beheer';
 include_once __dir__ . '/incs/top.php';
 
 ?>
 
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        margin: 20px;
+<body class='indexPaginaKleur'>
+    <?php include_once __dir__ . '/incs/menu.php';
+
+    include_once __DIR__ . '/incs/dbConnect.php';
+
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die('Databaseverbinding mislukt: ' . $e->getMessage());
     }
 
-    h1,
-    h2,
-    h3 {
-        margin-top: 0;
-    }
+    // Haal ook aantal_per_doos op
+    $query = "SELECT id, categorie, subcategorie, TypeNummer, sticker_text, aantal_per_doos
+    FROM products";
+    $stmt = $pdo->query($query);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    .button-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    button {
-        padding: 10px 20px;
-        margin: 5px;
-        border: none;
-        border-radius: 20px;
-        /* afgeronde hoeken */
-        background-color: #007BFF;
-        /* blauw, pas aan naar wens */
-        color: #fff;
-        /* witte tekst */
-        font-size: 14px;
-        /* wat grotere tekst */
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out,
-            transform 0.2s ease-in-out;
-    }
-
-    button:hover {
-        background-color: #0056b3;
-        /* iets donkerder blauw bij hover */
-        transform: translateY(-2px);
-        /* klein ‘opwaarts’ effect bij hover */
-    }
-
-    button:active {
-        background-color: #003f7f;
-        /* nog donkerder bij klikken */
-        transform: translateY(0);
-        /* klik-effect ‘terug naar plek’ */
-    }
-
-    /* Highlight voor de geselecteerde knop */
-    .selected {
-        background-color: #ffcc66;
-        /* opvallende kleur voor de geselecteerde knop */
-        color: #000;
-        font-weight: bold;
-    }
-
-    /* Input en select fields wat mooier maken */
-    input[type="text"],
-    select {
-        padding: 8px 12px;
-        margin: 5px;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        /* afgeronde hoeken */
-        font-size: 14px;
-        outline: none;
-        transition: border-color 0.2s ease-in-out;
-    }
-
-    input[type="text"]:focus,
-    select:focus {
-        border-color: #007BFF;
-        /* randje in de hoofdkleur bij focus */
-    }
+    // Zet alle data om naar JSON
+    $jsonData = json_encode($result);
 
 
+    $title = 'Stickers afdrukken';
+    include_once __dir__ . '/incs/top.php';
 
-    .sticker {
-        border: 1px solid grey;
-        padding: 2rem;
-        border-radius: 8px;
-        text-align: left;
-    }
+    ?>
 
-    .large {
-        font-size: 24px;
-
-    }
-
-    .small {
-        font-size: 16px;
-
-    }
-
-    .sticker-container {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    P {
-        margin: 0;
-        padding: 0;
-    }
-
-    .selected {
-        background-color: #ffcc66;
-        /* Kies een kleur naar wens */
-        color: #000;
-        /* Tekstkleur (optioneel) */
-        font-weight: bold;
-        /* Eventueel dikgedrukt */
-    }
-
-    @page {
-        margin: 0;
-        /* minimaliseer kop- en voetteksten */
-    }
-
-    @media print {
-
-        /* Verberg alles behalve de stickerContainer bij print */
-        body * {
-            visibility: hidden;
+    <style>
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
         }
 
-        #stickerContainer,
-        #stickerContainer * {
-            visibility: visible;
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        #stickerContainer {
-            position: absolute;
-            top: 0;
-            left: 0;
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 20px;
+            /* afgeronde hoeken */
+            background-color: #007BFF;
+            /* blauw, pas aan naar wens */
+            color: #fff;
+            /* witte tekst */
+            font-size: 14px;
+            /* wat grotere tekst */
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out,
+                transform 0.2s ease-in-out;
+            width: auto;
+            ;
         }
+
+        button:hover {
+            background-color: #0056b3;
+            /* iets donkerder blauw bij hover */
+            transform: translateY(-2px);
+            /* klein ‘opwaarts’ effect bij hover */
+        }
+
+        button:active {
+            background-color: #003f7f;
+            /* nog donkerder bij klikken */
+            transform: translateY(0);
+            /* klik-effect ‘terug naar plek’ */
+        }
+
+        /* Highlight voor de geselecteerde knop */
+        .selected {
+            background-color: #ffcc66;
+            /* opvallende kleur voor de geselecteerde knop */
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Input en select fields wat mooier maken */
+        input[type="text"],
+        select {
+            padding: 8px 12px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            /* afgeronde hoeken */
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #007BFF;
+            /* randje in de hoofdkleur bij focus */
+        }
+
 
         .sticker {
-            page-break-after: always;
-            border: none;
-            padding: 0;
+            border: 1px solid grey;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: left;
         }
 
         .large {
-            margin-left: 10cm;
-            /* horizontaal 10 cm */
-            margin-top: 10cm;
-            /* verticaal  10 cm */
-
+            font-size: 24px;
 
         }
 
         .small {
-            margin-left: 10cm;
-            /* horizontaal 10 cm */
-            margin-top: 3cm;
-            /* verticaal   3 cm */
+            font-size: 20px;
 
         }
-    }
-</style>
-</head>
 
-<body>
-    <h1>Stickers Afdrukken</h1>
-
-    <!-- Rijen voor categorie, subcategorie, typeNummer -->
-    <h2>Categorieën</h2>
-    <div id="categoryRow" class="button-row"></div>
-
-    <h2>Subcategorieën</h2>
-    <div id="subcategoryRow" class="button-row"></div>
-
-    <h2>TypeNummers</h2>
-    <div id="typeNumberRow" class="button-row"></div>
-
-    <!-- Extra inputveld voor stickerformaat + "aantal per doos" + printknop -->
-    <br>
-    <label for="size">Kies stickerformaat:</label>
-    <select name="size" id="size" onchange="generateSticker()">
-        <option value="small">Klein</option>
-        <option value="large">Groot</option>
-    </select>
-
-    &nbsp;&nbsp; <!-- wat spaties -->
-
-    <label for="boxQuantityInput">Aantal per doos:</label>
-    <input type="text" id="boxQuantityInput" oninput="generateSticker()" />
-
-    <br><br>
-    <button type="button" onclick="window.print()">Afdrukken</button>
-
-    <!-- Container waar stickers in getoond worden -->
-    <div id="stickerContainer" class="sticker-container"></div>
-
-    <script>
-        function highlightSelectedBtn(parentElement, clickedButton) {
-            // Verwijder .selected op alle knoppen binnen de parent
-            const allButtons = parentElement.querySelectorAll('button');
-            allButtons.forEach(btn => btn.classList.remove('selected'));
-
-            // Voeg .selected toe aan de knop waarop net is geklikt
-            clickedButton.classList.add('selected');
+        .sticker-container {
+            display: flex;
+            flex-wrap: wrap;
         }
 
-
-
-        // Alle producten uit PHP
-        const allProducts = JSON.parse('<?php echo $jsonData; ?>');
-
-        let selectedCategory = null;
-        let selectedSubcategory = null;
-        let selectedProduct = null; // Wordt gevuld met het gekozen product-object
-
-        // Helper-functie om knoppen te highlighten
-        function highlightSelectedBtn(parentElement, clickedButton) {
-            const allButtons = parentElement.querySelectorAll('button');
-            allButtons.forEach(btn => btn.classList.remove('selected'));
-            clickedButton.classList.add('selected');
+        P {
+            margin: 0;
+            padding: 0;
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            showCategories();
-        });
+        .selected {
+            background-color: #ffcc66;
+            /* Kies een kleur naar wens */
+            color: #000;
+            /* Tekstkleur (optioneel) */
+            font-weight: bold;
+            /* Eventueel dikgedrukt */
+        }
 
-        // Toon alle unieke categorieën als knoppen
-        function showCategories() {
-            const categories = [...new Set(allProducts.map(p => p.categorie))];
-            const categoryRow = document.getElementById('categoryRow');
-            categoryRow.innerHTML = ''; // wis eerdere inhoud
+        @page {
+            margin: 0;
+            /* minimaliseer kop- en voetteksten */
+        }
 
-            categories.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.textContent = cat;
-                btn.onclick = () => {
-                    selectedCategory = cat;
-                    selectedSubcategory = null;
-                    selectedProduct = null;
+        @media print {
 
-                    // Highlight deze knop
-                    highlightSelectedBtn(categoryRow, btn);
+            /* Verberg alles behalve de stickerContainer bij print */
+            body * {
+                visibility: hidden;
+            }
 
-                    showSubcategories(cat);
-                };
-                categoryRow.appendChild(btn);
+            #stickerContainer,
+            #stickerContainer * {
+                visibility: visible;
+            }
+
+            #stickerContainer {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .sticker {
+                page-break-after: always;
+                border: none;
+                padding: 0;
+            }
+
+            .large {
+                margin-left: 10cm;
+                /* horizontaal 10 cm */
+                margin-top: 10cm;
+                /* verticaal  10 cm */
+
+            }
+
+            .small {
+                margin-left: 13cm;
+                /* horizontaal 10 cm */
+                margin-top: 3cm;
+                /* verticaal   3 cm */
+
+            }
+
+            div {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+
+    <main>
+        <h1>Stickers Afdrukken</h1>
+
+        <!-- Rijen voor categorie, subcategorie, typeNummer -->
+        <h2>Categorieën</h2>
+        <div id="categoryRow" class="button-row"></div>
+
+        <h2>Subcategorieën</h2>
+        <div id="subcategoryRow" class="button-row"></div>
+
+        <h2>TypeNummers</h2>
+        <div id="typeNumberRow" class="button-row"></div>
+
+        <!-- Extra inputveld voor stickerformaat + "aantal per doos" + printknop -->
+        <br>
+        <label for="size">Kies stickerformaat:</label>
+        <select name="size" id="size" onchange="generateSticker()">
+            <option value="small">Klein</option>
+            <option value="large">Groot</option>
+        </select>
+
+        &nbsp;&nbsp; <!-- wat spaties -->
+
+        <label for="boxQuantityInput">Aantal per doos:</label>
+        <input type="text" id="boxQuantityInput" oninput="generateSticker()" />
+
+        <br><br>
+        <button type="button" onclick="window.print()">Afdrukken</button>
+
+        <!-- Container waar stickers in getoond worden -->
+        <div id="stickerContainer" class="sticker-container"></div>
+
+        <script>
+            function highlightSelectedBtn(parentElement, clickedButton) {
+                // Verwijder .selected op alle knoppen binnen de parent
+                const allButtons = parentElement.querySelectorAll('button');
+                allButtons.forEach(btn => btn.classList.remove('selected'));
+
+                // Voeg .selected toe aan de knop waarop net is geklikt
+                clickedButton.classList.add('selected');
+            }
+
+
+
+            // Alle producten uit PHP
+            const allProducts = JSON.parse('<?php echo $jsonData; ?>');
+
+            let selectedCategory = null;
+            let selectedSubcategory = null;
+            let selectedProduct = null; // Wordt gevuld met het gekozen product-object
+
+            // Helper-functie om knoppen te highlighten
+            function highlightSelectedBtn(parentElement, clickedButton) {
+                const allButtons = parentElement.querySelectorAll('button');
+                allButtons.forEach(btn => btn.classList.remove('selected'));
+                clickedButton.classList.add('selected');
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                showCategories();
             });
 
-            // Wis subcategorie-, type-rij en stickers
-            document.getElementById('subcategoryRow').innerHTML = '';
-            document.getElementById('typeNumberRow').innerHTML = '';
-            document.getElementById('stickerContainer').innerHTML = '';
-        }
+            // Toon alle unieke categorieën als knoppen
+            function showCategories() {
+                const categories = [...new Set(allProducts.map(p => p.categorie))];
+                const categoryRow = document.getElementById('categoryRow');
+                categoryRow.innerHTML = ''; // wis eerdere inhoud
 
-        // Toon subcategorieën van de gekozen categorie
-        function showSubcategories(category) {
-            const filtered = allProducts.filter(p => p.categorie === category);
-            const subcategories = [...new Set(filtered.map(p => p.subcategorie))];
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.textContent = cat;
+                    btn.onclick = () => {
+                        selectedCategory = cat;
+                        selectedSubcategory = null;
+                        selectedProduct = null;
 
-            const subcategoryRow = document.getElementById('subcategoryRow');
-            subcategoryRow.innerHTML = '';
+                        // Highlight deze knop
+                        highlightSelectedBtn(categoryRow, btn);
 
-            subcategories.forEach(subcat => {
-                const btn = document.createElement('button');
-                btn.textContent = subcat;
-                btn.onclick = () => {
-                    selectedSubcategory = subcat;
-                    selectedProduct = null;
+                        showSubcategories(cat);
+                    };
+                    categoryRow.appendChild(btn);
+                });
 
-                    // Highlight deze knop
-                    highlightSelectedBtn(subcategoryRow, btn);
+                // Wis subcategorie-, type-rij en stickers
+                document.getElementById('subcategoryRow').innerHTML = '';
+                document.getElementById('typeNumberRow').innerHTML = '';
+                document.getElementById('stickerContainer').innerHTML = '';
+            }
 
-                    showTypeNummers(category, subcat);
-                };
-                subcategoryRow.appendChild(btn);
-            });
+            // Toon subcategorieën van de gekozen categorie
+            function showSubcategories(category) {
+                const filtered = allProducts.filter(p => p.categorie === category);
+                const subcategories = [...new Set(filtered.map(p => p.subcategorie))];
 
-            document.getElementById('typeNumberRow').innerHTML = '';
-            document.getElementById('stickerContainer').innerHTML = '';
-        }
+                const subcategoryRow = document.getElementById('subcategoryRow');
+                subcategoryRow.innerHTML = '';
 
-        // Toon alle TypeNummers van de gekozen subcategorie
-        function showTypeNummers(category, subcategory) {
-            const filtered = allProducts.filter(p =>
-                p.categorie === category && p.subcategorie === subcategory
-            );
+                subcategories.forEach(subcat => {
+                    const btn = document.createElement('button');
+                    btn.textContent = subcat;
+                    btn.onclick = () => {
+                        selectedSubcategory = subcat;
+                        selectedProduct = null;
 
-            const typeNumberRow = document.getElementById('typeNumberRow');
-            typeNumberRow.innerHTML = '';
+                        // Highlight deze knop
+                        highlightSelectedBtn(subcategoryRow, btn);
 
-            filtered.forEach(product => {
-                const btn = document.createElement('button');
-                btn.textContent = product.TypeNummer;
-                btn.onclick = () => {
-                    selectedProduct = product;
-                    // Highlight deze knop
-                    highlightSelectedBtn(typeNumberRow, btn);
+                        showTypeNummers(category, subcat);
+                    };
+                    subcategoryRow.appendChild(btn);
+                });
 
-                    // Vul het inputveld met 'aantal_per_doos' zodra een product is gekozen.
-                    document.getElementById('boxQuantityInput').value = product.aantal_per_doos || '';
+                document.getElementById('typeNumberRow').innerHTML = '';
+                document.getElementById('stickerContainer').innerHTML = '';
+            }
 
-                    generateSticker();
-                };
-                typeNumberRow.appendChild(btn);
-            });
+            // Toon alle TypeNummers van de gekozen subcategorie
+            function showTypeNummers(category, subcategory) {
+                const filtered = allProducts.filter(p =>
+                    p.categorie === category && p.subcategorie === subcategory
+                );
 
-            document.getElementById('stickerContainer').innerHTML = '';
-        }
+                const typeNumberRow = document.getElementById('typeNumberRow');
+                typeNumberRow.innerHTML = '';
 
-        // Sticker genereren en tonen
-        function generateSticker() {
-            // Als nog geen product is geselecteerd, doen we niets
-            if (!selectedProduct) return;
+                filtered.forEach(product => {
+                    const btn = document.createElement('button');
+                    btn.textContent = product.TypeNummer;
+                    btn.onclick = () => {
+                        selectedProduct = product;
+                        // Highlight deze knop
+                        highlightSelectedBtn(typeNumberRow, btn);
 
-            const size = document.getElementById('size').value;
-            // Lees het (eventueel aangepaste) aantal per doos uit
-            const boxQty = document.getElementById('boxQuantityInput').value;
+                        // Vul het inputveld met 'aantal_per_doos' zodra een product is gekozen.
+                        document.getElementById('boxQuantityInput').value = product.aantal_per_doos || '';
 
-            // container leegmaken
-            const container = document.getElementById('stickerContainer');
-            container.innerHTML = '';
+                        generateSticker();
+                    };
+                    typeNumberRow.appendChild(btn);
+                });
 
-            // In dit voorbeeld maken we maar 1 sticker
-            const stickerDiv = document.createElement('div');
-            stickerDiv.className = 'sticker ' + size;
+                document.getElementById('stickerContainer').innerHTML = '';
+            }
 
-            // Toon productnaam, aantal per doos en de stickertekst
-            stickerDiv.innerHTML = `
-        <div><h3>${selectedProduct.TypeNummer}</h3></div>
-        <div>Aantal per doos: ${boxQty}</div>
+            // Sticker genereren en tonen
+            function generateSticker() {
+                // Als nog geen product is geselecteerd, doen we niets
+                if (!selectedProduct) return;
+
+                const size = document.getElementById('size').value;
+                // Lees het (eventueel aangepaste) aantal per doos uit
+                const boxQty = document.getElementById('boxQuantityInput').value;
+
+                // container leegmaken
+                const container = document.getElementById('stickerContainer');
+                container.innerHTML = '';
+
+                // In dit voorbeeld maken we maar 1 sticker
+                const stickerDiv = document.createElement('div');
+                stickerDiv.className = 'sticker ' + size;
+
+                // Toon productnaam, aantal per doos en de stickertekst
+                stickerDiv.innerHTML = `
+        <div><h2>${selectedProduct.TypeNummer}</h2></div>
+        <div><h5>Aantal per doos: ${boxQty}</h5></div>
         <div>${selectedProduct.sticker_text || ''}</div>
     `;
-            container.appendChild(stickerDiv);
-        }
-    </script>
+                container.appendChild(stickerDiv);
+            }
+        </script>
+    </main>
 </body>
 
 </html>

@@ -38,6 +38,11 @@
     margin: 0 auto;
   }
   
+  main{
+    width:1024px;
+    margin: 5rem auto 0rem;
+  }
+
   h1,
   h2,
   h3,
@@ -49,7 +54,7 @@
   }
   
   h1 {
-    font-size: 5rem;
+    font-size: 4rem;
   }
   
   h3 {
@@ -62,32 +67,44 @@
 
 
 
-
-header nav{
-  display:flex;
-  justify-content: space-around;
-  align-items: center; 
-  height: 100%;
-  width:70vw;
-  margin-left:30vw;
-  position: relative;
+ label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-header nav a{
-  color:var(--paars);
-  border-left-width: 2px;
-  border-left-style: solid;
-  border-left-color: transparent;
-  padding-left: 6px;
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border-color 0.3s;
 }
-header nav a:visited{
-  color:var(--paars);
-} 
 
-header nav a:hover{
-  border-left-color:var(--paars)
-  
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
 }
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
 
 
 

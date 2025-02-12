@@ -1,7 +1,7 @@
 <?php
 $title = "Fetum - Since 1985";
 $statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
-$eenpagina = true;
+$menu = 'geen';
 include_once __dir__ . '/incs/top.php';
 include_once __dir__ . '/incs/statusbalk.php';
 ?>
@@ -32,8 +32,6 @@ include_once __dir__ . '/incs/statusbalk.php';
         Tel: 0174 769 132 |<br>
         Verkoop@fetum.nl</p>
     </div>
-
-
 
 
     <?php
