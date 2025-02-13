@@ -3,3 +3,12 @@ contact
 13-02 responsive maken
 13-02 bol, trustpilot en socials in een grid naast elkaar zetten
 13-02 hero is niet mooi beter uitwerken
+
+forgot_password:
+13-02 na verzenden naar log in Pagina sturen
+
+reset_password
+13-02 na nieuwe pasworden ingevuld te hebben naar de reset pagina
+
+404 Pagina
+13-02 nog maken
