@@ -1,42 +1,231 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $title = 'contact ';
 $statusbalk = "Even bellen? 0174 769132";
 $menu = 'beheer';
 include_once __dir__ . '/incs/top.php';
 include_once __dir__ . '/incs/statusbalk.php';
+
+// Verzenden van het contactformulier
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+$melding = "";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $naam = htmlspecialchars($_POST['naam'] ?? '');
+    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : '';
+    $bericht = htmlspecialchars($_POST['bericht'] ?? '');
+    $ontvanger = "info@fetum.nl";
+
+    if ($naam && $email && $bericht) {
+        $onderwerp = "Nieuw contactformulier bericht van " . $naam;
+        $body = "Naam: $naam\nEmail: $email\n\nBericht:\n$bericht";
+
+        try {
+            // Eerste e-mail: naar de beheerder
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host       = 'mail225.hostingdiscounter.nl';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'info@fetum.nl';
+            $mail->Password   = 'rNqjQ2h4EC';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+            $mail->isHTML(false);
+
+            // Zet de afzender en ontvanger
+            $mail->setFrom('info@fetum.nl', 'Fetum');
+            $mail->addAddress($ontvanger);
+            $mail->addReplyTo($email, $naam);
+
+            // Inhoud van de e-mail
+            $mail->Subject = $onderwerp;
+            $mail->Body    = $body;
+
+            $mail->send();
+
+            // Tweede e-mail: kopie naar de afzender
+            $mailCopy = new PHPMailer(true);
+            $mailCopy->isSMTP();
+            $mailCopy->Host       = 'mail225.hostingdiscounter.nl';
+            $mailCopy->SMTPAuth   = true;
+            $mailCopy->Username   = 'info@fetum.nl';
+            $mailCopy->Password   = 'rNqjQ2h4EC';
+            $mailCopy->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mailCopy->Port       = 587;
+            $mailCopy->isHTML(false);
+
+            $mailCopy->setFrom('info@fetum.nl', 'Fetum');
+            $mailCopy->addAddress($email, $naam);
+            $mailCopy->Subject = "Kopie van uw bericht";
+            $mailCopy->Body    = $body;
+
+            $mailCopy->send();
+
+            $melding = "<div class='snackbar success'>Uw bericht is succesvol verzonden.</div>";
+        } catch (Exception $e) {
+            $melding = "<div class='snackbar error'>Er is een fout opgetreden bij het verzenden: {$mail->ErrorInfo}</div>";
+        }
+    } else {
+        $melding = "<div class='snackbar error'>Vul alle velden correct in.</div>";
+    }
+}
 ?>
 
 <style>
-    .kaart {
-        height: 100vh;
-        width: 100vw;
-    }
-
     .grid2col {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        /* Twee gelijke kolommen */
-        gap: 5px;
-        /* Ruimte tussen de cellen */
-        padding: 20px;
-        /* Binnenmarge voor extra ruimte */
-
-        /* Lichte achtergrondkleur voor een net uiterlijk */
-        border-radius: 8px;
-        /* Afronden van de hoeken */
-        max-width: 600px;
-        /* Optionele maximale breedte */
+        gap: 20px;
+        max-width: 100%;
         margin: 0 auto 10vh auto;
-        /* Centreert de grid horizontaal */
+        align-items: stretch;
+    }
+
+    .contact-info,
+    .contact-form {
+        background: transparent;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid var(--lichtpaars);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-width: 100%;
+    }
+
+    .contact-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px;
     }
 
     .grid2col .tr {
-        font-weight: bold;
-        /* Labels vetgedrukt */
         text-align: right;
-        /* Tekst rechts uitlijnen zodat de labels dicht bij de waarden staan */
         padding-right: 10px;
-        /* Extra ruimte aan de rechterkant van de labels */
+    }
+
+    .contact-form {
+        background: #f8f8f8;
+        display: flex;
+    }
+
+    .contact-form form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .contact-form textarea {
+        flex-grow: 1;
+        resize: none;
+    }
+
+    .contact-form button {
+        width: 100%;
+        padding: 10px;
+        background: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .contact-form button:hover {
+        background: #0056b3;
+    }
+
+    .snackbar {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .snackbar.success {
+        background: #28a745;
+    }
+
+    .snackbar.error {
+        background: #dc3545;
+    }
+
+    .kaart {
+        width: 100%;
+        height: 70vh;
+        margin: 0 auto;
+    }
+
+    .social {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid var(--lichtpaars);
+        border-radius: 4px;
+        margin-bottom: 10vh;
+    }
+
+    .bol {
+        /* totale hoogte */
+        height: 200px;
+
+        /* flexbox om afbeelding en tekst naast elkaar te zetten */
+        display: flex;
+        align-items: center;
+        /* verticaal centreren van de inhoud */
+
+        /* als je niet wilt dat de afbeelding buiten de box 'steekt' */
+        overflow: hidden;
+    }
+
+    /* Voor elk child-div in .bol */
+    .bol>div {
+        /* Zorg dat de inhoud van elk div ook verticaal/horizontaal gecentreerd is */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Eerste div bevat de afbeelding: deze laten we niet 'meerekken' */
+    .bol>div:first-child {
+        flex: 0 0 auto;
+        /* breedte wordt bepaald door de inhoud (de afbeelding) */
+        margin-right: 10px;
+        /* optioneel wat ruimte tussen afbeelding en tekst */
+    }
+
+    /* De afbeelding zelf */
+    .bol>div:first-child img {
+        max-height: 100%;
+        /* nooit hoger dan 200px */
+        max-width: 100%;
+        /* nooit breder dan de container */
+        object-fit: contain;
+    }
+
+    /* Laatste div bevat de tekst: die mag wel meerekken */
+    .bol>div:last-child {
+        flex: 1 1 auto;
+        text-align: center;
+        /* tekst horizontaal centreren */
     }
 </style>
 
@@ -46,56 +235,152 @@ include_once __dir__ . '/incs/statusbalk.php';
 
     <div class="bovenlicht">
         <div class="bovenlicht__text tekst_rechts">
-            <h1>contact info</h1>
+            <h1>Contact</h1>
             <h3>Altijd handig</h3>
         </div>
-        <div class=" bovenlicht__image">
+        <div class="bovenlicht__image">
             <img src="afbeeldingen/2710-rood-geel-block.jpg" alt="budget hoofdtelefoon in 4 verschillende vrolijke kleuren" />
         </div>
-
     </div>
 
     <main>
+        <?= $melding ?>
+        <div class="grid2col">
+            <!-- Contactinformatie links -->
+            <div class="contact-info">
+                <div class="tr">Naam</div>
+                <div>Fetum</div>
+                <div class="tr">Adres</div>
+                <div>Grote waard 36</div>
+                <div class="tr">Postcode</div>
+                <div>2675 BX</div>
+                <div class="tr">Plaats</div>
+                <div>Honselersdijk</div>
+                <div class="tr">&nbsp;</div>
+                <div></div>
+                <div class="tr">Telefoon</div>
+                <div><a href="tel:+31174769132">+31 (0) 174 769132</a></div>
+                <div class="tr">Mail</div>
+                <div><a href="mailto:info@fetum.nl">info@fetum.nl</a></div>
+                <div class="tr">&nbsp;</div>
+                <div></div>
+                <div class="tr">KVK</div>
+                <div>Den Haag 28045481</div>
+                <div class="tr">BTW nummer</div>
+                <div>801462.265.B01</div>
+                <div class="tr">Bank</div>
+                <div>NL78 KNAB 0724 8909 47</div>
+                <div class="tr">BIC</div>
+                <div>KNABNL2H</div>
+            </div>
 
-
-
-        <div class="grid2col phl">
-            <div class="tr">Naam</div>
-            <div>Fetum</div>
-            <div class="tr">Adres</div>
-            <div>Grote waard 36</div>
-            <div class="tr">Postcode</div>
-            <div>2675 BX</div>
-            <div class="tr">Plaats</div>
-            <div>Honselersdijk</div>
-            <div class="tr"></div>
-            <div></div>
-            <div class="tr">Telefoon</div>
-            <div>+31 (0) 174 769132</div>
-            <div class="tr">Mail</div>
-            <div>info@fetum.nl</div>
-            <div class="tr"></div>
-            <div></div>
-            <div class="tr">KVK</div>
-            <div>Den Haag 28045481</div>
-            <div class="tr">BTW nummer</div>
-            <div>801462.265.B01</div>
-            <div class="tr">Bank</div>
-            <div>NL78 KNAB 0724 8909 47</div>
-            <div class="tr">BIC</div>
-            <div>KNABNL2H</div>
+            <!-- Contactformulier rechts -->
+            <div class="contact-form">
+                <h3>Neem contact op</h3>
+                <form action="contact.php" method="post">
+                    <input type="text" name="naam" placeholder="Uw naam" required>
+                    <input type="email" name="email" placeholder="Uw e-mailadres" required>
+                    <textarea name="bericht" placeholder="Uw bericht" rows="4" required></textarea>
+                    <button type="submit">Verstuur</button>
+                </form>
+            </div>
         </div>
-    </main>
 
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Als er een succesvolle snackbar aanwezig is, verberg deze na 2 seconden en reset het formulier
+                var snackbarSuccess = document.querySelector('.snackbar.success');
+                if (snackbarSuccess) {
+                    setTimeout(function() {
+                        snackbarSuccess.style.display = 'none';
+                        // Reset het formulier
+                        var form = document.getElementById('contactForm');
+                        if (form) {
+                            form.reset();
+                        }
+                    }, 4000);
+                }
+            });
+        </script>
+
+
+        <!-- bol -->
+        <div class="bol">
+            <div>
+                <a href="https://www.bol.com/nl/nl/s/?searchtext=fetum" target="_blank" rel="noopener">
+                    <img src="afbeeldingen/bolklein.png" alt="Fetum bij BOL">
+                </a>
+            </div>
+            <div>ook te koop bij bol
+            </div>
+        </div>
+
+        <!-- TrustBox script -->
+        <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+        <!-- End TrustBox script -->
+
+        <section class="social">
+            <!-- TrustBox widget - Review Collector -->
+            <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="67adb76cdb89fc000f8526d9" data-style-height="52px" data-style-width="100%">
+                <a href="https://nl.trustpilot.com/review/fetum.nl" target="_blank" rel="noopener">Trustpilot</a>
+            </div>
+            <!-- End TrustBox widget -->
+
+
+
+
+            <!-- Social icons -->
+            <div class="social-icons">
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/profile.php?id=100064868221019" target="_blank" rel="noopener">
+                    <img src="https://cdn.simpleicons.org/facebook" alt="Facebook Logo">
+                </a>
+                <!-- Google Business -->
+                <a href="https://www.google.com/search?q=Fetum&stick=H4sIAAAAAAAA_-NgU1I1qDAxTzZNSUw2TjI2MzE2t7C0AgpZGqQmJyYZmRibmBoYWpouYmV1Sy0pzQUAo8NDUzEAAAA&hl=en-GB&mat=CZoDonTEXu6GElYBmzl_pcIVaeptVJu0UfBpd_msVTipXkjWhPMkLLdTOehpQY2YK4j_lTITmr9QvtrsEX38rbeYT633b6hzJ8TLEwhY5O4kH_zARNjTRLy4YWzDFwbJNg&authuser=0&sei=0tutZ_CrKJjY7_UPjJa7sAU" target="_blank" rel="noopener">
+                    <img src="https://cdn.simpleicons.org/google" alt="Google Business Logo">
+                </a>
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/company/3049791/admin/dashboard/" target="_blank" rel="noopener">
+                    <img src="https://cdn.simpleicons.org/linkedin" alt="LinkedIn Logo">
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/fetum.nl/?hl=en" target="_blank" rel="noopener">
+                    <img src="https://cdn.simpleicons.org/instagram" alt="Instagram Logo">
+                </a>
+            </div>
+        </section>
+
+        <style>
+            .social {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .social-icons {
+                margin-top: 15px;
+            }
+
+            .social-icons a {
+                display: inline-block;
+                margin: 0 10px;
+            }
+
+            .social-icons img {
+                width: 32px;
+                /* pas de grootte aan naar wens */
+                height: auto;
+            }
+        </style>
+
+        </section>
+    </main>
 
     <section class="kaart">
         <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2455.82541316921!2d4.221463815671645!3d52.010059179720855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snl!4v1680985867192!5m2!1sen!2snl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
 
-
-
-
-    </main>
 </body>
 
 </html>

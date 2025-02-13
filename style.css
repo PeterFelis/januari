@@ -8,7 +8,7 @@
     --heeldonker: #3d5248;
     --rood: #D7594D;
     --paars: #ba5ce9;
-    --lichtpaarts: #B497D6;
+    --lichtpaars: #B497D6;
     --heellichtpaars: #E1E2EF;
     --oxfortblue: #05204A;
     --achtergrond: #F8F6F2;
@@ -47,6 +47,7 @@
     height: 100vh;
     position: relative;
     margin: 0 auto;
+    overflow-X: hidden;
   }
   
   main{
@@ -154,12 +155,10 @@ button:hover {
   /* linkerkolom past zich aan de breedte van de afbeelding aan, rechter neemt de rest */
   align-items: center;
   /* centreert de content verticaal */
-  width: 100%;
+  width: 100vw;
   background-color: var(--heellichtpaars);
   /* voorbeeld achtergrondkleur, kan je aanpassen */
   height: auto;
-  width: 100vw;
-
 }
 
 /* Zorgt dat de afbeelding netjes binnen zijn container past */
