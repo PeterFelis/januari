@@ -19,6 +19,11 @@ include_once __dir__ . '/incs/top.php';
 
             <button type="submit">Inloggen</button>
         </form>
+
+         <!-- Link voor vergeten wachtwoord -->
+    <p class="forgot-link">
+        <a href="forgot_password.php">Wachtwoord vergeten?</a>
+    </p>
     </main>
 </body>
 

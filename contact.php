@@ -96,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         flex-direction: column;
         justify-content: space-between;
         max-width: 100%;
+        font-size: 1.6rem;
     }
 
     .contact-info {
@@ -183,49 +184,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         margin-bottom: 10vh;
     }
 
-    .bol {
-        /* totale hoogte */
-        height: 200px;
+    .bol a {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Indien gewenst kun je een vaste hoogte instellen */
+        height: 150px;
+        gap: 20px;
+    }
 
-        /* flexbox om afbeelding en tekst naast elkaar te zetten */
-        display: flex;
-        align-items: center;
-        /* verticaal centreren van de inhoud */
-
-        /* als je niet wilt dat de afbeelding buiten de box 'steekt' */
+    .bollogo {
+        /* Zorgt ervoor dat de afbeelding de hele cel opvult */
         overflow: hidden;
-    }
-
-    /* Voor elk child-div in .bol */
-    .bol>div {
-        /* Zorg dat de inhoud van elk div ook verticaal/horizontaal gecentreerd is */
         display: flex;
+        justify-content: end;
         align-items: center;
-        justify-content: center;
+
     }
 
-    /* Eerste div bevat de afbeelding: deze laten we niet 'meerekken' */
-    .bol>div:first-child {
-        flex: 0 0 auto;
-        /* breedte wordt bepaald door de inhoud (de afbeelding) */
-        margin-right: 10px;
-        /* optioneel wat ruimte tussen afbeelding en tekst */
+    .bollogo img {
+        width: auto;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 8px;
     }
 
-    /* De afbeelding zelf */
-    .bol>div:first-child img {
-        max-height: 100%;
-        /* nooit hoger dan 200px */
-        max-width: 100%;
-        /* nooit breder dan de container */
-        object-fit: contain;
-    }
-
-    /* Laatste div bevat de tekst: die mag wel meerekken */
-    .bol>div:last-child {
-        flex: 1 1 auto;
-        text-align: center;
-        /* tekst horizontaal centreren */
+    .boltekst {
+        /* Centreert de tekst horizontaal en verticaal */
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        padding: 0 10px;
+        /* optioneel: ruimte rondom de tekst */
     }
 </style>
 
@@ -307,13 +297,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- bol -->
         <div class="bol">
-            <div>
-                <a href="https://www.bol.com/nl/nl/s/?searchtext=fetum" target="_blank" rel="noopener">
+            <a href="https://www.bol.com/nl/nl/s/?searchtext=fetum" target="_blank" rel="noopener">
+                <div class="bollogo">
                     <img src="afbeeldingen/bolklein.png" alt="Fetum bij BOL">
-                </a>
-            </div>
-            <div>ook te koop bij bol
-            </div>
+                </div>
+                <div class="boltekst">
+                    ook te koop bij bol
+                </div>
+            </a>
         </div>
 
         <!-- TrustBox script -->
@@ -378,8 +369,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </main>
 
     <section class="kaart">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2455.82541316921!2d4.221463815671645!3d52.010059179720855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snl!4v1680985867192!5m2!1sen!2snl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1032.551418345417!2d4.223417460607463!3d52.00988473968992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c5dac3b3643789%3A0x490ecab243450195!2sFetum!5e0!3m2!1sen!2snl!4v1739470699835!5m2!1sen!2snl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
+
+
 
 </body>
 

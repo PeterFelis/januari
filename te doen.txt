@@ -1,0 +1,5 @@
+Pagina:
+contact
+13-02 responsive maken
+13-02 bol, trustpilot en socials in een grid naast elkaar zetten
+13-02 hero is niet mooi beter uitwerken
