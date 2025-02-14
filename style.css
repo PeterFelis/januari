@@ -141,6 +141,24 @@ button:hover {
   background-size: contain; /* Zorgt dat de SVG netjes schaalt */
 }
 
+/* maakt een label nieuw aan, gewoon als class toevoegen aan een element */
+.nieuw::after {
+  content: "nieuw";
+  position: relative;
+  display: inline-block;
+  background-color: red;
+  /* Pas de achtergrondkleur aan naar wens */
+  color: #fff;
+  font-size: 0.6em;
+  padding: 2px 6px;
+  left: 5%;
+  top: -15%;
+  border-radius: 8px;
+  z-index: 10;
+  transform: rotate(-15deg);
+}
+
+
 
 .indexPaginaKleur{
   background-color: var(--heellichtpaars);

@@ -1,5 +1,11 @@
 <?php
+// registreer.php
 include_once __DIR__ . '/incs/dbConnect.php';
+
+// PHPMailer classes includen
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
@@ -8,39 +14,81 @@ try {
     die("Databaseverbinding mislukt: " . $e->getMessage());
 }
 
-// Formuliergegevens ophalen
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Klantinformatie
+    // Klantinformatie ophalen en ontsmetten
     $klant_naam = htmlspecialchars($_POST['klant_naam']);
-    $adres = htmlspecialchars($_POST['adres']);
-    $contact_email = htmlspecialchars($_POST['contact_email']);
-    $telefoonnummer = htmlspecialchars($_POST['telefoonnummer']);
+    $straat = htmlspecialchars($_POST['straat']);
+    $nummer = htmlspecialchars($_POST['nummer']);
+    $postcode = htmlspecialchars($_POST['postcode']);
+    $plaats = htmlspecialchars($_POST['plaats']);
+    $extra_veld = htmlspecialchars($_POST['extra_veld']);
+    $algemeen_telefoonnummer = htmlspecialchars($_POST['algemeen_telefoonnummer']);
+    $algemene_email = htmlspecialchars($_POST['algemene_email']);
+    $url = htmlspecialchars($_POST['url']);
+    $factuur_email = htmlspecialchars($_POST['factuur_email']);
+    $factuur_extra_info = htmlspecialchars($_POST['factuur_extra_info']);
 
-    // Gebruikersinformatie
+    // Gebruikersinformatie ophalen en ontsmetten
     $naam = htmlspecialchars($_POST['naam']);
     $email = htmlspecialchars($_POST['email']);
     $wachtwoord = password_hash($_POST['wachtwoord'], PASSWORD_BCRYPT);
 
-    // Start transactie
+    // Genereer een bevestigingstoken
+    $confirmation_token = bin2hex(random_bytes(16));
+
+    // Start een transactie
     $pdo->beginTransaction();
 
     try {
         // Klant toevoegen
-        $sql_klant = "INSERT INTO klanten (naam, adres, contact_email, telefoonnummer) VALUES (?, ?, ?, ?)";
+        $sql_klant = "INSERT INTO klanten 
+            (naam, straat, nummer, postcode, plaats, extra_veld, algemeen_telefoonnummer, algemene_email, url, factuur_email, factuur_extra_info) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_klant = $pdo->prepare($sql_klant);
-        $stmt_klant->execute([$klant_naam, $adres, $contact_email, $telefoonnummer]);
-        $klant_id = $pdo->lastInsertId(); // Haal het klant-ID op
+        $stmt_klant->execute([
+            $klant_naam, $straat, $nummer, $postcode, $plaats, $extra_veld,
+            $algemeen_telefoonnummer, $algemene_email, $url, $factuur_email, $factuur_extra_info
+        ]);
+        $klant_id = $pdo->lastInsertId();
 
-        // Gebruiker toevoegen
-        $sql_user = "INSERT INTO users (naam, email, wachtwoord, klant_id) VALUES (?, ?, ?, ?)";
+        // Gebruiker toevoegen met de bevestigingstoken en email_confirmed op 0
+        $sql_user = "INSERT INTO users (naam, email, wachtwoord, klant_id, email_confirmed, confirmation_token) VALUES (?, ?, ?, ?, 0, ?)";
         $stmt_user = $pdo->prepare($sql_user);
-        $stmt_user->execute([$naam, $email, $wachtwoord, $klant_id]);
+        $stmt_user->execute([$naam, $email, $wachtwoord, $klant_id, $confirmation_token]);
 
         // Commit transactie
         $pdo->commit();
-        header("Location: loginForm.php"); // Terug naar login als niet ingelogd
+
+        // Bevestigingslink samenstellen (pas de domeinnaam aan indien nodig)
+        $confirmLink = "http://fetum.nl/confirm.php?token=" . $confirmation_token;
+        $subject = "Bevestig uw registratie";
+        $body = "Beste " . $naam . ",\n\nBedankt voor uw registratie.\n\nKlik op de volgende link om uw e-mailadres te bevestigen:\n" . $confirmLink . "\n\nAls u zich niet heeft geregistreerd, negeer dan deze e-mail.";
+
+        // Verstuur de bevestigingsmail met PHPMailer
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = 'mail225.hostingdiscounter.nl';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'info@fetum.nl';
+            $mail->Password   = 'rNqjQ2h4EC';
+            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+            $mail->isHTML(false);
+            $mail->setFrom('info@fetum.nl', 'Fetum');
+            $mail->addAddress($email, $naam);
+            $mail->Subject = $subject;
+            $mail->Body    = $body;
+            $mail->send();
+        } catch (PHPMailer\PHPMailer\Exception $e) {
+            // Mocht het verzenden van de mail falen, log dit dan (het account is wel geregistreerd)
+            error_log("Mail versturen mislukt: " . $mail->ErrorInfo);
+        }
+
+        echo "Registratie succesvol. Er is een bevestigingsmail naar uw e-mailadres verzonden. Klik op de link in die mail om uw account te activeren.";
     } catch (Exception $e) {
         $pdo->rollBack();
         die("Er is een fout opgetreden: " . $e->getMessage());
     }
 }
+?>

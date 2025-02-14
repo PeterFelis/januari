@@ -3,7 +3,7 @@
 // maakt of het normale menu of het beheermenu
 // $menu = 'geen', 'normaal' of 'beheer', moet meegegeven worden bij aanroep
 
-if ($menu == 'normal') { ?>
+if ($menu == 'normaal') { ?>
     <header>
         <nav>
             <a class="logo" href=" /">

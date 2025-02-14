@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 11 feb 2025 om 17:05
+-- Gegenereerd op: 14 feb 2025 om 14:49
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -43,9 +43,16 @@ CREATE TABLE `crm_notes` (
 CREATE TABLE `klanten` (
   `id` int NOT NULL,
   `naam` varchar(100) NOT NULL,
-  `adres` text,
-  `contact_email` varchar(150) DEFAULT NULL,
-  `telefoonnummer` varchar(20) DEFAULT NULL,
+  `straat` varchar(100) DEFAULT NULL,
+  `nummer` varchar(20) DEFAULT NULL,
+  `postcode` varchar(20) DEFAULT NULL,
+  `plaats` varchar(100) DEFAULT NULL,
+  `extra_veld` text,
+  `algemeen_telefoonnummer` varchar(20) DEFAULT NULL,
+  `algemene_email` varchar(150) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `factuur_email` varchar(150) DEFAULT NULL,
+  `factuur_extra_info` text,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -53,9 +60,10 @@ CREATE TABLE `klanten` (
 -- Gegevens worden geëxporteerd voor tabel `klanten`
 --
 
-INSERT INTO `klanten` (`id`, `naam`, `adres`, `contact_email`, `telefoonnummer`, `aangemaakt_op`) VALUES
-(1, 'Fetum', 'Grote Waard 36', 'verkoop@fetum.nl', '0656653', '2025-01-06 11:55:06'),
-(2, 'Dinges', 'straat', 'dinges@dinges.nl', '0123', '2025-02-05 14:51:07');
+INSERT INTO `klanten` (`id`, `naam`, `straat`, `nummer`, `postcode`, `plaats`, `extra_veld`, `algemeen_telefoonnummer`, `algemene_email`, `url`, `factuur_email`, `factuur_extra_info`, `aangemaakt_op`) VALUES
+(1, 'Fetum', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-01-06 11:55:06'),
+(2, 'Dinges', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-02-05 14:51:07'),
+(5, 'test', 'test', '100', '1245 rf', 'test', 'test', '01252', 'algemeen@felis.nl', 'http://felis.nl', 'factuur@felis.nl', 'sdfsd', '2025-02-14 14:25:49');
 
 -- --------------------------------------------------------
 
@@ -148,16 +156,19 @@ CREATE TABLE `users` (
   `google_id` varchar(255) DEFAULT NULL,
   `avatar_url` varchar(255) DEFAULT NULL,
   `klant_id` int DEFAULT NULL,
-  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
+  `confirmation_token` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
-INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`) VALUES
-(1, 'Peter', 'Peter@felis.nl', '$2y$10$z36pvzx9NTjzJ3kXV5pSpOuAUE2mwmEoczgg9ycNlFqEX3P4EVTI2', 'admin', NULL, NULL, 1, '2025-01-06 11:55:06'),
-(2, 'Titus', 'Titus@titus.nl', '$2y$10$XwRMxqbCcwxCBMtYIDhQaOMOw2WPMyExsRO9GcoA31gPrRZfnM9HK', 'klant', NULL, NULL, 2, '2025-02-05 14:51:07');
+INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`, `email_confirmed`, `confirmation_token`) VALUES
+(1, 'Peter', 'Peter@felis.nl', '$2y$10$z36pvzx9NTjzJ3kXV5pSpOuAUE2mwmEoczgg9ycNlFqEX3P4EVTI2', 'admin', NULL, NULL, 1, '2025-01-06 11:55:06', 0, NULL),
+(2, 'Titus', 'Titus@titus.nl', '$2y$10$XwRMxqbCcwxCBMtYIDhQaOMOw2WPMyExsRO9GcoA31gPrRZfnM9HK', 'klant', NULL, NULL, 2, '2025-02-05 14:51:07', 0, NULL),
+(5, 'test', 'verkoop@fetum.nl', '$2y$10$/EqCDcLz25dlM9yrXfzMAOlHnBH.YT8dPyABCYK2egRBxts7yJY7q', 'klant', NULL, NULL, 5, '2025-02-14 14:25:49', 1, NULL);
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -227,7 +238,7 @@ ALTER TABLE `crm_notes`
 -- AUTO_INCREMENT voor een tabel `klanten`
 --
 ALTER TABLE `klanten`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT voor een tabel `orders`
@@ -257,7 +268,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
