@@ -43,16 +43,19 @@ if ($menu == 'normaal') { ?>
 
 <style>
     header {
-        width: 1024px;
-        max-width: 1024px;
+        width: 100vw;
         margin: 0 auto;
         background-color: transparent;
+        background-color: white;
         font-size: 1.4rem;
         position: relative;
         height: 4rem;
     }
 
     nav {
+        max-width: 1024px;
+        width: 1024px;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;

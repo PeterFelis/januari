@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Gegenereerd op: 14 feb 2025 om 14:49
--- Serverversie: 8.0.30
--- PHP-versie: 8.1.10
+-- Host: localhost:3306
+-- Generation Time: Feb 16, 2025 at 07:43 PM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `crm_notes`
+-- Table structure for table `crm_notes`
 --
 
 CREATE TABLE `crm_notes` (
@@ -37,38 +37,46 @@ CREATE TABLE `crm_notes` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `klanten`
+-- Table structure for table `klanten`
 --
 
 CREATE TABLE `klanten` (
   `id` int NOT NULL,
-  `naam` varchar(100) NOT NULL,
-  `straat` varchar(100) DEFAULT NULL,
-  `nummer` varchar(20) DEFAULT NULL,
-  `postcode` varchar(20) DEFAULT NULL,
-  `plaats` varchar(100) DEFAULT NULL,
-  `extra_veld` text,
-  `algemeen_telefoonnummer` varchar(20) DEFAULT NULL,
-  `algemene_email` varchar(150) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
-  `factuur_email` varchar(150) DEFAULT NULL,
-  `factuur_extra_info` text,
-  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `naam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `extra_veld` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `algemeen_telefoonnummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `algemene_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `factuur_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `factuur_extra_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `factuur_straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `factuur_nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `factuur_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `factuur_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `aflever_straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `aflever_nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `aflever_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `aflever_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `land` varchar(50) NOT NULL DEFAULT 'Nederland'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `klanten`
+-- Dumping data for table `klanten`
 --
 
-INSERT INTO `klanten` (`id`, `naam`, `straat`, `nummer`, `postcode`, `plaats`, `extra_veld`, `algemeen_telefoonnummer`, `algemene_email`, `url`, `factuur_email`, `factuur_extra_info`, `aangemaakt_op`) VALUES
-(1, 'Fetum', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-01-06 11:55:06'),
-(2, 'Dinges', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-02-05 14:51:07'),
-(5, 'test', 'test', '100', '1245 rf', 'test', 'test', '01252', 'algemeen@felis.nl', 'http://felis.nl', 'factuur@felis.nl', 'sdfsd', '2025-02-14 14:25:49');
+INSERT INTO `klanten` (`id`, `naam`, `straat`, `nummer`, `postcode`, `plaats`, `extra_veld`, `algemeen_telefoonnummer`, `algemene_email`, `website`, `factuur_email`, `factuur_extra_info`, `factuur_straat`, `factuur_nummer`, `factuur_postcode`, `factuur_plaats`, `aflever_straat`, `aflever_nummer`, `aflever_postcode`, `aflever_plaats`, `aangemaakt_op`, `land`) VALUES
+(2, 'Fetum Company', 'Hoofdstraat', '1', '1234AB', 'Amsterdam', NULL, NULL, NULL, 'http://fetum.nl', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-02-15 14:54:53', 'Nederland'),
+(6, 'test met postcode', 'Couperuslaan', '56', '1422BE', 'Uithoorn', '', '06', 'lalaa@fetum.nl', 'http://fetum.nl', '', '', '', '', '', '', '', '', '', '', '2025-02-16 16:57:37', 'Nederland');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -83,7 +91,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `order_items`
+-- Table structure for table `order_items`
 --
 
 CREATE TABLE `order_items` (
@@ -97,7 +105,7 @@ CREATE TABLE `order_items` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `products`
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -114,7 +122,7 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `products`
+-- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschrijving`, `prijsstaffel`, `aantal_per_doos`, `aangemaakt_op`, `USP`, `sticker_text`) VALUES
@@ -131,7 +139,7 @@ INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschr
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `settings`
+-- Table structure for table `settings`
 --
 
 CREATE TABLE `settings` (
@@ -144,51 +152,52 @@ CREATE TABLE `settings` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `naam` varchar(100) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `wachtwoord` varchar(255) NOT NULL,
-  `rol` enum('klant','admin') DEFAULT 'klant',
-  `google_id` varchar(255) DEFAULT NULL,
-  `avatar_url` varchar(255) DEFAULT NULL,
+  `voornaam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `achternaam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `geslacht` enum('M','V','X') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `wachtwoord` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `rol` enum('klant','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'klant',
+  `google_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `klant_id` int DEFAULT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
-  `confirmation_token` varchar(64) DEFAULT NULL
+  `confirmation_token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`, `email_confirmed`, `confirmation_token`) VALUES
-(1, 'Peter', 'Peter@felis.nl', '$2y$10$z36pvzx9NTjzJ3kXV5pSpOuAUE2mwmEoczgg9ycNlFqEX3P4EVTI2', 'admin', NULL, NULL, 1, '2025-01-06 11:55:06', 0, NULL),
-(2, 'Titus', 'Titus@titus.nl', '$2y$10$XwRMxqbCcwxCBMtYIDhQaOMOw2WPMyExsRO9GcoA31gPrRZfnM9HK', 'klant', NULL, NULL, 2, '2025-02-05 14:51:07', 0, NULL),
-(5, 'test', 'verkoop@fetum.nl', '$2y$10$/EqCDcLz25dlM9yrXfzMAOlHnBH.YT8dPyABCYK2egRBxts7yJY7q', 'klant', NULL, NULL, 5, '2025-02-14 14:25:49', 1, NULL);
+INSERT INTO `users` (`id`, `voornaam`, `achternaam`, `geslacht`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`, `email_confirmed`, `confirmation_token`) VALUES
+(3, 'Peter', 'Felis', 'M', 'peter@felis.nl', '$2y$10$XkFohs0mVI1OiKFmFxkKRuWeU9AniZEmMdfEA67YmPzP6LmcLR3oS', 'admin', NULL, NULL, 2, '2025-02-15 14:54:53', 1, NULL),
+(7, 'Peter', 'Felis', 'M', 'verkoop@fetum.nl', '$2y$10$z1VePWTYwSJd/YC1nY64OOJxyoQdg55UQiD3HU5E35Nz4/28GFvAS', 'klant', NULL, NULL, 6, '2025-02-16 16:57:37', 1, NULL);
 
 --
--- Indexen voor geëxporteerde tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indexen voor tabel `crm_notes`
+-- Indexes for table `crm_notes`
 --
 ALTER TABLE `crm_notes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `klant_id` (`klant_id`);
 
 --
--- Indexen voor tabel `klanten`
+-- Indexes for table `klanten`
 --
 ALTER TABLE `klanten`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
@@ -196,7 +205,7 @@ ALTER TABLE `orders`
   ADD KEY `contactpersoon_id` (`contactpersoon_id`);
 
 --
--- Indexen voor tabel `order_items`
+-- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
@@ -204,101 +213,101 @@ ALTER TABLE `order_items`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexen voor tabel `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `settings`
+-- Indexes for table `settings`
 --
 ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `google_id` (`google_id`),
-  ADD KEY `klant_id` (`klant_id`);
+  ADD KEY `idx_email` (`email`),
+  ADD KEY `idx_google_id` (`google_id`),
+  ADD KEY `idx_klant_id` (`klant_id`);
 
 --
--- AUTO_INCREMENT voor geëxporteerde tabellen
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT voor een tabel `crm_notes`
+-- AUTO_INCREMENT for table `crm_notes`
 --
 ALTER TABLE `crm_notes`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `klanten`
+-- AUTO_INCREMENT for table `klanten`
 --
 ALTER TABLE `klanten`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT voor een tabel `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `order_items`
+-- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `products`
+-- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT voor een tabel `settings`
+-- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- Beperkingen voor geëxporteerde tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Beperkingen voor tabel `crm_notes`
+-- Constraints for table `crm_notes`
 --
 ALTER TABLE `crm_notes`
   ADD CONSTRAINT `crm_notes_ibfk_1` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`);
 
 --
--- Beperkingen voor tabel `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`),
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`contactpersoon_id`) REFERENCES `users` (`id`);
 
 --
--- Beperkingen voor tabel `order_items`
+-- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
--- Beperkingen voor tabel `users`
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`);
+  ADD CONSTRAINT `fk_users_klanten` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

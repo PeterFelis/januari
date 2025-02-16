@@ -7,15 +7,17 @@
     --groen: #6b9080;
     --heeldonker: #3d5248;
     --rood: #D7594D;
-    --paars: #ba5ce9;
+    --paars: #9421ce;
     --lichtpaars: #B497D6;
-    --heellichtpaars: #E1E2EF;
+    --heellichtpaars: #f3c3f5;
+    --superlichtpaars: #fdedfd;
     --oxfortblue: #05204A;
     --achtergrond: #F8F6F2;
     --oranje: #F5B06F;
     --accent:#ffffff;
     --lichtgroen: #bce046;
     --noglichtergroen:#daf18e;
+    --roze:#ffb6c1 
 
   }
 
@@ -41,7 +43,7 @@
   
   body {
     font-family: 'Poppins', sans-serif;
-    font-size: 2rem;
+    font-size: 1.6rem;
     line-height: 2.6rem;
     max-width:100vw;
     height: 100vh;
@@ -75,6 +77,10 @@
   
  a{
   text-decoration: none;
+ }
+ p{
+  display:block;
+  margin-bottom: 1.6rem;
  }
 
 
@@ -170,10 +176,10 @@ button:hover {
 
 .indexPaginaKleur{
   background-color: var(--heellichtpaars);
+  background-color: var(--superlichtpaars);
 }
 
 
-/*css voor de text/foto bovenaan sommige paginas bijv. leveringsvoorwaarden*/
 .bovenlicht {
   box-sizing: border-box;
   display: grid;
@@ -182,10 +188,11 @@ button:hover {
   align-items: center;
   /* centreert de content verticaal */
   width: 100vw;
-  background-color: var(--heellichtpaars);
+  background-color: var(--superlichtpaars);
   /* voorbeeld achtergrondkleur, kan je aanpassen */
   height: auto;
 }
+
 
 /* Zorgt dat de afbeelding netjes binnen zijn container past */
 .bovenlicht__image img {

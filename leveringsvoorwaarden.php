@@ -29,7 +29,7 @@ include_once __dir__ . '/incs/statusbalk.php';
 </style>
 
 
-<body class='indexPaginaKleur'>
+<body>
     <?php include_once __dir__ . '/incs/menu.php'; ?>
 
     <div class="bovenlicht">

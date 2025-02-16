@@ -15,6 +15,7 @@ $klantData = [
     "nummer" => "",
     "postcode" => "",
     "plaats" => "",
+    "land" => "Nederland", // nieuw veld met default Nederland
     "extra_veld" => "",
     "voornaam" => "",
     "achternaam" => "",
@@ -63,10 +64,10 @@ if (isset($_GET['edit']) && $_GET['edit'] == 1) {
         $stmtUser->execute([$klant_id]);
         $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
         if ($userData) {
-            $klantData['voornaam'] = $userData['voornaam'];
-            $klantData['achternaam'] = $userData['achternaam'];
-            $klantData['geslacht'] = $userData['geslacht'];
-            $klantData['email'] = $userData['email'];
+            $klantData['voornaam'] = $userData['voornaam'] ?? '';
+            $klantData['achternaam'] = $userData['achternaam'] ?? '';
+            $klantData['geslacht'] = $userData['geslacht'] ?? '';
+            $klantData['email'] = $userData['email'] ?? '';
         }
     }
 }
@@ -88,10 +89,13 @@ include_once __DIR__ . '/incs/top.php';
             margin: 0 auto;
             background-color: transparent;
             padding: 2rem;
-            border: 1px dashed #ccc;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
+        }
+
+        main {
+            border: 1px solid var(--superlichtpaars);
+            border-radius: 8px;
         }
 
         form.registration-form h3 {
@@ -99,7 +103,7 @@ include_once __DIR__ . '/incs/top.php';
             padding-bottom: 5px;
             margin-top: 30px;
             margin-bottom: 20px;
-            color: var(--groen);
+            color: var(--paars);
         }
 
         form.registration-form h4 {
@@ -119,34 +123,38 @@ include_once __DIR__ . '/incs/top.php';
             color: red;
         }
 
-        /* Adresregels: straat en nummer op één regel */
+        /* Eerste rij: postcode, nummer en land op één regel */
         .adres-regel {
             display: flex;
             gap: 1rem;
             margin-bottom: 15px;
         }
 
-        .adres-regel .straat {
-            flex: 3;
+        .adres-regel .postcode {
+            flex: 1;
         }
 
         .adres-regel .nummer {
             flex: 1;
         }
 
-        /* Adresregels: postcode en plaats op één regel */
+        .adres-regel .land {
+            flex: 1;
+        }
+
+        /* Tweede rij: straat en plaats op één regel */
         .adres-regel2 {
             display: flex;
             gap: 1rem;
             margin-bottom: 15px;
         }
 
-        .adres-regel2 .postcode {
+        .adres-regel2 .straat {
             flex: 1;
         }
 
         .adres-regel2 .plaats {
-            flex: 3;
+            flex: 1;
         }
 
         .button-group {
@@ -198,47 +206,50 @@ include_once __DIR__ . '/incs/top.php';
     </style>
 </head>
 
-<body class="indexPaginaKleur">
+<body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <main>
         <p class="instructions">Velden gemarkeerd met <span class="required">*</span> zijn verplicht.</p>
         <form id="multiStepForm" class="registration-form" action="<?php echo $action; ?>" method="POST">
             <?php if ($edit && isset($klant_id)) { ?>
-                <input type="hidden" name="klant_id" value="<?php echo htmlspecialchars($klant_id); ?>">
+                <input type="hidden" name="klant_id" value="<?php echo htmlspecialchars($klant_id ?? ''); ?>">
             <?php } ?>
             <!-- Stap 1: Klantinformatie -->
             <div class="form-step center-required active" id="step-1">
-                <h3>Klantinformatie</h3>
+                <h3>Noodzakelijke klant info</h3>
                 <label for="naam">Klantnaam: <span class="required">*</span></label>
-                <input type="text" id="naam" name="naam" required value="<?php echo htmlspecialchars($klantData['naam']); ?>">
-                <!-- Straat en nummer op één regel -->
+                <input type="text" id="naam" name="naam" required value="<?php echo htmlspecialchars($klantData['naam'] ?? ''); ?>">
+
+                <!-- Eerste rij: postcode, nummer en land -->
                 <div class="adres-regel">
-                    <div class="straat">
-                        <label for="straat">Straat: <span class="required">*</span></label>
-                        <input type="text" id="straat" name="straat" required value="<?php echo htmlspecialchars($klantData['straat']); ?>">
+                    <div class="postcode">
+                        <label for="postcode">Postcode: <span class="required">*</span></label>
+                        <input type="text" id="postcode" name="postcode" required value="<?php echo htmlspecialchars($klantData['postcode'] ?? ''); ?>">
                     </div>
                     <div class="nummer">
                         <label for="nummer">Nummer: <span class="required">*</span></label>
-                        <input type="text" id="nummer" name="nummer" required value="<?php echo htmlspecialchars($klantData['nummer']); ?>">
+                        <input type="text" id="nummer" name="nummer" required value="<?php echo htmlspecialchars($klantData['nummer'] ?? ''); ?>">
+                    </div>
+                    <div class="land">
+                        <label for="land">Land: <span class="required">*</span></label>
+                        <input type="text" id="land" name="land" required value="<?php echo htmlspecialchars($klantData['land'] ?? 'Nederland'); ?>">
                     </div>
                 </div>
-                <!-- Postcode en plaats op één regel -->
+
+                <!-- Tweede rij: straat en plaats -->
                 <div class="adres-regel2">
-                    <div class="postcode">
-                        <label for="postcode">Postcode: <span class="required">*</span></label>
-                        <input type="text" id="postcode" name="postcode" required value="<?php echo htmlspecialchars($klantData['postcode']); ?>">
+                    <div class="straat">
+                        <label for="straat">Straat: <span class="required">*</span></label>
+                        <input type="text" id="straat" name="straat" required value="<?php echo htmlspecialchars($klantData['straat'] ?? ''); ?>">
                     </div>
                     <div class="plaats">
                         <label for="plaats">Plaats: <span class="required">*</span></label>
-                        <input type="text" id="plaats" name="plaats" required value="<?php echo htmlspecialchars($klantData['plaats']); ?>">
+                        <input type="text" id="plaats" name="plaats" required value="<?php echo htmlspecialchars($klantData['plaats'] ?? ''); ?>">
                     </div>
                 </div>
-                <!-- Knop om adresgegevens via de API op te halen -->
-                <div>
-                    <button type="button" id="getAddressBtn">Adres ophalen</button>
-                </div>
+
                 <label for="extra_veld">Extra veld:</label>
-                <textarea id="extra_veld" name="extra_veld" placeholder="als u hier iets invoert dan wordt dit in de adressering gezet"><?php echo htmlspecialchars($klantData['extra_veld']); ?></textarea>
+                <textarea id="extra_veld" name="extra_veld" placeholder="als u hier iets invoert dan wordt dit in de adressering gezet"><?php echo htmlspecialchars($klantData['extra_veld'] ?? ''); ?></textarea>
                 <div class="button-group">
                     <span></span>
                     <button type="button" class="cancelBtn">Cancel</button>
@@ -247,25 +258,25 @@ include_once __DIR__ . '/incs/top.php';
             </div>
             <!-- Stap 2: Gebruikersinformatie -->
             <div class="form-step center-required" id="step-2">
-                <h3>Gebruikersinformatie</h3>
+                <h3>Besteller (u dus)</h3>
                 <label for="voornaam">Voornaam: <span class="required">*</span></label>
-                <input type="text" id="voornaam" name="voornaam" required value="<?php echo htmlspecialchars($klantData['voornaam']); ?>">
+                <input type="text" id="voornaam" name="voornaam" required value="<?php echo htmlspecialchars($klantData['voornaam'] ?? ''); ?>">
                 <label for="achternaam">Achternaam: <span class="required">*</span></label>
-                <input type="text" id="achternaam" name="achternaam" required value="<?php echo htmlspecialchars($klantData['achternaam']); ?>">
+                <input type="text" id="achternaam" name="achternaam" required value="<?php echo htmlspecialchars($klantData['achternaam'] ?? ''); ?>">
                 <p>Geslacht: <span class="required">*</span></p>
                 <div class="radio-group">
                     <label>
-                        <input type="radio" name="geslacht" value="M" required <?php if ($klantData['geslacht'] === 'M') echo "checked"; ?>> M
+                        <input type="radio" name="geslacht" value="M" required <?php if (($klantData['geslacht'] ?? '') === 'M') echo "checked"; ?>> M
                     </label>
                     <label>
-                        <input type="radio" name="geslacht" value="V" required <?php if ($klantData['geslacht'] === 'V') echo "checked"; ?>> V
+                        <input type="radio" name="geslacht" value="V" required <?php if (($klantData['geslacht'] ?? '') === 'V') echo "checked"; ?>> V
                     </label>
                     <label>
-                        <input type="radio" name="geslacht" value="X" required <?php if ($klantData['geslacht'] === 'X') echo "checked"; ?>> X
+                        <input type="radio" name="geslacht" value="X" required <?php if (($klantData['geslacht'] ?? '') === 'X') echo "checked"; ?>> X
                     </label>
                 </div>
                 <label for="email">E-mail: <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required value="<?php echo htmlspecialchars($klantData['email']); ?>">
+                <input type="email" id="email" name="email" required value="<?php echo htmlspecialchars($klantData['email'] ?? ''); ?>">
                 <label for="wachtwoord">Wachtwoord: <span class="required">*</span></label>
                 <input type="password" id="wachtwoord" name="wachtwoord" <?php echo $edit ? "" : "required"; ?>>
                 <label for="wachtwoord_confirm">Herhaal wachtwoord: <span class="required">*</span></label>
@@ -279,37 +290,37 @@ include_once __DIR__ . '/incs/top.php';
             </div>
             <!-- Stap 3: Aanvullende informatie -->
             <div class="form-step" id="step-3">
-                <h3>Aanvullende informatie</h3>
+                <h3>Eventuele aanvullende informatie</h3>
                 <label for="algemeen_telefoonnummer">Algemeen telefoonnummer:</label>
-                <input type="text" id="algemeen_telefoonnummer" name="algemeen_telefoonnummer" value="<?php echo htmlspecialchars($klantData['algemeen_telefoonnummer']); ?>">
+                <input type="text" id="algemeen_telefoonnummer" name="algemeen_telefoonnummer" value="<?php echo htmlspecialchars($klantData['algemeen_telefoonnummer'] ?? ''); ?>">
                 <label for="algemene_email">Algemene email:</label>
-                <input type="email" id="algemene_email" name="algemene_email" value="<?php echo htmlspecialchars($klantData['algemene_email']); ?>">
+                <input type="email" id="algemene_email" name="algemene_email" value="<?php echo htmlspecialchars($klantData['algemene_email'] ?? ''); ?>">
                 <label for="website">Website:</label>
-                <input type="text" id="website" name="website" value="<?php echo htmlspecialchars($klantData['website']); ?>">
+                <input type="text" id="website" name="website" value="<?php echo htmlspecialchars($klantData['website'] ?? ''); ?>">
                 <label for="factuur_email">Factuur email adres:</label>
-                <input type="email" id="factuur_email" name="factuur_email" value="<?php echo htmlspecialchars($klantData['factuur_email']); ?>">
+                <input type="email" id="factuur_email" name="factuur_email" value="<?php echo htmlspecialchars($klantData['factuur_email'] ?? ''); ?>">
                 <label for="factuur_extra_info">Extra info voor factuur:</label>
-                <textarea id="factuur_extra_info" name="factuur_extra_info" placeholder="bijv. brinnummer"><?php echo htmlspecialchars($klantData['factuur_extra_info']); ?></textarea>
+                <textarea id="factuur_extra_info" name="factuur_extra_info" placeholder="bijv. brinnummer"><?php echo htmlspecialchars($klantData['factuur_extra_info'] ?? ''); ?></textarea>
                 <h4 id="toggleFactuur">Optioneel: Ander factuuradres &#9660;</h4>
                 <div id="factuurAccordion" class="accordion-content">
                     <div class="adres-regel">
                         <div class="straat">
                             <label for="factuur_straat">Straat:</label>
-                            <input type="text" id="factuur_straat" name="factuur_straat" value="<?php echo htmlspecialchars($klantData['factuur_straat']); ?>">
+                            <input type="text" id="factuur_straat" name="factuur_straat" value="<?php echo htmlspecialchars($klantData['factuur_straat'] ?? ''); ?>">
                         </div>
                         <div class="nummer">
                             <label for="factuur_nummer">Nummer:</label>
-                            <input type="text" id="factuur_nummer" name="factuur_nummer" value="<?php echo htmlspecialchars($klantData['factuur_nummer']); ?>">
+                            <input type="text" id="factuur_nummer" name="factuur_nummer" value="<?php echo htmlspecialchars($klantData['factuur_nummer'] ?? ''); ?>">
                         </div>
                     </div>
                     <div class="adres-regel2">
                         <div class="postcode">
                             <label for="factuur_postcode">Postcode:</label>
-                            <input type="text" id="factuur_postcode" name="factuur_postcode" value="<?php echo htmlspecialchars($klantData['factuur_postcode']); ?>">
+                            <input type="text" id="factuur_postcode" name="factuur_postcode" value="<?php echo htmlspecialchars($klantData['factuur_postcode'] ?? ''); ?>">
                         </div>
                         <div class="plaats">
                             <label for="factuur_plaats">Plaats:</label>
-                            <input type="text" id="factuur_plaats" name="factuur_plaats" value="<?php echo htmlspecialchars($klantData['factuur_plaats']); ?>">
+                            <input type="text" id="factuur_plaats" name="factuur_plaats" value="<?php echo htmlspecialchars($klantData['factuur_plaats'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
@@ -318,21 +329,21 @@ include_once __DIR__ . '/incs/top.php';
                     <div class="adres-regel">
                         <div class="straat">
                             <label for="aflever_straat">Straat:</label>
-                            <input type="text" id="aflever_straat" name="aflever_straat" value="<?php echo htmlspecialchars($klantData['aflever_straat']); ?>">
+                            <input type="text" id="aflever_straat" name="aflever_straat" value="<?php echo htmlspecialchars($klantData['aflever_straat'] ?? ''); ?>">
                         </div>
                         <div class="nummer">
                             <label for="aflever_nummer">Nummer:</label>
-                            <input type="text" id="aflever_nummer" name="aflever_nummer" value="<?php echo htmlspecialchars($klantData['aflever_nummer']); ?>">
+                            <input type="text" id="aflever_nummer" name="aflever_nummer" value="<?php echo htmlspecialchars($klantData['aflever_nummer'] ?? ''); ?>">
                         </div>
                     </div>
                     <div class="adres-regel2">
                         <div class="postcode">
                             <label for="aflever_postcode">Postcode:</label>
-                            <input type="text" id="aflever_postcode" name="aflever_postcode" value="<?php echo htmlspecialchars($klantData['aflever_postcode']); ?>">
+                            <input type="text" id="aflever_postcode" name="aflever_postcode" value="<?php echo htmlspecialchars($klantData['aflever_postcode'] ?? ''); ?>">
                         </div>
                         <div class="plaats">
                             <label for="aflever_plaats">Plaats:</label>
-                            <input type="text" id="aflever_plaats" name="aflever_plaats" value="<?php echo htmlspecialchars($klantData['aflever_plaats']); ?>">
+                            <input type="text" id="aflever_plaats" name="aflever_plaats" value="<?php echo htmlspecialchars($klantData['aflever_plaats'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
@@ -410,38 +421,52 @@ include_once __DIR__ . '/incs/top.php';
                 window.location.href = "dashboard.php";
             });
         });
-        // Postcode API integratie via proxy
-        document.getElementById('getAddressBtn').addEventListener('click', function() {
+        // Functie om automatisch adresgegevens op te halen
+        function fetchAddress() {
             let postcode = document.getElementById('postcode').value.trim();
             let nummer = document.getElementById('nummer').value.trim();
             if (!postcode || !nummer) {
-                alert("Vul zowel postcode als nummer in om het adres op te halen.");
                 return;
             }
             // Verwijder spaties uit de postcode (bijv. "1422 BE" wordt "1422BE")
             postcode = postcode.replace(/\s+/g, '');
             document.getElementById('postcode').value = postcode;
 
-            fetch('proxy.php?postcode=' + postcode + '&number=' + nummer)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Netwerkfout bij ophalen adresgegevens.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.street && data.city) {
-                        document.getElementById('straat').value = data.street;
-                        document.getElementById('plaats').value = data.city;
-                    } else {
-                        alert("Geen adresgegevens gevonden voor deze postcode en nummer.");
-                    }
-                })
-                .catch(error => {
-                    console.error('Fout:', error);
-                    alert('Er is een fout opgetreden bij het ophalen van het adres.');
-                });
-        });
+            // Controleer of het een Nederlandse postcode is (4 cijfers en 2 letters)
+            const dutchRegex = /^\d{4}[A-Z]{2}$/i;
+            if (dutchRegex.test(postcode)) {
+                document.getElementById('land').value = 'Nederland';
+                // Roep de proxy aan voor Nederlandse adressen
+                fetch('proxy.php?postcode=' + postcode + '&number=' + nummer)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Netwerkfout bij ophalen adresgegevens.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data && data.street && data.city) {
+                            document.getElementById('straat').value = data.street;
+                            document.getElementById('plaats').value = data.city;
+                        } else {
+                            document.getElementById('straat').value = '';
+                            document.getElementById('plaats').value = '';
+                            alert("Geen adresgegevens gevonden voor deze Nederlandse postcode en nummer.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fout:', error);
+                        alert('Er is een fout opgetreden bij het ophalen van het adres.');
+                    });
+            } else {
+                // Als de postcode niet voldoet aan de Nederlandse syntax, stel dan land in op België.
+                document.getElementById('land').value = 'België';
+                // Je kunt hier eventueel ook straat en plaats leegmaken of handmatig laten invullen.
+            }
+        }
+        // Voeg blur-event listeners toe aan postcode en nummer
+        document.getElementById('postcode').addEventListener('blur', fetchAddress);
+        document.getElementById('nummer').addEventListener('blur', fetchAddress);
     </script>
 </body>
 

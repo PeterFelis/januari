@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $straat = htmlspecialchars($_POST['straat']);
     $nummer = htmlspecialchars($_POST['nummer']);
     $postcode = htmlspecialchars($_POST['postcode']);
+    $land = htmlspecialchars($_POST['land']); // nieuw veld
     $plaats = htmlspecialchars($_POST['plaats']);
     $extra_veld = htmlspecialchars($_POST['extra_veld']);
     $algemeen_telefoonnummer = htmlspecialchars($_POST['algemeen_telefoonnummer']);
@@ -63,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             straat = ?,
             nummer = ?,
             postcode = ?,
+            land = ?,
             plaats = ?,
             extra_veld = ?,
             algemeen_telefoonnummer = ?,
@@ -85,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $straat,
             $nummer,
             $postcode,
+            $land,
             $plaats,
             $extra_veld,
             $algemeen_telefoonnummer,
@@ -104,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         // Update de gebruikersgegevens in de tabel 'users'
-        // Als er een nieuw wachtwoord is ingevuld, update dit veld ook
         if ($wachtwoord) {
             $sql_user = "UPDATE users SET 
                 voornaam = ?,
@@ -142,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Commit de transactie
         $pdo->commit();
 
-        // Na een succesvolle update, kun je de gebruiker doorsturen naar bijvoorbeeld het dashboard
+        // Na een succesvolle update, doorsturen naar dashboard
         header("Location: dashboard.php");
         exit;
     } catch (Exception $e) {

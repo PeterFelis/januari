@@ -8,6 +8,7 @@ include_once __DIR__ . '/incs/top.php';
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
   <meta charset="UTF-8">
   <title><?php echo $title; ?></title>
@@ -23,6 +24,7 @@ include_once __DIR__ . '/incs/top.php';
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       margin-bottom: 2rem;
     }
+
     form.registration-form h3 {
       border-bottom: 2px dashed var(--groen);
       padding-bottom: 5px;
@@ -30,35 +32,42 @@ include_once __DIR__ . '/incs/top.php';
       margin-bottom: 20px;
       color: var(--groen);
     }
+
     form.registration-form h4 {
       margin-top: 20px;
       margin-bottom: 5px;
       color: var(--groen);
       cursor: pointer;
     }
+
     form.registration-form p.optional {
       font-size: 0.9em;
       color: #666;
       margin-bottom: 10px;
     }
+
     .required {
       color: red;
     }
+
     /* De instructietekst centreren */
     p.instructions {
       text-align: center;
       font-size: 1em;
       margin-bottom: 20px;
     }
+
     /* Verplichte velden in stap 1 en 2 (container blijft links uitgelijnd) */
     .form-step.center-required {
       font-size: 0.9em;
     }
+
     /* Groepen (adresregels) blijven links */
     .form-step.center-required .adres-regel,
     .form-step.center-required .adres-regel2 {
       text-align: left;
     }
+
     /* Standaard invoervelden */
     input[type="text"],
     input[type="email"],
@@ -72,6 +81,7 @@ include_once __DIR__ . '/incs/top.php';
       transition: border-color 0.3s;
       margin-bottom: 15px;
     }
+
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="password"]:focus,
@@ -79,34 +89,42 @@ include_once __DIR__ . '/incs/top.php';
       border-color: #007bff;
       outline: none;
     }
+
     /* Kleinere velden (bv. e-mail, wachtwoord, telefoon, website) */
     input.small-field {
       width: 50%;
     }
+
     /* Groepering: Straat & Nummer (3/4 & 1/4) */
     .adres-regel {
       display: flex;
       gap: 1rem;
       margin-bottom: 15px;
     }
+
     .adres-regel .straat {
       flex: 3;
     }
+
     .adres-regel .nummer {
       flex: 1;
     }
+
     /* Groepering: Postcode & Plaats (1/4 & 3/4) */
     .adres-regel2 {
       display: flex;
       gap: 1rem;
       margin-bottom: 15px;
     }
+
     .adres-regel2 .postcode {
       flex: 1;
     }
+
     .adres-regel2 .plaats {
       flex: 3;
     }
+
     /* Styling voor de radio buttons: alle opties links uitgelijnd */
     .radio-group {
       display: flex;
@@ -114,9 +132,11 @@ include_once __DIR__ . '/incs/top.php';
       gap: 10px;
       margin-bottom: 15px;
     }
+
     .radio-group label {
       display: inline-block;
     }
+
     /* Accordion styling voor optionele adressen */
     .accordion-content {
       display: none;
@@ -124,18 +144,22 @@ include_once __DIR__ . '/incs/top.php';
       margin-top: 10px;
       border-left: 2px solid #ccc;
     }
+
     /* Multi-step formulier */
     .form-step {
       display: none;
     }
+
     .form-step.active {
       display: block;
     }
+
     .button-group {
       display: flex;
       justify-content: space-between;
       margin-top: 20px;
     }
+
     .error-message {
       color: red;
       font-size: 0.9em;
@@ -144,7 +168,8 @@ include_once __DIR__ . '/incs/top.php';
     }
   </style>
 </head>
-<body class="indexPaginaKleur">
+
+<body>
   <?php include_once __DIR__ . '/incs/menu.php'; ?>
   <main>
     <p class="instructions">Velden gemarkeerd met <span class="required">*</span> zijn verplicht.</p>
@@ -154,7 +179,7 @@ include_once __DIR__ . '/incs/top.php';
         <h3>Klantinformatie</h3>
         <label for="klant_naam">Klantnaam: <span class="required">*</span></label>
         <input type="text" id="klant_naam" name="klant_naam" required>
-        
+
         <!-- Straat en nummer op één regel -->
         <div class="adres-regel">
           <div class="straat">
@@ -166,7 +191,7 @@ include_once __DIR__ . '/incs/top.php';
             <input type="text" id="nummer" name="nummer" required>
           </div>
         </div>
-        
+
         <!-- Postcode en plaats op één regel -->
         <div class="adres-regel2">
           <div class="postcode">
@@ -178,24 +203,24 @@ include_once __DIR__ . '/incs/top.php';
             <input type="text" id="plaats" name="plaats" required>
           </div>
         </div>
-        
+
         <label for="extra_veld">Extra veld:</label>
         <textarea id="extra_veld" name="extra_veld" placeholder="als u hier iets invoert dan wordt dit in de adressering gezet"></textarea>
-        
+
         <div class="button-group">
           <button type="button" id="nextBtn1">Volgende</button>
         </div>
       </div>
-      
+
       <!-- Stap 2: Gebruikersinformatie (verplicht) -->
       <div class="form-step center-required" id="step-2">
         <h3>Gebruikersinformatie</h3>
         <label for="voornaam">Voornaam: <span class="required">*</span></label>
         <input type="text" id="voornaam" name="voornaam" required>
-        
+
         <label for="achternaam">Achternaam: <span class="required">*</span></label>
         <input type="text" id="achternaam" name="achternaam" required>
-        
+
         <p>Geslacht: <span class="required">*</span></p>
         <div class="radio-group">
           <label>
@@ -208,42 +233,42 @@ include_once __DIR__ . '/incs/top.php';
             <input type="radio" name="geslacht" value="X" required> X
           </label>
         </div>
-        
+
         <label for="email">E-mail: <span class="required">*</span></label>
         <input type="email" id="email" name="email" class="small-field" required>
-        
+
         <label for="wachtwoord">Wachtwoord: <span class="required">*</span></label>
         <input type="password" id="wachtwoord" name="wachtwoord" class="small-field" required>
-        
+
         <label for="wachtwoord_confirm">Herhaal wachtwoord: <span class="required">*</span></label>
         <input type="password" id="wachtwoord_confirm" name="wachtwoord_confirm" class="small-field" required>
         <div id="passwordError" class="error-message" style="display: none;">De wachtwoorden komen niet overeen!</div>
-        
+
         <div class="button-group">
           <button type="button" id="prevBtn2">Vorige</button>
           <button type="button" id="nextBtn2">Volgende</button>
         </div>
       </div>
-      
+
       <!-- Stap 3: Aanvullende informatie (optioneel) -->
       <div class="form-step" id="step-3">
         <h3>Aanvullende informatie</h3>
         <label for="algemeen_telefoonnummer">Algemeen telefoonnummer:</label>
         <input type="text" id="algemeen_telefoonnummer" name="algemeen_telefoonnummer" class="small-field">
-        
+
         <label for="algemene_email">Algemene email:</label>
         <input type="email" id="algemene_email" name="algemene_email" class="small-field">
-        
+
         <label for="website">Website:</label>
         <input type="text" id="website" name="website" class="small-field">
-        
+
         <label for="factuur_email">Factuur email adres:</label>
         <input type="email" id="factuur_email" name="factuur_email" class="small-field">
-        
+
         <!-- Extra info voor factuur, zoals brinnummer -->
         <label for="factuur_extra_info">Extra info voor factuur:</label>
         <textarea id="factuur_extra_info" name="factuur_extra_info" placeholder="bijv. brinnummer"></textarea>
-        
+
         <!-- Accordion voor Ander factuuradres -->
         <h4 id="toggleFactuur">Optioneel: Ander factuuradres &#9660;</h4>
         <div id="factuurAccordion" class="accordion-content">
@@ -268,7 +293,7 @@ include_once __DIR__ . '/incs/top.php';
             </div>
           </div>
         </div>
-        
+
         <!-- Accordion voor Ander afleveradres -->
         <h4 id="toggleAflever">Optioneel: Ander afleveradres &#9660;</h4>
         <div id="afleverAccordion" class="accordion-content">
@@ -293,7 +318,7 @@ include_once __DIR__ . '/incs/top.php';
             </div>
           </div>
         </div>
-        
+
         <div class="button-group">
           <button type="button" id="prevBtn3">Vorige</button>
           <button type="submit">Registreer</button>
@@ -305,23 +330,24 @@ include_once __DIR__ . '/incs/top.php';
     // Multi-step formulier logica
     const steps = document.querySelectorAll('.form-step');
     let currentStep = 0;
+
     function showStep(step) {
       steps.forEach((elem, index) => {
         elem.classList.toggle('active', index === step);
       });
     }
-    
+
     // Navigatie tussen de stappen
     document.getElementById('nextBtn1').addEventListener('click', () => {
       currentStep = 1;
       showStep(currentStep);
     });
-    
+
     document.getElementById('prevBtn2').addEventListener('click', () => {
       currentStep = 0;
       showStep(currentStep);
     });
-    
+
     document.getElementById('nextBtn2').addEventListener('click', () => {
       // Controleer of de wachtwoorden overeenkomen
       const wachtwoord = document.getElementById('wachtwoord').value;
@@ -335,12 +361,12 @@ include_once __DIR__ . '/incs/top.php';
       currentStep = 2;
       showStep(currentStep);
     });
-    
+
     document.getElementById('prevBtn3').addEventListener('click', () => {
       currentStep = 1;
       showStep(currentStep);
     });
-    
+
     // Directe controle op het herhaal wachtwoord veld bij invoer
     document.getElementById('wachtwoord_confirm').addEventListener('input', function() {
       const wachtwoord = document.getElementById('wachtwoord').value;
@@ -350,7 +376,7 @@ include_once __DIR__ . '/incs/top.php';
         document.getElementById('passwordError').style.display = 'none';
       }
     });
-    
+
     // Website-validatie: voeg 'http://' toe indien nodig
     document.getElementById('multiStepForm').addEventListener('submit', function(event) {
       const websiteField = document.getElementById('website');
@@ -359,14 +385,14 @@ include_once __DIR__ . '/incs/top.php';
         websiteField.value = 'http://' + websiteValue;
       }
     });
-    
+
     // Accordion toggles voor optionele adressen
     document.getElementById('toggleFactuur').addEventListener('click', function() {
       const content = document.getElementById('factuurAccordion');
       content.style.display = content.style.display === 'block' ? 'none' : 'block';
       this.innerHTML = content.style.display === 'block' ? 'Optioneel: Ander factuuradres &#9650;' : 'Optioneel: Ander factuuradres &#9660;';
     });
-    
+
     document.getElementById('toggleAflever').addEventListener('click', function() {
       const content = document.getElementById('afleverAccordion');
       content.style.display = content.style.display === 'block' ? 'none' : 'block';
@@ -374,6 +400,5 @@ include_once __DIR__ . '/incs/top.php';
     });
   </script>
 </body>
+
 </html>
-
-
