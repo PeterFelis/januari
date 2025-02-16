@@ -1,0 +1,16 @@
+16-02-2025
+
+https://www.api-postcode.nl/
+
+login: peter@felis.nl
+pass: Titus!100
+
+api key: dd2e4e4f-c54f-4297-ab85-80312b92cc65
+meesturen in header als token
+
+
+API-key: Je moet de opgegeven API-key (dd2e4e4f-c54f-4297-ab85-80312b92cc65) meesturen in de header onder de naam "token".
+Gebruik: Door een GET-request te sturen naar de URL (bijvoorbeeld https://json.api-postcode.nl?postcode=2675BX&number=36), ontvang je de bijbehorende adresgegevens.
+Response: De API geeft een JSON-object terug met onder andere de straat, stad, huisnummer, postcode, breedte- en lengtegraad, en provincie.
+Limiet: Je kunt tot 1000 requests per dag uitvoeren.
+Dit maakt het invoeren van adresgegevens gemakkelijker en betrouwbaarder voor je klanten.

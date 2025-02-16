@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // 2) Heeft de gebruiker de juiste rol? 
-if ($_SESSION['user_role'] !== 'admin') {
+if ($_SESSION['role'] !== 'admin') {
     echo "Geen toegang tot deze pagina.";
     exit;
 }
@@ -656,6 +656,7 @@ include_once __DIR__ . '/incs/top.php';
                 <h2>Product Beheren</h2>
                 <form>
                     <input type="hidden" id="product-id">
+                    <!-- Eerste regel: Categorie en Subcategorie -->
                     <div class="input-row">
                         <div class="form-group">
                             <label for="categorie">Categorie:</label>
@@ -665,6 +666,9 @@ include_once __DIR__ . '/incs/top.php';
                             <label for="subcategorie">Subcategorie:</label>
                             <input type="text" id="subcategorie">
                         </div>
+                    </div>
+                    <!-- Tweede regel: TypeNummer en Aantal per doos -->
+                    <div class="input-row">
                         <div class="form-group">
                             <label for="TypeNummer">TypeNummer:</label>
                             <input type="text" id="TypeNummer" required>

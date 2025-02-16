@@ -14,7 +14,7 @@ if ($menu == 'normaal') { ?>
             <a href="webshopinfo.php">Webshop Info</a>
             <a href="contact.php">Contact</a>
             <a href="shop.php">Webshop</a>
-            <a href="registratie.php">Wordt klant</a>
+            <a href="klantForm.php">Wordt klant</a>
             <a href="loginForm.php">login</a>
 
         </nav>
@@ -33,7 +33,7 @@ if ($menu == 'normaal') { ?>
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'dashboard') echo '<a href="dashboard.php">Dashboard</a>'; ?>
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'producten_beheer') echo '<a href="producten_beheer.php">Productenbeheer</a>'; ?>
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'product_sticker') echo '<a href="product_sticker.php">Sticker Afdrukken</a>'; ?>
-            <a href="registratie.php">Registreren</a>
+            <a href="klantForm.php">Registreren</a>
             <a href="contact.php">Contact</a>
             <a href="leveringsvoorwaarden.php">Leveringsvoorwaarden</a>
             <a href="webshopinfo.php">Webshopinfo</a>
