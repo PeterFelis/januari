@@ -6,6 +6,7 @@ $title = "Le Dashboard -- ssstt!";
 $menu = 'beheer';
 include_once __DIR__ . '/incs/top.php';
 ?>
+
 <body class="indexPaginaKleur">
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <main>
@@ -69,4 +70,5 @@ include_once __DIR__ . '/incs/top.php';
         ?>
     </main>
 </body>
+
 </html>

@@ -67,20 +67,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $melding = "Voer een geldig e-mailadres in.";
     }
 }
+
+
+include_once __dir__ . '/incs/top.php';
 ?>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Wachtwoord vergeten</title>
-</head>
-<body>
-    <h2>Wachtwoord reset aanvragen</h2>
-    <?php if(isset($melding)) echo "<p>$melding</p>"; ?>
-    <form method="post" action="">
-        <label for="email">E-mailadres:</label>
-        <input type="email" id="email" name="email" required>
-        <button type="submit">Reset wachtwoord</button>
-    </form>
-</body>
-</html>
+<style>
+    .inlog {
+        width: 50%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding-top: 10vh;
+    }
+</style>
+
+<body class='indexPaginaKleur'>
+    <?php
+    $menu = 'normaal';
+    include_once __DIR__ . '/incs/menu.php';
+    ?>
+
+    <body>
+        <div class='inlog'>
+            <h2>Wachtwoord reset aanvragen</h2>
+            <?php if (isset($melding)) echo "<p>$melding</p>"; ?>
+            <form method="post" action="">
+                <label for="email">E-mailadres:</label>
+                <input type="email" id="email" name="email" required>
+                <button type="submit">Verstuur reset password aanvraag naar uw mail</button>
+            </form>
+        </div>
+    </body>
+
+    </html>

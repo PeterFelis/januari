@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 16, 2025 at 07:43 PM
+-- Generation Time: Feb 17, 2025 at 08:17 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -70,8 +70,7 @@ CREATE TABLE `klanten` (
 --
 
 INSERT INTO `klanten` (`id`, `naam`, `straat`, `nummer`, `postcode`, `plaats`, `extra_veld`, `algemeen_telefoonnummer`, `algemene_email`, `website`, `factuur_email`, `factuur_extra_info`, `factuur_straat`, `factuur_nummer`, `factuur_postcode`, `factuur_plaats`, `aflever_straat`, `aflever_nummer`, `aflever_postcode`, `aflever_plaats`, `aangemaakt_op`, `land`) VALUES
-(2, 'Fetum Company', 'Hoofdstraat', '1', '1234AB', 'Amsterdam', NULL, NULL, NULL, 'http://fetum.nl', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-02-15 14:54:53', 'Nederland'),
-(6, 'test met postcode', 'Couperuslaan', '56', '1422BE', 'Uithoorn', '', '06', 'lalaa@fetum.nl', 'http://fetum.nl', '', '', '', '', '', '', '', '', '', '', '2025-02-16 16:57:37', 'Nederland');
+(2, 'Fetum Company', 'Hoofdstraat', '1', '1234AB', 'Amsterdam', NULL, NULL, NULL, 'http://fetum.nl', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-02-15 14:54:53', 'Nederland');
 
 -- --------------------------------------------------------
 
@@ -168,16 +167,17 @@ CREATE TABLE `users` (
   `klant_id` int DEFAULT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
-  `confirmation_token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `confirmation_token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `password_reset_token` varchar(32) DEFAULT NULL,
+  `password_reset_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `voornaam`, `achternaam`, `geslacht`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`, `email_confirmed`, `confirmation_token`) VALUES
-(3, 'Peter', 'Felis', 'M', 'peter@felis.nl', '$2y$10$XkFohs0mVI1OiKFmFxkKRuWeU9AniZEmMdfEA67YmPzP6LmcLR3oS', 'admin', NULL, NULL, 2, '2025-02-15 14:54:53', 1, NULL),
-(7, 'Peter', 'Felis', 'M', 'verkoop@fetum.nl', '$2y$10$z1VePWTYwSJd/YC1nY64OOJxyoQdg55UQiD3HU5E35Nz4/28GFvAS', 'klant', NULL, NULL, 6, '2025-02-16 16:57:37', 1, NULL);
+INSERT INTO `users` (`id`, `voornaam`, `achternaam`, `geslacht`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`, `email_confirmed`, `confirmation_token`, `password_reset_token`, `password_reset_expires`) VALUES
+(3, 'Peter', 'Felis', 'M', 'peter@felis.nl', '$2y$10$dvrmztV4V5tIs4Mryn8lAOMbr6xeu56PVDHE0pYwCqlWI.3BVFPlG', 'admin', NULL, NULL, 2, '2025-02-15 14:54:53', 1, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables

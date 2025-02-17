@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // 2) Heeft de gebruiker de juiste rol?
 // Voorbeeld: alleen 'admin' mag bij beheer
-if ($_SESSION['user_role'] !== 'admin') {
+if ($_SESSION['role'] !== 'admin') {
     // Doorsturen of melding tonen
     echo "Geen toegang tot deze pagina.";
     exit;

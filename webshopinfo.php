@@ -1,6 +1,6 @@
 <?php
 $title = 'wat kan er allemaal bij ons';
-$menu = 'beheer';
+$menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
 ?>
 <!DOCTYPE html>
@@ -10,8 +10,6 @@ include_once __DIR__ . '/incs/top.php';
     <meta charset="UTF-8">
     <title><?php echo $title; ?></title>
     <style>
-       
-        
         .vvv-table {
             width: 100%;
             border-collapse: collapse;
@@ -43,7 +41,7 @@ include_once __DIR__ . '/incs/top.php';
             <div class="bovenlicht__text tekst_links">
                 <h1>Webshop Info</h1>
                 <h3>
-                    Aankopen, VVV cheques, klant worden. Hier leggen we het duidelijk uit.
+                    Aankopen, VVV cheques, klant worden. <br>Hier leggen we het duidelijk uit.
                 </h3>
             </div>
         </div>

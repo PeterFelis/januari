@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 
 $title = 'contact ';
 $statusbalk = "Even bellen? 0174 769132";
-$menu = 'beheer';
+$menu = 'normaal';
 include_once __dir__ . '/incs/top.php';
 include_once __dir__ . '/incs/statusbalk.php';
 
@@ -323,14 +323,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     </section>
 
-
-
-
-
-
-
-
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Als er een succesvolle snackbar aanwezig is, verberg deze na 2 seconden en reset het formulier
@@ -349,53 +341,64 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </script>
 
 
-    <!-- bol -->
-    <div class="bol">
-        <a href="https://www.bol.com/nl/nl/s/?searchtext=fetum" target="_blank" rel="noopener">
-            <div class="bollogo">
-                <img src="afbeeldingen/bolklein.png" alt="Fetum bij BOL">
-            </div>
-            <div class="boltekst">
-                ook te koop bij bol
-            </div>
-        </a>
-    </div>
+
+
+    <section class="full-sectiontransparent">
+        <div class='container'>
+            <section class="section reverse">
+                <div class="text">
+                    <div class="bol">
+                        <a href="https://www.bol.com/nl/nl/s/?searchtext=fetum" target="_blank" rel="noopener">
+                            <div class="bollogo">
+                                <img src="afbeeldingen/bolklein.png" alt="Fetum bij BOL">
+                            </div>
+                            <div class="boltekst">
+                                ook te koop bij bol
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="text">
+                    <!-- TrustBox widget - Review Collector -->
+                    <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="67adb76cdb89fc000f8526d9" data-style-height="52px" data-style-width="100%">
+                        <a href="https://nl.trustpilot.com/review/fetum.nl" target="_blank" rel="noopener">Trustpilot</a>
+                    </div>
+                    <!-- End TrustBox widget -->
+
+                    <!-- Social icons -->
+                    <div class="social-icons">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/profile.php?id=100064868221019" target="_blank" rel="noopener">
+                            <img src="https://cdn.simpleicons.org/facebook" alt="Facebook Logo">
+                        </a>
+                        <!-- Google Business -->
+                        <a href="https://www.google.com/search?q=Fetum&stick=H4sIAAAAAAAA_-NgU1I1qDAxTzZNSUw2TjI2MzE2t7C0AgpZGqQmJyYZmRibmBoYWpouYmV1Sy0pzQUAo8NDUzEAAAA&hl=en-GB&mat=CZoDonTEXu6GElYBmzl_pcIVaeptVJu0UfBpd_msVTipXkjWhPMkLLdTOehpQY2YK4j_lTITmr9QvtrsEX38rbeYT633b6hzJ8TLEwhY5O4kH_zARNjTRLy4YWzDFwbJNg&authuser=0&sei=0tutZ_CrKJjY7_UPjJa7sAU" target="_blank" rel="noopener">
+                            <img src="https://cdn.simpleicons.org/google" alt="Google Business Logo">
+                        </a>
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/company/3049791/admin/dashboard/" target="_blank" rel="noopener">
+                            <img src="https://cdn.simpleicons.org/linkedin" alt="LinkedIn Logo">
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/fetum.nl/?hl=en" target="_blank" rel="noopener">
+                            <img src="https://cdn.simpleicons.org/instagram" alt="Instagram Logo">
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </section>
+
+
+
 
     <!-- TrustBox script -->
     <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
     <!-- End TrustBox script -->
 
-    <section class="social">
-        <!-- TrustBox widget - Review Collector -->
-        <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="67adb76cdb89fc000f8526d9" data-style-height="52px" data-style-width="100%">
-            <a href="https://nl.trustpilot.com/review/fetum.nl" target="_blank" rel="noopener">Trustpilot</a>
-        </div>
-        <!-- End TrustBox widget -->
 
-
-
-
-        <!-- Social icons -->
-        <div class="social-icons">
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/profile.php?id=100064868221019" target="_blank" rel="noopener">
-                <img src="https://cdn.simpleicons.org/facebook" alt="Facebook Logo">
-            </a>
-            <!-- Google Business -->
-            <a href="https://www.google.com/search?q=Fetum&stick=H4sIAAAAAAAA_-NgU1I1qDAxTzZNSUw2TjI2MzE2t7C0AgpZGqQmJyYZmRibmBoYWpouYmV1Sy0pzQUAo8NDUzEAAAA&hl=en-GB&mat=CZoDonTEXu6GElYBmzl_pcIVaeptVJu0UfBpd_msVTipXkjWhPMkLLdTOehpQY2YK4j_lTITmr9QvtrsEX38rbeYT633b6hzJ8TLEwhY5O4kH_zARNjTRLy4YWzDFwbJNg&authuser=0&sei=0tutZ_CrKJjY7_UPjJa7sAU" target="_blank" rel="noopener">
-                <img src="https://cdn.simpleicons.org/google" alt="Google Business Logo">
-            </a>
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/company/3049791/admin/dashboard/" target="_blank" rel="noopener">
-                <img src="https://cdn.simpleicons.org/linkedin" alt="LinkedIn Logo">
-            </a>
-
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/fetum.nl/?hl=en" target="_blank" rel="noopener">
-                <img src="https://cdn.simpleicons.org/instagram" alt="Instagram Logo">
-            </a>
-        </div>
-    </section>
 
     <style>
         .social {
