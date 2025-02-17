@@ -46,7 +46,7 @@ if ($menu == 'normaal') { ?>
         width: 100vw;
         margin: 0 auto;
         background-color: transparent;
-        background-color: white;
+        background-color: var(--paars);
         font-size: 1.4rem;
         position: relative;
         height: 4rem;
@@ -66,12 +66,12 @@ if ($menu == 'normaal') { ?>
 
 
     header nav a {
-        color: var(--paars);
+        color: white;
         transition: transform 0.2s ease-in-out;
     }
 
     header nav a:visited {
-        color: var(--paars);
+        color: white;
     }
 
     header nav a:hover {

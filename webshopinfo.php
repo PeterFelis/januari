@@ -1,9 +1,7 @@
 <?php
 $title = 'wat kan er allemaal bij ons';
-$statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $menu = 'beheer';
 include_once __DIR__ . '/incs/top.php';
-include_once __DIR__ . '/incs/statusbalk.php';
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -12,98 +10,75 @@ include_once __DIR__ . '/incs/statusbalk.php';
     <meta charset="UTF-8">
     <title><?php echo $title; ?></title>
     <style>
-        /* Algemeen: main en container voor vaste breedte */
-        main,
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Basis styling voor de secties */
-        .section {
-            display: flex;
-            align-items: center;
-            padding: 40px 0;
-        }
-
-        .section .image,
-        .section .text {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .section img {
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        /* Eerste sectie: witte achtergrond (in main) */
-        .first-section {
-            background-color: transparent;
-        }
-
-        /* Tweede sectie: full-width achtergrondkleur */
-        .full-section {
+       
+        
+        .vvv-table {
             width: 100%;
-            background-color: #f9f9f9;
-            /* Pas deze kleur aan naar wens */
+            border-collapse: collapse;
+            margin: 20px 0;
         }
 
-        /* Binnen de container van de tweede sectie: kolommen omkeren (tekst links, foto rechts) */
-        .reverse {
-            flex-direction: row-reverse;
+        .vvv-table th,
+        .vvv-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
         }
 
-        /* Responsive: op kleinere schermen stapelen de kolommen */
-        @media (max-width: 768px) {
-            .section {
-                flex-direction: column;
-            }
+        .vvv-table th {
+            background-color: var(--superlichtpaars);
+            color: #000;
         }
     </style>
 </head>
 
-<body class="indexPaginaKleur">
+<body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
 
     <div class="bovenlicht">
-        <div class="bovenlicht__text tekst_rechts">
-            <h1>Webshop Info</h1>
-            <h3>
-                Aankopen, VVV cheques, klant worden<br> en wat er allemaal mogelijk is.
-            </h3>
-        </div>
-        <div class="bovenlicht__image">
-            <img src="afbeeldingen/hp-32.png" alt="oortje met naamsticker" />
+        <div class="bovenlicht__wrapper">
+            <div class="bovenlicht__image">
+                <img src="afbeeldingen/hero.png" alt="oortje met naamsticker" />
+            </div>
+            <div class="bovenlicht__text tekst_links">
+                <h1>Webshop Info</h1>
+                <h3>
+                    Aankopen, VVV cheques, klant worden. Hier leggen we het duidelijk uit.
+                </h3>
+            </div>
         </div>
     </div>
 
-    <section class="full-section">
-        <div class="container">
+    <section class="full-sectiontransparent">
+        <div class='container'>
             <section class="section reverse">
                 <div class="text">
                     <h2>Onze Klanten</h2>
-                    <p>Wij leveren aan: Scholen, schoolstichtingen, ziekenhuizen, musea en bedrijven.</p>
+                    <p>Wij leveren uitsluitend in groothandelshoeveelheden – dus geen losse producten,
+                        maar de aantallen die organisaties nodig hebben. Dit is kosteneffectief.
+                        Onze klanten zijn divers: van scholen, schoolstichtingen, ROC's, hogescholen en universiteiten tot revalidatiecentra, ziekenhuizen, musea, bibliotheken en andere groothandels.
+
+                        Of je nu in het onderwijs, de zorg of een andere sector zit: bij ons vind je altijd de kwaliteit, het product en service die je zoekt.
+                        Wil je weten wat wij voor jou kunnen betekenen? Neem gerust contact met ons op!</p>
                     <h2>Betaling</h2>
                     <p>
-                        U kunt bij ons meestal achteraf betalen. Bij bestelling versturen wij de goederen en mailen
-                        u later de factuur. De factuur dient binnen 10 dagen na ontvangst van de goederen voldaan te
-                        worden. Wij houden ons het recht voor om eerst betaling te verzoeken. Wij laten dit weten en
-                        sturen u een proforma factuur u kunt dan de bestelling annuleren. Na ontvangst van de
-                        betaling verzenden wij de goederen
+                        Bij ons kun je meestal achteraf betalen.
+                        Na je bestelling sturen we direct de goederen en ontvang je later de factuur. Deze dien je binnen 10 dagen
+                        na ontvangst van de goederen te voldoen. In sommige gevallen behouden we ons het recht voor om vooraf betaling .
+                        te vragen. Mocht dit het geval zijn, ontvang je eerst een proforma factuur, zodat je eventueel de bestelling
+                        kunt annuleren. Zodra we de betaling ontvangen, verzenden we de goederen.
                     </p>
                     <h2>BTW</h2>
                     <p>
-                        Alle geoffreerde prijzen zijn exclusief BTW. Het Nederlandse BTW percentage is 21%. Dit
-                        wordt opgeteld bij de factuur. Bent u een Belgische klant dan kan de BTW verlegd worden mits
-                        u een BTW nummer heeft. Wij dienen dit nummer van u te ontvangen
+                        Al onze prijzen zijn exclusief BTW.
+                        Voor Nederlandse klanten komt hier 21% BTW bij,
+                        wat duidelijk op de factuur wordt vermeld. Ben je uit België,
+                        dan kun je de BTW laten verleggen, mits je een geldig BTW-nummer aanlevert.
                     </p>
                     <h2>Leveringskosten</h2>
                     <p>
-                        Wij vragen een bijdrage in de leveringskosten van € 5,95 (ex btw). Bestellingen boven de €
-                        500,00 (ex btw) worden franco geleverd. Dit geldt voor Nederlandse en Belgische klanten.
+                        We rekenen een vaste bijdrage van € 7,35 (exclusief BTW) als bijdrage in de leveringskosten.
+                        Bestellingen vanaf € 1000,00 (exclusief BTW) worden franco verzonden, zowel voor klanten in Nederland als België.
                     </p>
                 </div>
                 <div class="image">
@@ -113,44 +88,84 @@ include_once __DIR__ . '/incs/statusbalk.php';
         </div>
     </section>
 
-    <!-- Eerste sectie (witte achtergrond) nu onderaan -->
-    <main>
-        <section class="section first-section">
-            <div class="text">
-                <h2>Irischeque</h2>
-                <p>
-                    Bij bestelling via onze webshop krijgt u een irischeque waarmee off-en -online gekocht kan
-                    worden bij veel Nederlandse winkels. De cheque is digitaal, u ontvangt een code van VVV op
-                    een door u op te geven email adres. Dit geldt niet voor bestellingen buiten onze Webshop om.
-                    Orderhoogte VVVbedrag 300,00 7,50 500,00 10,00 700,00 15,00 900,00 20,00
-                </p>
-            </div>
-            <div class="image">
-                <img src="afbeeldingen/hp-32.png" alt="Illustratie">
-            </div>
-        </section>
-    </main>
 
-    <section class="full-section">
-        <div class="container">
+
+    <!-- Eerste sectie (witte achtergrond) nu onderaan -->
+    <section class="full-sectioncolour">
+        <div class='container'>
+            <section class="section first-section">
+                <div class="image">
+                    <img src="afbeeldingen/vvv.jpg" alt="Illustratie">
+                </div>
+                <div class="text">
+                    <h2>VVV cadeaukaart</h2>
+                    <p>
+                        Bij bestellingen via onze webshop ontvangt u een digitale vvv cadeaukaart waarmee u kunt winkelen bij veel Nederlandse winkels.<br>
+                        U krijgt de VVV-code toegestuurd op het door u opgegeven e-mailadres, nadat de betaling is ontvangen.<br><br>
+                        Let op: dit geldt niet voor bestellingen die buiten onze webshop worden geplaatst of Belgisiche klanten.
+
+                        Orderhoogte VVV-bedrag
+                    <table class="vvv-table">
+                        <thead>
+                            <tr>
+                                <th>Orderhoogte</th>
+                                <th>VVV-bedrag</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>€ 400,00</td>
+                                <td>€ 7,50</td>
+                            </tr>
+                            <tr>
+                                <td>€ 700,00</td>
+                                <td>€ 12,50</td>
+                            </tr>
+                            <tr>
+                                <td>€ 1000,00</td>
+                                <td>€ 17,50</td>
+                            </tr>
+                            <tr>
+                                <td>€ 1500,00</td>
+                                <td>€ 25,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    </p>
+                    <a href="https://www.vvvcadeaukaarten.nl/" target="_blank">Meer informatie over de VVV cadeaukaart</a>
+                </div>
+
+            </section>
+        </div>
+    </section>
+
+
+    <section class="full-sectiontransparent">
+        <div class='container'>
             <section class="section reverse">
                 <div class="text">
                     <h2>Bestellen</h2>
                     <p>
-                        In onze webshop kunt u direct bestellen. U koopt per verpakkingseenheid. De genoemde
-                        aantallen is per verpakkingseenheid.
+                        Bestellen
+                        In onze webshop kunt u direct bestellen. <br>
+                        U koopt per verpakkingseenheid. Wij hanteren staffelprijzen, deze staan bij de producten vermeld.
+                        Het systeem laat u automatisch de staffelprijs zien bij het invoeren van het aantal. <br>
+
                     </p>
-                    <h2>Klant</h2>
-                    <p>U kunt:</p>
-                    <ul>
-                        <li>inloggen als bestaande klant</li>
-                        <li>een account aanmaken</li>
-                        <li>als gast bestellen</li>
-                    </ul>
+                    <p>Bestellen kan ook op deze manier:
+                        via u eigen inkoopsysteem. <br>
+                        via een email<br>
+                        of gewoon even bellen<br>
+                        Wij zorgen voor de rest<br>
+                        U kunt de bestelling mailen naar verkoop@fetum.nl.
+                    </p>
+
+                    <h2>Bestelproces</h2>
                     <p>
-                        Deze optie is beschikbaar bij het afronden van uw bestelling Na het doen van uw bestellling
-                        mailen wij u een orderbevestiging. Dit is dus geen factuur en is alleen voor uw informatie
-                        en niet gebruiken om te betalen.
+                        Na het invoeren van een bestelling ontvangt u een orderbevestiging per e-mail.
+                        Hierin staat een overzicht van de bestelde artikelen en de totale kosten. <br>
+                        Dit is dus geen factuur, maar een bevestiging van uw bestelling. <br>
                     </p>
                 </div>
                 <div class="image">
@@ -158,27 +173,32 @@ include_once __DIR__ . '/incs/statusbalk.php';
                 </div>
             </section>
         </div>
+
     </section>
 
     <!-- Eerste sectie (witte achtergrond) nu onderaan -->
-    <main>
-        <section class="section first-section">
-            <div class="text">
-                <h2>Algemene voorwaarden</h2>
-                <p>
-                    hier vind u onze algemene voorwaarden. Bij het bestellen vragen wij u dit akkoord te
-                    bevinden voordat de bestelling wordt afgerond.
-                </p>
-                <h2>Leveringskosten</h2>
-                Wij vragen een bijdrage in de leveringskosten van € 5,95 (ex btw). Bestellingen boven de € 500,00
-                (ex btw) worden franco geleverd. Dit geldt voor Nederlandse en Belgische klanten.
-            </div>
-            </div>
-            <div class="image">
-                <img src="afbeeldingen/hp-32.png" alt="Illustratie">
-            </div>
-        </section>
-    </main>
+    <section class="full-sectioncolour">
+        <div class='container'>
+            <section class="section first-section">
+                <div class="image">
+                    <img src="afbeeldingen/hp-32.png" alt="Illustratie">
+                </div>
+                <div class="text">
+                    <h2>Algemene voorwaarden</h2>
+                    <p>
+                        <a href="leveringsvoorwaarden.php">Hier vind u onze algemene voorwaarden.</a> Bij het bestellen vragen wij u dit akkoord te
+                        bevinden voordat de bestelling wordt afgerond.
+                    </p>
+                    <h2>Leveringskosten</h2>
+                    Wij vragen een bijdrage in de leveringskosten van € 7,35 (ex btw). Bestellingen boven de € 1000,00
+                    (ex btw) worden franco geleverd. Dit geldt voor Nederlandse en Belgische klanten.
+                </div>
+            </section>
+        </div>
+    </section>
+
+    </div>
+
 
 
 </body>

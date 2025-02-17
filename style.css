@@ -1,4 +1,5 @@
 /*algemene opmaak*/
+/*losse stylesheet: style.css*/
 
 
 :root {
@@ -53,9 +54,16 @@
   }
   
   main{
-    width:1024px;
+    width:1200px;
     margin: 5rem auto 0rem;
   }
+
+ /* Algemeen: main en container voor vaste breedte */
+ main,
+ .container {
+     max-width: 1200px;
+     margin: 0 auto;
+ }
 
   h1,
   h2,
@@ -133,6 +141,56 @@ button:hover {
 
 
 
+.textcenter{
+  width:100%;
+  text-align: center;
+}
+
+/* Basis styling voor de secties */
+/* dit zijn oa de gekleurde banen bij webshopinfo en conatct */
+.section {
+  display: flex;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.section .image,
+.section .text {
+  flex: 1;
+  padding: 20px;
+}
+
+.section img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Eerste sectie: witte achtergrond (in main) */
+.first-section {
+  width: 100%;
+}
+
+/* Tweede sectie: full-width achtergrondkleur */
+.full-sectiontransparant {
+  width: 100%;
+  background-color: transparent;
+}
+
+
+.full-sectioncolour {
+  width: 100%;
+  background-color: var(--superlichtpaars);
+}
+
+/* Responsive: op kleinere schermen stapelen de kolommen */
+@media (max-width: 768px) {
+  .section {
+      flex-direction: column;
+  }
+}
+
+
 /*utilities*/
 .pdf{
   text-decoration: none;
@@ -180,46 +238,61 @@ button:hover {
 }
 
 
+/* De volle breedte achtergrond */
 .bovenlicht {
+  width: 100vw;
+  background-color: var(--superlichtpaars);
+  /* eventueel kun je hier de hoogte verwijderen als deze vastgezet wordt in de wrapper */
+  border-bottom: 1px solid var(--paars);
+}
+
+/* Wrapper die de content centreert en een max-width geeft */
+.bovenlicht__wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* linkerkolom past zich aan de breedte van de afbeelding aan, rechter neemt de rest */
   align-items: center;
-  /* centreert de content verticaal */
-  width: 100vw;
-  background-color: var(--superlichtpaars);
-  /* voorbeeld achtergrondkleur, kan je aanpassen */
-  height: auto;
+  gap: 4rem;
+  height: 45vh; /* verplaats de hoogte hierheen */
+  padding-bottom: 2vh;
+  padding-top: 3vh;
 }
-
 
 /* Zorgt dat de afbeelding netjes binnen zijn container past */
+.bovenlicht__image {
+  height: 100%;
+  min-height: 0; /* Zorgt dat de container niet groter wordt dan 40vh */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden; /* Optioneel: verbergt eventueel overtollige delen */
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+}
+
 .bovenlicht__image img {
-  max-width: 100%;
-  height: auto;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: right center;
   display: block;
-  mix-blend-mode: multiply;
+  border-radius: 16px;
+  misx-blend-mode: multiply;
 }
 
-/* Extra marge of padding voor de tekst (optioneel) */
+/* Styling voor de tekst */
 .bovenlicht__text {
-  padding: 20px;
   color: var(--paars);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start; /* 'left' is geen geldige waarde voor align-items */
+  height: 100%;
+  padding-bottom: 2vh;
 }
 
-
-.tekst_links{
-  text-align: left;
-}
-
-.tekst_rechts{
-  text-align: right;
-}
-
-.tekst_center{
-  text-align: center;
-}
 /*per pagina*/
 
 .index{

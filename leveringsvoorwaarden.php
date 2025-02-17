@@ -1,9 +1,7 @@
 <?php
 $title = "Leveringsvoorwaarden - hele kleine lettertjes";
-$statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $menu = 'beheer';
 include_once __dir__ . '/incs/top.php';
-include_once __dir__ . '/incs/statusbalk.php';
 ?>
 
 <style>
@@ -11,6 +9,7 @@ include_once __dir__ . '/incs/statusbalk.php';
         columns: 3;
         column-gap: 3rem;
         font-size: 1.6rem;
+        padding-top: 10rem;
     }
 
     .coloms p {
@@ -31,17 +30,18 @@ include_once __dir__ . '/incs/statusbalk.php';
 
 <body>
     <?php include_once __dir__ . '/incs/menu.php'; ?>
-
     <div class="bovenlicht">
-        <div class="bovenlicht__image">
-            <img src="afbeeldingen/hp-136.jpg" alt="muisje" />
-        </div>
-        <div class="bovenlicht__text tekst_links">
-            <h1>Leveringsvoorwaarden</h1>
-            <h3>
-                De kleine lettertjes. <br />
-                Kunnen we ook niets aan doen.
-            </h3>
+        <div class="bovenlicht__wrapper">
+            <div class="bovenlicht__image">
+                <img src="afbeeldingen/hp-136.jpg" alt="muisje" />
+            </div>
+            <div class="bovenlicht__text tekst_links">
+                <h1>Leveringsvoorwaarden</h1>
+                <h3>
+                    De kleine lettertjes. <br />
+                    Kunnen we ook niets aan doen.
+                </h3>
+            </div>
         </div>
     </div>
 
