@@ -3,32 +3,27 @@ $title = 'wat kan er allemaal bij ons';
 $menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
 ?>
-<!DOCTYPE html>
-<html lang="nl">
 
-<head>
-    <meta charset="UTF-8">
-    <title><?php echo $title; ?></title>
-    <style>
-        .vvv-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
+<style>
+    .vvv-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
 
-        .vvv-table th,
-        .vvv-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
+    .vvv-table th,
+    .vvv-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
 
-        .vvv-table th {
-            background-color: var(--superlichtpaars);
-            color: #000;
-        }
-    </style>
-</head>
+    .vvv-table th {
+        background-color: var(--superlichtpaars);
+        color: #000;
+    }
+</style>
+
 
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
@@ -198,7 +193,6 @@ include_once __DIR__ . '/incs/top.php';
     </div>
 
 
-
-</body>
-
-</html>
+    <?php
+    include_once __DIR__ . '/incs/bottom.php';
+    ?>

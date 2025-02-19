@@ -745,6 +745,6 @@ include_once __DIR__ . '/incs/top.php';
             });
         </script>
     </main>
-</body>
-
-</html>
+    <?php
+    include_once __DIR__ . '/incs/bottom.php';
+    ?>
