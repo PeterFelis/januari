@@ -1,5 +1,6 @@
 <?php
-$title = "Fetum - Since 1985";
+// shop.php
+$title = "Fetum - webshop";
 $statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
@@ -56,10 +57,42 @@ include_once __DIR__ . '/incs/top.php';
         text-align: center;
         cursor: pointer;
         transition: transform 0.2s;
+        /* Stel een vaste hoogte in zodat de verhoudingen behouden blijven */
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .product-card:hover {
         transform: scale(1.05);
+    }
+
+    /* Layout binnen de kaart: verticale indeling, 75% voor foto, 25% voor USP-tekst */
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        height: 75%;
+        margin-bottom: 10px;
+    }
+
+    .card-photo {
+        flex: 0 0 75%;
+        margin-bottom: 5px;
+    }
+
+    .card-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-usp {
+        flex: 0 0 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 </style>
 
@@ -162,14 +195,22 @@ include_once __DIR__ . '/incs/top.php';
             filtered.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                // Gebruik het typenummer als titel en een (ingekorte) omschrijving als tekst
+                // Productkaart: tonen TypeNummer, een foto (boven, 75%) en USP tekst (onder, 25%)
                 card.innerHTML = `
-        <h3>${product.TypeNummer}</h3>
-        <p>${stripHTML(product.omschrijving).substring(0, 100)}...</p>
-        <p><strong>Prijs:</strong> ${getLowestPrice(product.prijsstaffel)}</p>
-      `;
+                    <h3>${product.TypeNummer}</h3>
+                    <div class="card-content">
+                        <div class="card-photo">
+                        ${product.foto_link}
+                            <img src="${product.foto_link ? product.foto_link : 'default_foto.jpg'}" alt="${product.TypeNummer}">
+                        </div>
+                        <div class="card-usp">
+                            <p>${stripHTML(product.USP)}</p>
+                        </div>
+                    </div>
+                    <p><strong>Prijs:</strong> ${getLowestPrice(product.prijsstaffel)}</p>
+                `;
                 card.addEventListener('click', () => {
-                    // Ga naar de productpagina (aangenomen dat de mapstructuur: artikelen/{TypeNummer}/index.php)
+                    // Ga naar de productpagina (artikelen/{TypeNummer}/index.php)
                     window.location.href = 'artikelen/' + encodeURIComponent(product.TypeNummer) + '/index.php';
                 });
                 grid.appendChild(card);
