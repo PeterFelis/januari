@@ -57,42 +57,49 @@ include_once __DIR__ . '/incs/top.php';
         text-align: center;
         cursor: pointer;
         transition: transform 0.2s;
-        /* Stel een vaste hoogte in zodat de verhoudingen behouden blijven */
-        height: 400px;
+        /* Verwijder de vaste hoogte en gebruik eventueel een minimumhoogte */
+        min-height: 400px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        /* Geen vaste hoogte meer; de inhoud bepaalt de hoogte */
+        min-height: 70%;
+    }
+
+    .card-photo {
+        width: 100%;
+        height: auto;
+        /* Laat de afbeelding op natuurlijke wijze schalen */
+        margin-bottom: 5px;
+    }
+
+    .card-usp {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
     }
 
     .product-card:hover {
         transform: scale(1.05);
     }
 
-    /* Layout binnen de kaart: verticale indeling, 75% voor foto, 25% voor USP-tekst */
-    .card-content {
-        display: flex;
-        flex-direction: column;
-        height: 75%;
-        margin-bottom: 10px;
-    }
-
-    .card-photo {
-        flex: 0 0 75%;
-        margin-bottom: 5px;
-    }
-
+    /* Binnen de foto: de afbeelding vult de container */
     .card-photo img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .card-usp {
-        flex: 0 0 25%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+    .card-usp p {
+        margin: 0;
     }
 </style>
 
@@ -195,19 +202,18 @@ include_once __DIR__ . '/incs/top.php';
             filtered.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                // Productkaart: tonen TypeNummer, een foto (boven, 75%) en USP tekst (onder, 25%)
+                // Gebruik de vaste foto-locatie: artikelen/{TypeNummer}/Pfoto.png
                 card.innerHTML = `
                     <h3>${product.TypeNummer}</h3>
+                    <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
                     <div class="card-content">
                         <div class="card-photo">
-                        ${product.foto_link}
-                            <img src="${product.foto_link ? product.foto_link : 'default_foto.jpg'}" alt="${product.TypeNummer}">
+                              <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
                         </div>
                         <div class="card-usp">
-                            <p>${stripHTML(product.USP)}</p>
+                            ${product.USP}
                         </div>
                     </div>
-                    <p><strong>Prijs:</strong> ${getLowestPrice(product.prijsstaffel)}</p>
                 `;
                 card.addEventListener('click', () => {
                     // Ga naar de productpagina (artikelen/{TypeNummer}/index.php)
@@ -215,13 +221,6 @@ include_once __DIR__ . '/incs/top.php';
                 });
                 grid.appendChild(card);
             });
-        }
-
-        // Verwijder HTML-tags uit een string
-        function stripHTML(html) {
-            var div = document.createElement("div");
-            div.innerHTML = html;
-            return div.textContent || div.innerText || "";
         }
 
         // Haal de laagste prijs op uit de prijsstaffel-string

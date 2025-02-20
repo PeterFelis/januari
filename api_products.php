@@ -26,14 +26,14 @@ if ($method === 'GET') {
         $stmt->execute([$_GET['TypeNummer']]);
         echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     } else {
-        // Haal alle producten op (inclusief leverbaar en foto_link)
-        $stmt = $pdo->query("SELECT id, categorie, subcategorie, TypeNummer, omschrijving, sticker_text, prijsstaffel, aantal_per_doos, USP, leverbaar, foto_link FROM products ORDER BY TypeNummer");
+        // Haal alle producten op (inclusief leverbaar )
+        $stmt = $pdo->query("SELECT id, categorie, subcategorie, TypeNummer, omschrijving, sticker_text, prijsstaffel, aantal_per_doos, USP, leverbaar FROM products ORDER BY TypeNummer");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 } elseif ($method === 'POST') {
     // Voeg nieuw product toe
     $data = json_decode(file_get_contents('php://input'), true);
-    $stmt = $pdo->prepare("INSERT INTO products (categorie, subcategorie, TypeNummer, omschrijving, prijsstaffel, aantal_per_doos, USP, sticker_text, leverbaar, foto_link)
+    $stmt = $pdo->prepare("INSERT INTO products (categorie, subcategorie, TypeNummer, omschrijving, prijsstaffel, aantal_per_doos, USP, sticker_text, leverbaar)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([
         $data['categorie'],
@@ -44,14 +44,13 @@ if ($method === 'GET') {
         $data['aantal_per_doos'],
         $data['USP'],
         $data['sticker_text'] ?? '',
-        $data['leverbaar'] ?? 'ja',
-        $data['foto_link'] ?? ''
+        $data['leverbaar'] ?? 'ja'
     ]);
     echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
 } elseif ($method === 'PUT') {
     // Update bestaand product
     $data = json_decode(file_get_contents('php://input'), true);
-    $stmt = $pdo->prepare("UPDATE products SET categorie = ?, subcategorie = ?, TypeNummer = ?, omschrijving = ?, prijsstaffel = ?, aantal_per_doos = ?, USP = ?, sticker_text = ?, leverbaar = ?, foto_link = ?
+    $stmt = $pdo->prepare("UPDATE products SET categorie = ?, subcategorie = ?, TypeNummer = ?, omschrijving = ?, prijsstaffel = ?, aantal_per_doos = ?, USP = ?, sticker_text = ?, leverbaar = ?
                            WHERE id = ?");
     $stmt->execute([
         $data['categorie'],
@@ -63,7 +62,6 @@ if ($method === 'GET') {
         $data['USP'],
         $data['sticker_text'] ?? '',
         $data['leverbaar'] ?? 'ja',
-        $data['foto_link'] ?? '',
         intval($data['id'])
     ]);
     echo json_encode(['success' => true]);
@@ -80,3 +78,4 @@ if ($method === 'GET') {
 } else {
     echo json_encode(['error' => 'Ongeldige methode']);
 }
+?>

@@ -15,6 +15,122 @@ if ($_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// === Afhandelblok voor de upload van een afbeelding ===
+if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
+    // Zorg dat het een POST-request is
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+        exit;
+    }
+
+    // Controleer of er een bestand is geüpload
+    if (!isset($_FILES['avatar'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Geen bestand geüpload.']);
+        exit;
+    }
+
+    // Verkrijg het product (TypeNummer) via queryparameter
+    if (!isset($_GET['product']) || empty($_GET['product'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Product niet gespecificeerd.']);
+        exit;
+    }
+    $product = $_GET['product'];
+
+    // Bepaal de map voor dit product, bijvoorbeeld in "artikelen/{TypeNummer}"
+    $directory = __DIR__ . '/artikelen/' . $product;
+    if (!is_dir($directory)) {
+        mkdir($directory, 0777, true);
+    }
+
+    $file = $_FILES['avatar'];
+
+    // Controleer op uploadfouten
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Upload fout: ' . $file['error']]);
+        exit;
+    }
+
+    // Bepaal de extensie (allemaal kleine letters)
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Alleen JPG, JPEG en PNG bestanden zijn toegestaan.']);
+        exit;
+    }
+
+    // De bestemming: in de productmap met de naam "Pfoto.extension"
+    $destPath = $directory . '/Pfoto.' . $extension;
+
+    // Functie om de afbeelding te verkleinen
+    function createResizedImage($srcPath, $destPath, $extension)
+    {
+        switch ($extension) {
+            case 'jpg':
+            case 'jpeg':
+                $srcImage = imagecreatefromjpeg($srcPath);
+                break;
+            case 'png':
+                $srcImage = imagecreatefrompng($srcPath);
+                break;
+            default:
+                return false;
+        }
+        if (!$srcImage) {
+            return false;
+        }
+        list($width, $height) = getimagesize($srcPath);
+        $newWidth = 300;
+        $newHeight = intval(($height / $width) * $newWidth);
+        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        if ($extension === 'png') {
+            imagealphablending($newImage, false);
+            imagesavealpha($newImage, true);
+        }
+        imagecopyresampled(
+            $newImage,
+            $srcImage,
+            0,
+            0,
+            0,
+            0,
+            $newWidth,
+            $newHeight,
+            $width,
+            $height
+        );
+        switch ($extension) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($newImage, $destPath, 90);
+                break;
+            case 'png':
+                imagepng($newImage, $destPath);
+                break;
+        }
+        imagedestroy($srcImage);
+        imagedestroy($newImage);
+        return true;
+    }
+
+    $resizeSuccess = createResizedImage($file['tmp_name'], $destPath, $extension);
+    if ($resizeSuccess) {
+        header('Content-Type: application/json');
+        // Geef de URL terug waarmee de shop later de afbeelding kan laden
+        $imageUrl = 'artikelen/' . $product . '/Pfoto.' . $extension;
+        echo json_encode(['success' => true, 'image_url' => $imageUrl]);
+        exit;
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Fout bij het verkleinen van de afbeelding.']);
+        exit;
+    }
+}
+// === Einde uploadafhandeling ===
+
 $title = 'Product beheer';
 include_once __DIR__ . '/incs/top.php';
 ?>
@@ -145,7 +261,7 @@ include_once __DIR__ . '/incs/top.php';
         flex: 1;
     }
 
-    /* Extra styling voor de fotolink: een file-input wordt nu getoond */
+    /* Extra styling voor de fotolink: een file-input wordt getoond */
     .foto-group {
         display: flex;
         gap: 10px;
@@ -159,15 +275,6 @@ include_once __DIR__ . '/incs/top.php';
     <main>
         <!-- Snackbar element -->
         <div id="snackbar"></div>
-
-        <!-- Custom confirm modal -->
-        <div id="confirmModal" class="modal">
-            <div class="modal-content">
-                <p id="confirmMessage"></p>
-                <button id="confirmYes">Ja</button>
-                <button id="confirmNo">Nee</button>
-            </div>
-        </div>
 
         <div class="container">
             <!-- Linkerpaneel: productselector -->
@@ -226,8 +333,15 @@ include_once __DIR__ . '/incs/top.php';
                             <label for="avatar">Fotolink:</label>
                             <!-- Visible file input -->
                             <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
-                            <!-- De DataURL wordt in een verborgen veld opgeslagen -->
-                            <input type="hidden" id="foto_link">
+                        </div>
+                    </div>
+                    <!-- Foto preview container -->
+                    <div class="input-row">
+                        <div class="form-group">
+                            <div id="foto_preview_container">
+                                <img id="foto_preview" style="max-width: 100px; display: none;" alt="Foto preview" />
+                                <span id="foto_filename"></span>
+                            </div>
                         </div>
                     </div>
                     <div id="omschrijvingveld">
@@ -451,6 +565,10 @@ include_once __DIR__ . '/incs/top.php';
                     btn.textContent = product.TypeNummer;
                     checkProductPage(product.TypeNummer, btn);
                     btn.onclick = async () => {
+                        // Reset de file-input en gerelateerde preview elementen
+                        document.getElementById('avatar').value = '';
+                        document.getElementById('foto_preview').style.display = 'none';
+                        document.getElementById('foto_filename').textContent = "";
                         selectedProduct = product;
                         highlightSelectedBtn(prodRow, btn);
                         const productData = await fetchProductById(product.id);
@@ -462,11 +580,11 @@ include_once __DIR__ . '/incs/top.php';
                         quillSticker.root.innerHTML = productData.sticker_text || '';
                         document.getElementById('prijsstaffel').value = productData.prijsstaffel;
                         document.getElementById('aantal_per_doos').value = productData.aantal_per_doos;
-                        // Voor USP: toon in de textarea de platte tekst (zonder <p> tags)
                         document.getElementById('USP').value = stripP(productData.USP);
-                        // Nieuwe velden:
                         document.getElementById('leverbaar').checked = (productData.leverbaar === 'ja');
-                        document.getElementById('foto_link').value = productData.foto_link || '';
+
+                        
+
                         document.getElementById('save-button').classList.add('hidden');
                     };
                     prodRow.appendChild(btn);
@@ -486,7 +604,9 @@ include_once __DIR__ . '/incs/top.php';
                 document.getElementById('aantal_per_doos').value = '';
                 document.getElementById('USP').value = '';
                 document.getElementById('leverbaar').checked = true;
-                document.getElementById('foto_link').value = '';
+                // Reset foto preview
+                document.getElementById('foto_preview').style.display = 'none';
+                document.getElementById('foto_filename').textContent = "";
                 document.getElementById('save-button').classList.remove('hidden');
                 isEditingNewProduct = false;
             }
@@ -515,8 +635,7 @@ include_once __DIR__ . '/incs/top.php';
                     prijsstaffel: document.getElementById('prijsstaffel').value,
                     aantal_per_doos: document.getElementById('aantal_per_doos').value,
                     USP: wrapUSP(document.getElementById('USP').value),
-                    leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
-                    foto_link: document.getElementById('foto_link').value
+                    leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
                 };
                 await saveProduct(data, false);
             }
@@ -528,21 +647,35 @@ include_once __DIR__ . '/incs/top.php';
                 }
             }
 
-            // In plaats van een prompt: Gebruik een file input (met id "avatar") en lees de file als DataURL
-            document.getElementById('avatar').addEventListener('change', (event) => {
+            // Nieuwe eventlistener voor de file-upload: verstuurt het bestand naar de server, waar deze wordt verkleind en opgeslagen.
+            document.getElementById('avatar').addEventListener('change', async (event) => {
                 const file = event.target.files[0];
                 if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Zet de DataURL in de verborgen foto_link input
-                    document.getElementById('foto_link').value = e.target.result;
-                    showSnackbar("Afbeelding geselecteerd.");
-                    // Direct autoSave aanroepen om de update door te voeren (alleen als we een bestaand product hebben)
-                    if (document.getElementById('product-id').value) {
-                        autoSave();
+                // Zorg dat er een product (TypeNummer) geselecteerd is
+                const typeNummer = document.getElementById('TypeNummer').value;
+                if (!typeNummer) {
+                    showSnackbar("Selecteer eerst een product.");
+                    return;
+                }
+                const formData = new FormData();
+                formData.append('avatar', file);
+                try {
+                    const response = await fetch(`producten_beheer.php?action=upload_image&product=${encodeURIComponent(typeNummer)}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        showSnackbar("Afbeelding succesvol geüpload en verkleind.");
+                        document.getElementById('foto_preview').src = result.image_url;
+                        document.getElementById('foto_preview').style.display = 'block';
+                        document.getElementById('foto_filename').textContent = file.name;
+                    } else {
+                        showSnackbar("Fout bij het uploaden van de afbeelding: " + result.error);
                     }
-                };
-                reader.readAsDataURL(file);
+                } catch (error) {
+                    showSnackbar("Fout bij het uploaden van de afbeelding.");
+                }
             });
 
             document.addEventListener('DOMContentLoaded', () => {
@@ -584,8 +717,7 @@ include_once __DIR__ . '/incs/top.php';
                         prijsstaffel: document.getElementById('prijsstaffel').value,
                         aantal_per_doos: document.getElementById('aantal_per_doos').value,
                         USP: wrapUSP(document.getElementById('USP').value),
-                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
-                        foto_link: document.getElementById('foto_link').value
+                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
                     };
                     const newProduct = await saveProduct(data, true);
                     showSnackbar("Productgegevens gekopieerd en opgeslagen.");
@@ -643,8 +775,7 @@ include_once __DIR__ . '/incs/top.php';
                         prijsstaffel: document.getElementById('prijsstaffel').value,
                         aantal_per_doos: document.getElementById('aantal_per_doos').value,
                         USP: wrapUSP(document.getElementById('USP').value),
-                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
-                        foto_link: document.getElementById('foto_link').value
+                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
                     };
                     await saveProduct(data, true);
                     resetForm();
