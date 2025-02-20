@@ -583,7 +583,7 @@ include_once __DIR__ . '/incs/top.php';
                         document.getElementById('USP').value = stripP(productData.USP);
                         document.getElementById('leverbaar').checked = (productData.leverbaar === 'ja');
 
-                        
+
 
                         document.getElementById('save-button').classList.add('hidden');
                     };

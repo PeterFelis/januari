@@ -23,7 +23,7 @@ include_once __dir__ . '/incs/top.php';
 
 ?>
 
-<body class='indexPaginaKleur'>
+<body>
     <?php include_once __dir__ . '/incs/menu.php';
 
     include_once __DIR__ . '/incs/dbConnect.php';
@@ -54,7 +54,25 @@ include_once __dir__ . '/incs/top.php';
         h1,
         h2,
         h3 {
-            margin-top: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-weight: 500;
+            line-height: 1.2;
+            font-size: 6rem;
+
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .tekstUSPsticker {
+            margin-top: 2rem;
         }
 
         .button-row {
@@ -145,10 +163,6 @@ include_once __dir__ . '/incs/top.php';
             flex-wrap: wrap;
         }
 
-        P {
-            margin: 0;
-            padding: 0;
-        }
 
         .selected {
             background-color: #ffcc66;
@@ -197,9 +211,9 @@ include_once __dir__ . '/incs/top.php';
             }
 
             .small {
-                margin-left: 13cm;
+                margin-left: 12cm;
                 /* horizontaal 10 cm */
-                margin-top: 3cm;
+                margin-top: 5cm;
                 /* verticaal   3 cm */
 
             }
@@ -207,6 +221,10 @@ include_once __dir__ . '/incs/top.php';
             div {
                 margin-bottom: 2rem;
             }
+        }
+
+        main {
+            margin-top: 10rem;
         }
     </style>
 
@@ -374,9 +392,10 @@ include_once __dir__ . '/incs/top.php';
 
                 // Toon productnaam, aantal per doos en de stickertekst
                 stickerDiv.innerHTML = `
-        <div><h2>${selectedProduct.TypeNummer}</h2></div>
-        <div><h5>Aantal per doos: ${boxQty}</h5></div>
-        <div>${selectedProduct.sticker_text || ''}</div>
+        <div>
+        <h1>${selectedProduct.TypeNummer}</h1>
+        <h1>${boxQty} stuks</h1></div>
+        <p class='tekstUSPsticker'>${selectedProduct.sticker_text || ''}</p>
     `;
                 container.appendChild(stickerDiv);
             }

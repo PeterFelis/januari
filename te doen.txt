@@ -20,3 +20,6 @@ registreer.php
 confirm.php
 14-02 doorsturen naar inlog voor klanten, gaat nu nog naar dashboard
 klantpagina maken, met oa edit mogelijkheden en bekijken winkelmandje
+
+klantform:
+staat nog head in omzetten
