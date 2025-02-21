@@ -1,13 +1,12 @@
 <?php
-//file: incs/menu.php
-// maakt of het normale menu of het beheermenu
-// $menu = 'geen', 'normaal' of 'beheer', moet meegegeven worden bij aanroep
+// file: incs/menu.php
+// $menu kan 'geen', 'normaal', 'beheer' of 'logo' zijn
 
 if ($menu == 'normaal') { ?>
 
     <header>
         <nav>
-            <a class="logo" href=" /">
+            <a class="logo" href="/">
                 <img src="/afbeeldingen/fetumlogo.png" alt="Fetum logo" />
             </a>
             <a href="/onderwijs.php">Onderwijs</a>
@@ -20,7 +19,6 @@ if ($menu == 'normaal') { ?>
             if (!isset($_SESSION['user_id']) && (strtolower(basename($_SERVER['SCRIPT_NAME'], ".php")) !== 'loginform')) { ?>
                 <a href="loginForm.php">Inloggen</a>
             <?php } ?>
-
         </nav>
     </header>
 
@@ -28,11 +26,10 @@ if ($menu == 'normaal') { ?>
 
     <header>
         <nav>
-            <a class="logo" href=" /">
+            <a class="logo" href="/">
                 <img src="/afbeeldingen/fetumlogo.png" alt="Fetum logo" />
             </a>
-            <?php
-            if (!isset($_SESSION['user_id']) && (strtolower(basename($_SERVER['SCRIPT_NAME'], ".php")) !== 'loginform')) { ?>
+            <?php if (!isset($_SESSION['user_id']) && (strtolower(basename($_SERVER['SCRIPT_NAME'], ".php")) !== 'loginform')) { ?>
                 <a href="loginForm.php">Inloggen</a>
             <?php } ?>
             <a href="logout.php">Logout</a>
@@ -43,6 +40,16 @@ if ($menu == 'normaal') { ?>
             <a href="contact.php">Contact</a>
             <a href="leveringsvoorwaarden.php">Leveringsvoorwaarden</a>
             <a href="webshopinfo.php">Webshopinfo</a>
+        </nav>
+    </header>
+
+<?php } else if ($menu == 'logo') { ?>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/afbeeldingen/fetumlogo.png" alt="Fetum logo" />
+            </div>
         </nav>
     </header>
 
@@ -90,15 +97,18 @@ if ($menu == 'normaal') { ?>
         height: 200%;
         position: relative;
         margin-top: 1rem;
+        z-index: 20;
+        /* Zorg ervoor dat het logo altijd boven het vlak staat */
     }
 
     .logo img {
         height: 100%;
         width: auto;
-        z-index: 10;
+        z-index: 30;
         position: relative;
     }
 
+    /* Gekanteld vlak */
     .logo::after {
         content: '';
         display: block;
@@ -106,10 +116,13 @@ if ($menu == 'normaal') { ?>
         height: 250%;
         background: var(--accent);
         position: absolute;
-        z-index: 5;
+        z-index: 15;
+        /* Boven de hero, onder het logo */
         top: -100%;
         left: -10%;
         transform: rotate(-15deg);
         border-radius: 0% 0% 20% 20%;
+        pointer-events: none;
+        /* Voorkom flikkeren bij hover */
     }
 </style>

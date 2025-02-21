@@ -3,40 +3,40 @@
 if (isset($statusbalk)): ?>
     <style>
         .statusBalk {
-            position: absolute;
-            top: -5rem;
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100vw;
             text-align: center;
             background-color: var(--rood);
             color: var(--geel);
-            padding-top: .5rem;
-            padding-bottom: .5rem;
+            padding: 0.5rem;
             letter-spacing: 2px;
-            /* Combineert de slide-in animatie met een fade-out na 60 seconden */
-            animation: showStatusBalk 2s ease-in-out forwards, fadeOutStatusBalk 2s 5s forwards;
+            z-index: 1000;
+            /* Eerst schuift de balk in, dan vervaagt hij */
+            animation: slideIn 1s ease-out forwards, fadeOut 2s 4s forwards;
+            pointer-events: none;
         }
 
-        @keyframes showStatusBalk {
-            0% {
-                transform: translateY(0rem);
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
             }
 
-            100% {
-                transform: translateY(10rem);
+            to {
+                transform: translateY(0);
             }
         }
 
-        @keyframes fadeOutStatusBalk {
-            0% {
+        @keyframes fadeOut {
+            from {
                 opacity: 1;
             }
 
-            100% {
+            to {
                 opacity: 0;
             }
         }
     </style>
-
-    <div class='statusBalk'><?= $statusbalk ?></div>
+    <div class="statusBalk"><?= $statusbalk ?></div>
 <?php endif; ?>
