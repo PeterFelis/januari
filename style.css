@@ -11,7 +11,7 @@
     --paars: #9421ce;
     --lichtpaars: #B497D6;
     --heellichtpaars: #f3c3f5;
-    --superlichtpaars: #fdedfd;
+    --superlichtpaars: #fdf2fd;
     --oxfortblue: #05204A;
     --achtergrond: #F8F6F2;
     --oranje: #F5B06F;
@@ -47,6 +47,7 @@
     font-size: 1.6rem;
     line-height: 2.6rem;
     max-width:100vw;
+    width: 100vw;
     height: 100vh;
     position: relative;
     margin: 0 auto;
@@ -238,59 +239,86 @@ button:hover {
 }
 
 
-/* De volle breedte achtergrond */
+/* Eenvoudige bovenlicht styling */
 .bovenlicht {
   width: 100vw;
   background-color: var(--superlichtpaars);
-  /* eventueel kun je hier de hoogte verwijderen als deze vastgezet wordt in de wrapper */
   border-bottom: 1px solid var(--paars);
+  padding: 4rem 0;
 }
 
-/* Wrapper die de content centreert en een max-width geeft */
+/* Wrapper */
 .bovenlicht__wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 4rem;
-  height: 45vh; /* verplaats de hoogte hierheen */
-  padding-bottom: 2vh;
-  padding-top: 3vh;
+  min-height: 400px;
 }
 
-/* Zorgt dat de afbeelding netjes binnen zijn container past */
-.bovenlicht__image {
-  height: 100%;
-  min-height: 0; /* Zorgt dat de container niet groter wordt dan 40vh */
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  overflow: hidden; /* Optioneel: verbergt eventueel overtollige delen */
-  padding-top: 2vh;
-  padding-bottom: 2vh;
-}
-
-.bovenlicht__image img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  object-position: right center;
-  display: block;
-  border-radius: 16px;
-  misx-blend-mode: multiply;
-}
-
-/* Styling voor de tekst */
+/* Tekst styling - rechts uitgelijnd */
 .bovenlicht__text {
   color: var(--paars);
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: flex-end; /* Rechts uitlijnen */
+  text-align: right; /* Zorgt dat de tekst zelf ook rechts staat */
+}
+
+/* Afbeelding styling */
+.bovenlicht__image {
+  position: relative;
+  display: flex;
   justify-content: flex-end;
-  align-items: flex-start; /* 'left' is geen geldige waarde voor align-items */
-  height: 100%;
-  padding-bottom: 2vh;
+  align-items: center;
+}
+
+.bovenlicht__hero {
+  max-width: 110%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+  transform: translateX(10%);
+}
+
+/* Responsieve aanpassingen */
+@media (max-width: 768px) {
+  .bovenlicht__wrapper {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      min-height: auto;
+  }
+
+  .bovenlicht__image {
+      justify-content: center;
+  }
+
+  .bovenlicht__hero {
+      max-width: 80%;
+      transform: translateX(0);
+  }
+
+  .bovenlicht__text {
+      align-items: center; /* Terug naar centreren op mobiel */
+      text-align: center; /* Centraal op kleinere schermen */
+  }
+}
+
+@media (max-width: 480px) {
+  .bovenlicht {
+      padding: 2rem 0;
+  }
+
+  .bovenlicht__text h1 {
+      font-size: 3rem;
+  }
+
+  .bovenlicht__text h3 {
+      font-size: 2rem;
+  }
 }
 
 /*per pagina*/

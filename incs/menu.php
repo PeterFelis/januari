@@ -11,6 +11,7 @@ if ($menu == 'normaal') { ?>
             </a>
             <a href="/onderwijs.php">Onderwijs</a>
             <a href="/zorg.php">Zorg</a>
+            <a href="news.php">NIEUWS</a>
             <a href="webshopinfo.php">Webshop Info</a>
             <a href="contact.php">Contact</a>
             <a href="shop.php">Webshop</a>
@@ -64,6 +65,8 @@ if ($menu == 'normaal') { ?>
         font-size: 1.4rem;
         position: relative;
         height: 4rem;
+        border-bottom: 1px solid white;
+        border-top: 1px solid white;
     }
 
     nav {

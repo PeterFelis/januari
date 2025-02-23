@@ -30,14 +30,14 @@ include_once __DIR__ . '/incs/top.php';
 
     <div class="bovenlicht">
         <div class="bovenlicht__wrapper">
-            <div class="bovenlicht__image">
-                <img src="afbeeldingen/hero.png" alt="oortje met naamsticker" />
-            </div>
-            <div class="bovenlicht__text tekst_links">
+            <div class="bovenlicht__text">
                 <h1>Webshop Info</h1>
                 <h3>
-                    Aankopen, VVV cheques, klant worden. <br>Hier leggen we het duidelijk uit.
+                    Aankopen, VVV cheques, klant worden.<br>Hier leggen we het duidelijk uit.
                 </h3>
+            </div>
+            <div class="bovenlicht__image">
+                <img src="afbeeldingen/hero.png" alt="oortje met naamsticker" class="bovenlicht__hero" />
             </div>
         </div>
     </div>
