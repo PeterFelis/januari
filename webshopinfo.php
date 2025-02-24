@@ -13,13 +13,13 @@ include_once __DIR__ . '/incs/top.php';
 
     .vvv-table th,
     .vvv-table td {
-        border: 1px solid #ddd;
+        border: 2px dashed #f0bf70;
         padding: 8px;
         text-align: center;
     }
 
     .vvv-table th {
-        background-color: var(--superlichtpaars);
+        background-color: transparent;
         color: #000;
     }
 </style>
@@ -33,7 +33,7 @@ include_once __DIR__ . '/incs/top.php';
             <div class="bovenlicht__text">
                 <h1>Webshop Info</h1>
                 <h3>
-                    Aankopen, VVV cheques, klant worden.<br>Hier leggen we het duidelijk uit.
+                    Kopen, VVV cadeaukaart, klant worden.<br>Hier leggen we het duidelijk uit.
                 </h3>
             </div>
             <div class="bovenlicht__image">

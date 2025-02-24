@@ -52,6 +52,8 @@
     position: relative;
     margin: 0 auto;
     overflow-X: hidden;
+    background-color: #fcf1f5;
+    background-color: #FAF3E0;
   }
   
   main{
@@ -71,17 +73,19 @@
   h3,
   h4 {
     font-family: "Poppins", sans-serif;
-    line-height: 1.6;
+    line-height: 1.;
     padding: 0;
     margin: 0;
   }
   
   h1 {
-    font-size: 4rem;
+    font-size: 5rem;
+    line-height: 1.4;
   }
   
   h3 {
     font-size: 2.5rem;
+    line-height: 1.6;
   }
   
  a{
@@ -89,7 +93,8 @@
  }
  p{
   display:block;
-  margin-bottom: 4rem;
+  margin-bottom: 6rem;
+  margin-top: 1rem;
  }
 
 
@@ -152,13 +157,14 @@ button:hover {
 .section {
   display: flex;
   align-items: center;
-  padding: 40px 0;
+  
 }
 
 .section .image,
 .section .text {
   flex: 1;
-  padding: 20px;
+  padding: 50px 20px;
+  margin-bottom: 10rem;
 }
 
 .section img {
@@ -181,7 +187,7 @@ button:hover {
 
 .full-sectioncolour {
   width: 100%;
-  background-color: var(--superlichtpaars);
+  background-color: #f3cf96;
 }
 
 /* Responsive: op kleinere schermen stapelen de kolommen */
@@ -242,9 +248,9 @@ button:hover {
 /* Eenvoudige bovenlicht styling */
 .bovenlicht {
   width: 100vw;
-  background-color: var(--superlichtpaars);
-  border-bottom: 1px solid var(--paars);
+  background-color: #C8E6C9;
   padding: 4rem 0;
+  max-height: 35vh;
 }
 
 /* Wrapper */
@@ -255,17 +261,22 @@ button:hover {
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 4rem;
-  min-height: 400px;
+  overflow: hidden;
+  max-height: 35vh;
 }
 
 /* Tekst styling - rechts uitgelijnd */
 .bovenlicht__text {
-  color: var(--paars);
+  color: #FCf1f5;
+  color:black;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-end; /* Rechts uitlijnen */
-  text-align: right; /* Zorgt dat de tekst zelf ook rechts staat */
+  justify-content: center; /* Zorgt voor verticale centrering */
+  align-items: center;    /* centreert kinderen horizontaal */
+  text-align: center;       /* Zorgt dat de tekst zelf rechts uitgelijnd is */
+  width: 100%;             /* Zorgt ervoor dat de volledige breedte benut wordt */
+  padding-right: 4rem;
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.2));
 }
 
 /* Afbeelding styling */
@@ -274,15 +285,17 @@ button:hover {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  height: 100%;
+  width: 100%;
+  max-height: 35vh; /* Beperkt de hoogte van de afbeelding container */
+  padding: 4rem 0; /* Voegt 4rem padding bovenaan en onderaan toe */
 }
 
 .bovenlicht__hero {
-  max-width: 110%;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-  transform: translateX(10%);
-}
+  max-width: 100%; /* Zorgt dat de afbeelding niet breder wordt dan de container */
+  max-height: 100%; /* Beperkt de hoogte tot de container */
+  object-fit: contain; /* Houdt proporties intact */
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)); /* Schaduw hersteld zoals eerder */
 
 /* Responsieve aanpassingen */
 @media (max-width: 768px) {
@@ -293,12 +306,14 @@ button:hover {
   }
 
   .bovenlicht__image {
-      justify-content: center;
+    justify-content: center;
+    max-height: 25vh; /* Iets kleinere max-height op mobiel */
+    padding: 2rem 0; /* Minder padding op kleinere schermen voor balans */
   }
 
   .bovenlicht__hero {
-      max-width: 80%;
-      transform: translateX(0);
+    max-width: 80%;
+    max-height: 100%; /* Blijft binnen de container */
   }
 
   .bovenlicht__text {

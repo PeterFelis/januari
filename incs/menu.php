@@ -65,8 +65,6 @@ if ($menu == 'normaal') { ?>
         font-size: 1.4rem;
         position: relative;
         height: 4rem;
-        border-bottom: 1px solid white;
-        border-top: 1px solid white;
     }
 
     nav {

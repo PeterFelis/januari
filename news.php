@@ -49,33 +49,21 @@ include_once __DIR__ . '/incs/top.php';
             <div class="bovenlicht__text">
                 <h1>Nieuws</h1>
                 <h3>
-                    Blijf op de hoogte van<br>onze laatste updates en acties.
-                </h3>
+                    Blijf geïnformeerd </h3>
             </div>
             <div class="bovenlicht__image">
-                <img src="afbeeldingen/hero.png" alt="oortje met naamsticker" class="bovenlicht__hero" />
+                <img src="afbeeldingen/muis.png" alt="oortje met naamsticker" class="bovenlicht__hero" />
             </div>
         </div>
     </div>
 
     <!-- Moderne styling met CSS Columns -->
     <style>
-        /* Algemene body-styling */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f9;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        
-
         /* CSS Columns voor nieuwsitems (masonry-effect) */
         .news-container {
             column-count: 3;
             column-gap: 20px;
-            padding: 20px;
+            padding: 20px 0;
             max-width: 1200px;
             margin: 10rem auto;
         }

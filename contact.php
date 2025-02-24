@@ -242,17 +242,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <?php include_once __dir__ . '/incs/menu.php'; ?>
 
+
+
     <div class="bovenlicht">
         <div class="bovenlicht__wrapper">
-            <div class="bovenlicht__image">
-                <img src="afbeeldingen/2710-rood-geel-block.jpg" alt="budget hoofdtelefoon in 4 verschillende vrolijke kleuren" />
-            </div>
             <div class="bovenlicht__text">
                 <h1>Contact</h1>
                 <h3>Altijd handig</h3>
             </div>
+            <div class="bovenlicht__image">
+                <img src="afbeeldingen/2710 alle vier geen achtergrond.png" alt="budget hoofdtelefoon in 4 verschillende vrolijke kleuren" />
+            </div>
         </div>
     </div>
+
+
 
 
     <?= $melding ?>
