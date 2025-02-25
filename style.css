@@ -242,7 +242,7 @@ button {
 /* Eenvoudige bovenlicht styling */
 .bovenlicht {
   width: 100%;
-  height: 30vh; /* Vaste hoogte voor de hele sectie */
+  height: 35vh; /* Vaste hoogte voor de hele sectie */
   background-color: #C8E6C9; /* Optioneel: achtergrondkleur */
   padding:4rem 0;
 }

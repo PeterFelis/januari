@@ -28,20 +28,20 @@ include "../artikelkop.php";
 </script>
 
 <body>
-<?php include_once __DIR__ . '/../../incs/menu.php'; ?>
+    <?php include_once __DIR__ . '/../../incs/menu.php'; ?>
 
-<div id="selectionComponent"></div>
-<script src="/incs/selection_component.js"></script>
-<script>
-    var selection = new SelectionComponent({
-        container: document.getElementById('selectionComponent'),
-        orientation: "horizontal", // horizontale layout: bij productselectie redirect
-        showProducts: true, // zorg dat producten worden getoond
-        onSelectionChange: function(selectionData) {
-            console.log("Geselecteerd:", selectionData);
-        }
-    });
-</script>
+    <div id="selectionComponent"></div>
+    <script src="/incs/selection_component.js"></script>
+    <script>
+        var selection = new SelectionComponent({
+            container: document.getElementById('selectionComponent'),
+            orientation: "horizontal", // horizontale layout: bij productselectie redirect
+            showProducts: true, // zorg dat producten worden getoond
+            onSelectionChange: function(selectionData) {
+                console.log("Geselecteerd:", selectionData);
+            }
+        });
+    </script>
     <article class='grid-container'>
         <div class="een">
             <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
@@ -55,12 +55,9 @@ include "../artikelkop.php";
         </div>
 
         <div id="usp">
-            <?php
-            foreach (explode("\n", $USP) as $usp) : ?>
-                <?php echo htmlspecialchars($usp); ?>
-                <br>
-            <?php endforeach; ?>
+            <?php echo $USP; ?>
         </div>
+
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
         <div class="drie">
@@ -76,7 +73,7 @@ include "../artikelkop.php";
         <div class="vijf"> <img class='hoog' src="3053.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
         <div class="zes"><img class='hoog' src="3054.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
-        <div class="zeven cols2">
+        <div class="zeven cols2 omschrijving">
             <?php echo $omschrijving; ?>
         </div>
 
@@ -87,6 +84,12 @@ include "../artikelkop.php";
             <img class='hoog' src="hp-305 hangend uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
     </article>
+
+    <div id="lightbox-overlay" class="lightbox-overlay">
+        <img id="lightbox-image" class="lightbox-image" src="" alt="Uitvergrote afbeelding">
+        <!-- Include de lightbox JavaScript -->
+        <script src="../lightbox.js"></script>
+    </div>
 
 </body>
 <?php

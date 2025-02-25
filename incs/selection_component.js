@@ -48,6 +48,7 @@
                 height:15rem;
                 margin-bottom: 20px;
                 padding: 30px;
+                padding-top: 5rem;
                 border-bottom:2px solid var(--paars);
             }
 

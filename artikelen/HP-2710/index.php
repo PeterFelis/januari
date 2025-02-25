@@ -59,11 +59,7 @@ include "../artikelkop.php";
         </div>
 
         <div id="usp">
-            <?php
-            foreach (explode("\n", $USP) as $usp) : ?>
-                <?php echo htmlspecialchars($usp); ?>
-                <br>
-            <?php endforeach; ?>
+            <?php echo $USP; ?>
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
@@ -84,7 +80,7 @@ include "../artikelkop.php";
 
         <div class="zes"><img class='hoog' src="hp-122 staand.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
-        <div class="zeven cols2">
+        <div class="zeven cols2 omschrijving">
             <?php echo $omschrijving; ?>
         </div>
 
@@ -96,6 +92,13 @@ include "../artikelkop.php";
         </div>
 
     </article>
+
+
+    <div id="lightbox-overlay" class="lightbox-overlay">
+        <img id="lightbox-image" class="lightbox-image" src="" alt="Uitvergrote afbeelding">
+        <!-- Include de lightbox JavaScript -->
+        <script src="../lightbox.js"></script>
+    </div>
 
 </body>
 <?php
