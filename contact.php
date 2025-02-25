@@ -244,19 +244,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 
-    <div class="bovenlicht">
+    <section class="bovenlicht">
         <div class="bovenlicht__wrapper">
             <div class="bovenlicht__text">
-                <h1>Contact</h1>
-                <h3>Altijd handig</h3>
+            <h1>Contact</h1>
+            <h3>Altijd handig</h3>
             </div>
-            <div class="bovenlicht__image">
-                <img src="afbeeldingen/2710 alle vier geen achtergrond.png" alt="budget hoofdtelefoon in 4 verschillende vrolijke kleuren" />
+            <div class="bovenlicht__image" style="background-image: url('afbeeldingen/2710 alle vier geen achtergrond.png'); ">
+                <!-- Inhoud, indien nodig -->
             </div>
         </div>
-    </div>
-
-
+    </section>
 
 
     <?= $melding ?>

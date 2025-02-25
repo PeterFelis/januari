@@ -44,18 +44,24 @@ include_once __DIR__ . '/incs/top.php';
 
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
-    <div class="bovenlicht">
+
+
+
+    <section class="bovenlicht">
         <div class="bovenlicht__wrapper">
             <div class="bovenlicht__text">
                 <h1>Nieuws</h1>
                 <h3>
                     Blijf geïnformeerd </h3>
             </div>
-            <div class="bovenlicht__image">
-                <img src="afbeeldingen/muis.png" alt="oortje met naamsticker" class="bovenlicht__hero" />
+            <div class="bovenlicht__image" style="background-image: url('afbeeldingen/muis.png');">
+                <!-- Inhoud, indien nodig -->
             </div>
         </div>
-    </div>
+    </section>
+
+
+
 
     <!-- Moderne styling met CSS Columns -->
     <style>

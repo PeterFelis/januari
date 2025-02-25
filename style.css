@@ -133,16 +133,10 @@ button {
   width: auto;
   padding: 10px;
   border: none;
-  background-color: #007bff;
-  color: white;
   font-size: 14px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #0056b3;
 }
 
 
@@ -247,92 +241,50 @@ button:hover {
 
 /* Eenvoudige bovenlicht styling */
 .bovenlicht {
-  width: 100vw;
-  background-color: #C8E6C9;
-  padding: 4rem 0;
-  max-height: 35vh;
+  width: 100%;
+  height: 30vh; /* Vaste hoogte voor de hele sectie */
+  background-color: #C8E6C9; /* Optioneel: achtergrondkleur */
+  padding:4rem 0;
 }
 
-/* Wrapper */
 .bovenlicht__wrapper {
   max-width: 1200px;
+  height: 100%; 
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 4rem;
-  overflow: hidden;
-  max-height: 35vh;
+  gap: 2rem;
 }
 
-/* Tekst styling - rechts uitgelijnd */
 .bovenlicht__text {
-  color: #FCf1f5;
-  color:black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Zorgt voor verticale centrering */
-  align-items: center;    /* centreert kinderen horizontaal */
-  text-align: center;       /* Zorgt dat de tekst zelf rechts uitgelijnd is */
-  width: 100%;             /* Zorgt ervoor dat de volledige breedte benut wordt */
-  padding-right: 4rem;
-  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.2));
+  text-align: center;
+  color: #000; /* Zorgt voor leesbare tekst */
 }
 
-/* Afbeelding styling */
+.bovenlicht__text h1 {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.bovenlicht__text h3 {
+  font-size: 2.5rem;
+  line-height: 1.6;
+}
+
+/* Fotogedeelte met achtergrondafbeelding die de volledige sectie vult */
 .bovenlicht__image {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100%;
   width: 100%;
-  max-height: 35vh; /* Beperkt de hoogte van de afbeelding container */
-  padding: 4rem 0; /* Voegt 4rem padding bovenaan en onderaan toe */
+  height: 100%; /* Past zich aan de hoogte van de bovenlicht sectie aan */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.bovenlicht__hero {
-  max-width: 100%; /* Zorgt dat de afbeelding niet breder wordt dan de container */
-  max-height: 100%; /* Beperkt de hoogte tot de container */
-  object-fit: contain; /* Houdt proporties intact */
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)); /* Schaduw hersteld zoals eerder */
-
-/* Responsieve aanpassingen */
+/* Responsive: bij kleinere schermen stapelen de elementen */
 @media (max-width: 768px) {
   .bovenlicht__wrapper {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      min-height: auto;
-  }
-
-  .bovenlicht__image {
-    justify-content: center;
-    max-height: 25vh; /* Iets kleinere max-height op mobiel */
-    padding: 2rem 0; /* Minder padding op kleinere schermen voor balans */
-  }
-
-  .bovenlicht__hero {
-    max-width: 80%;
-    max-height: 100%; /* Blijft binnen de container */
-  }
-
-  .bovenlicht__text {
-      align-items: center; /* Terug naar centreren op mobiel */
-      text-align: center; /* Centraal op kleinere schermen */
-  }
-}
-
-@media (max-width: 480px) {
-  .bovenlicht {
-      padding: 2rem 0;
-  }
-
-  .bovenlicht__text h1 {
-      font-size: 3rem;
-  }
-
-  .bovenlicht__text h3 {
-      font-size: 2rem;
+    grid-template-columns: 1fr;
   }
 }
 

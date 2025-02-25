@@ -28,7 +28,9 @@ include_once __DIR__ . '/incs/top.php';
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
 
-    <div class="bovenlicht">
+
+
+    <section class="bovenlicht">
         <div class="bovenlicht__wrapper">
             <div class="bovenlicht__text">
                 <h1>Webshop Info</h1>
@@ -36,11 +38,13 @@ include_once __DIR__ . '/incs/top.php';
                     Kopen, VVV cadeaukaart, klant worden.<br>Hier leggen we het duidelijk uit.
                 </h3>
             </div>
-            <div class="bovenlicht__image">
-                <img src="afbeeldingen/hero.png" alt="oortje met naamsticker" class="bovenlicht__hero" />
+            <div class="bovenlicht__image" style="background-image: url('afbeeldingen/hero.png');">
+                <!-- Inhoud, indien nodig -->
             </div>
         </div>
-    </div>
+    </section>
+
+
 
     <section class="full-sectiontransparent">
         <div class='container'>

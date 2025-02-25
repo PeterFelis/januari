@@ -30,20 +30,23 @@ include_once __dir__ . '/incs/top.php';
 
 <body>
     <?php include_once __dir__ . '/incs/menu.php'; ?>
-    <div class="bovenlicht">
+
+    <section class="bovenlicht">
         <div class="bovenlicht__wrapper">
-            <div class="bovenlicht__image">
-                <img src="afbeeldingen/hp-136.jpg" alt="muisje" />
-            </div>
-            <div class="bovenlicht__text tekst_links">
+            <div class="bovenlicht__text">
                 <h1>Leveringsvoorwaarden</h1>
                 <h3>
                     De kleine lettertjes. <br />
                     Kunnen we ook niets aan doen.
                 </h3>
             </div>
+            <div class="bovenlicht__image" style="background-image: url('afbeeldingen/hp-136uitgeknipt500breedt.png');">
+
+            </div>
         </div>
-    </div>
+    </section>
+
+
 
     <main>
         <section class="coloms">

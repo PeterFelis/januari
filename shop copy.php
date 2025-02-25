@@ -5,34 +5,9 @@ $statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
 ?>
+
 <style>
-    /* Standaard stijlen voor de selectie-component */
-    .selection-category,
-    .selection-subcategory,
-    .selection-products {
-        margin-bottom: 20px;
-    }
-
-    .selection-category h2,
-    .selection-subcategory h3,
-    .selection-products h3 {
-        margin: 0 0 10px;
-    }
-
-    .selection-btn {
-        padding: 5px 10px;
-        margin: 3px;
-        border: 1px solid #ccc;
-        background: #f9f9f9;
-        cursor: pointer;
-    }
-
-    .selection-btn.selected {
-        font-weight: bold;
-        background-color: #007BFF;
-        color: white;
-    }
-
+    /* Layout van de pagina */
     .container {
         display: flex;
         margin-top: 10vh;
@@ -49,7 +24,27 @@ include_once __DIR__ . '/incs/top.php';
         padding: 20px;
     }
 
-    /* Product grid en kaartstijlen */
+    /* Stijlen voor de lijsten */
+    .category-list,
+    .subcategory-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-list li,
+    .subcategory-list li {
+        cursor: pointer;
+        padding: 5px;
+        margin: 5px 0;
+    }
+
+    .selected {
+        font-weight: bold;
+        color: #007BFF;
+    }
+
+    /* Product grid en kaarten */
     .product-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -62,6 +57,7 @@ include_once __DIR__ . '/incs/top.php';
         text-align: center;
         cursor: pointer;
         transition: transform 0.2s;
+        /* Verwijder de vaste hoogte en gebruik eventueel een minimumhoogte */
         min-height: 400px;
         display: flex;
         flex-direction: column;
@@ -72,12 +68,14 @@ include_once __DIR__ . '/incs/top.php';
         display: flex;
         flex-direction: column;
         margin-bottom: 10px;
+        /* Geen vaste hoogte meer; de inhoud bepaalt de hoogte */
         min-height: 70%;
     }
 
     .card-photo {
         width: 100%;
         height: auto;
+        /* Laat de afbeelding op natuurlijke wijze schalen */
         margin-bottom: 5px;
     }
 
@@ -93,6 +91,7 @@ include_once __DIR__ . '/incs/top.php';
         transform: scale(1.05);
     }
 
+    /* Binnen de foto: de afbeelding vult de container */
     .card-photo img {
         width: 100%;
         height: 100%;
@@ -107,36 +106,88 @@ include_once __DIR__ . '/incs/top.php';
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <div class="container">
-        <!-- Linker kolom: hier komt de selectie-component -->
+        <!-- Linker kolom: categorieën en subcategorieën -->
         <div class="left-pane">
-            <div id="selectionComponent"></div>
+            <h2>Soort</h2>
+            <ul class="category-list" id="categoryList"></ul>
+            <div id="subCategoryContainer" style="display:none;">
+                <h3>Type</h3>
+                <ul class="subcategory-list" id="subcategoryList"></ul>
+            </div>
         </div>
-        <!-- Rechter kolom: productgrid -->
+        <!-- Rechter kolom: grid met productkaarten -->
         <div class="right-pane">
-            <h2>Producten</h2>
+            <h2>Typenummer</h2>
             <div class="product-grid" id="productGrid">
-                <!-- Productkaarten worden hier geladen -->
+                <!-- Hier komen de productkaarten -->
             </div>
         </div>
     </div>
-    <script src="incs/selection_component.js"></script>
+
     <script>
-        // Variabelen voor filtering
+        // Globale variabelen
         let products = [];
         let currentCategory = "";
         let currentSubcategory = "";
 
-        // Haal alle producten op en toon de grid
+        // Haal alle producten op via het API-endpoint
         async function fetchProducts() {
             try {
                 const response = await fetch('api_products.php');
                 products = await response.json();
-                filterAndDisplayProducts();
+                populateCategories();
             } catch (error) {
                 console.error("Fout bij ophalen van producten:", error);
             }
         }
 
+        // Vul de lijst met unieke categorieën
+        function populateCategories() {
+            const categorySet = new Set(products.map(p => p.categorie));
+            const categoryList = document.getElementById('categoryList');
+            categoryList.innerHTML = "";
+            categorySet.forEach(category => {
+                const li = document.createElement('li');
+                li.textContent = category;
+                li.addEventListener('click', () => {
+                    currentCategory = category;
+                    currentSubcategory = "";
+                    highlightSelection(categoryList, li);
+                    populateSubcategories(category);
+                    filterAndDisplayProducts();
+                });
+                categoryList.appendChild(li);
+            });
+        }
+
+        // Vul de lijst met subcategorieën voor een gekozen categorie
+        function populateSubcategories(category) {
+            const subcategories = new Set(
+                products.filter(p => p.categorie === category).map(p => p.subcategorie)
+            );
+            const subcategoryList = document.getElementById('subcategoryList');
+            subcategoryList.innerHTML = "";
+            subcategories.forEach(subcat => {
+                const li = document.createElement('li');
+                li.textContent = subcat;
+                li.addEventListener('click', () => {
+                    currentSubcategory = subcat;
+                    highlightSelection(subcategoryList, li);
+                    filterAndDisplayProducts();
+                });
+                subcategoryList.appendChild(li);
+            });
+            // Toon of verberg de subcategorieën
+            document.getElementById('subCategoryContainer').style.display = subcategories.size > 0 ? 'block' : 'none';
+        }
+
+        // Highlight de geselecteerde lijstitem
+        function highlightSelection(listElement, selectedItem) {
+            listElement.querySelectorAll('li').forEach(item => item.classList.remove('selected'));
+            selectedItem.classList.add('selected');
+        }
+
+        // Filter de producten op basis van de gekozen categorie en subcategorie en toon ze in de grid
         function filterAndDisplayProducts() {
             let filtered = products.filter(p => p.categorie === currentCategory);
             if (currentSubcategory) {
@@ -151,12 +202,13 @@ include_once __DIR__ . '/incs/top.php';
             filtered.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                // Gebruik de vaste foto-locatie: artikelen/{TypeNummer}/Pfoto.png
                 card.innerHTML = `
                     <h3>${product.TypeNummer}</h3>
                     <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
                     <div class="card-content">
                         <div class="card-photo">
-                            <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
+                              <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
                         </div>
                         <div class="card-usp">
                             ${product.USP}
@@ -164,12 +216,15 @@ include_once __DIR__ . '/incs/top.php';
                     </div>
                 `;
                 card.addEventListener('click', () => {
+                    // Ga naar de productpagina (artikelen/{TypeNummer}/index.php)
                     window.location.href = 'artikelen/' + encodeURIComponent(product.TypeNummer) + '/index.php';
                 });
                 grid.appendChild(card);
             });
         }
 
+        // Haal de laagste prijs op uit de prijsstaffel-string
+        // (Verondersteld dat de staffel wordt weergegeven als: "32 7,86\n64 7,64\n..." etc.)
         function getLowestPrice(prijsstaffel) {
             const lines = prijsstaffel.split('\n');
             let lowest = Number.POSITIVE_INFINITY;
@@ -185,20 +240,10 @@ include_once __DIR__ . '/incs/top.php';
             return (lowest !== Number.POSITIVE_INFINITY) ? lowest.toFixed(2) : "n.v.t.";
         }
 
-        // Initialiseer de selectie-component
-        var selection = new SelectionComponent({
-            container: document.getElementById('selectionComponent'),
-            showProducts: false, // Alleen categorieën en subcategorieën voor de webshop
-            onSelectionChange: function(selectionData) {
-                currentCategory = selectionData.category || "";
-                currentSubcategory = selectionData.subcategory || "";
-                filterAndDisplayProducts();
-            }
-        });
-
-        window.onload = function() {
-            fetchProducts();
-        };
+        // Initialiseer de pagina door de producten op te halen
+        window.onload = fetchProducts;
     </script>
-    <?php include_once __DIR__ . '/incs/bottom.php'; ?>
-</body>
+
+    <?php
+    include_once __DIR__ . '/incs/bottom.php';
+    ?>

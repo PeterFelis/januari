@@ -232,10 +232,10 @@ include_once __dir__ . '/incs/top.php';
         <h1>Stickers Afdrukken</h1>
 
         <!-- Rijen voor categorie, subcategorie, typeNummer -->
-        <h2>Categorieën</h2>
+        <h2>Soort</h2>
         <div id="categoryRow" class="button-row"></div>
 
-        <h2>Subcategorieën</h2>
+        <h2>Type</h2>
         <div id="subcategoryRow" class="button-row"></div>
 
         <h2>TypeNummers</h2>

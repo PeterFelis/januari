@@ -1,4 +1,8 @@
 <?php
+
+session_start();
+$menu = "beheer";
+
 $title = "HP-305 comfort hoofdtelefoon";
 $TypeNummer = "HP-305";
 include "../artikelkop.php";
@@ -24,8 +28,20 @@ include "../artikelkop.php";
 </script>
 
 <body>
-    <?php include_once __DIR__ . '/../../incs/product_selector.php'; ?>
+<?php include_once __DIR__ . '/../../incs/menu.php'; ?>
 
+<div id="selectionComponent"></div>
+<script src="/incs/selection_component.js"></script>
+<script>
+    var selection = new SelectionComponent({
+        container: document.getElementById('selectionComponent'),
+        orientation: "horizontal", // horizontale layout: bij productselectie redirect
+        showProducts: true, // zorg dat producten worden getoond
+        onSelectionChange: function(selectionData) {
+            console.log("Geselecteerd:", selectionData);
+        }
+    });
+</script>
     <article class='grid-container'>
         <div class="een">
             <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
