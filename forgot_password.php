@@ -68,8 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
-include_once __dir__ . '/incs/top.php';
 ?>
 <style>
     .inlog {
@@ -80,22 +78,32 @@ include_once __dir__ . '/incs/top.php';
     }
 </style>
 
-<body class='indexPaginaKleur'>
-    <?php
-    $menu = 'normaal';
-    include_once __DIR__ . '/incs/menu.php';
-    ?>
 
-    <body>
-        <div class='inlog'>
-            <h2>Wachtwoord reset aanvragen</h2>
-            <?php if (isset($melding)) echo "<p>$melding</p>"; ?>
+<?php
+$menu = 'normaal';
+$title = "Paswoord vergeten? Geen probleem!";
+include_once __DIR__ . '/incs/top.php';
+?>
+
+<body class='indexPaginaKleur'>
+
+    <?php include_once __DIR__ . '/incs/menu.php'; ?>
+    <div class='inlog'>
+        <h2>Wachtwoord reset aanvragen</h2>
+        <?php
+        if (isset($melding)) {
+            echo "<p>$melding</p>";
+        }
+        // Toon het formulier alleen als de bevestiging niet is gegeven
+        if (!isset($melding) || $melding !== "Er is een e-mail verzonden met instructies om je wachtwoord te resetten.") {
+        ?>
             <form method="post" action="">
                 <label for="email">E-mailadres:</label>
                 <input type="email" id="email" name="email" required>
                 <button type="submit">Verstuur reset password aanvraag naar uw mail</button>
             </form>
-        </div>
-    </body>
+        <?php } ?>
+    </div>
+</body>
 
-    </html>
+</html>

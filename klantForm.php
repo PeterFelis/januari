@@ -76,11 +76,7 @@ $menu = 'normaal';
 $title = $pageTitle;
 include_once __DIR__ . '/incs/top.php';
 ?>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title><?php echo $title; ?></title>
+
     <style>
         /* Basis styling voor het formulier */
         form.registration-form {
@@ -150,7 +146,7 @@ include_once __DIR__ . '/incs/top.php';
             margin-bottom: 15px;
         }
     </style>
-</head>
+
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <main>

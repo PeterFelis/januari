@@ -42,17 +42,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Ontdek onze producten</h2>
         <div class="product-grid">
             <?php foreach ($products as $product): ?>
-                <div class="product-card">
-                    <h3><?php echo htmlspecialchars($product['TypeNummer']); ?></h3>
-                    <div class="product-image">
-                        <img src="artikelen/<?php echo urlencode($product['TypeNummer']); ?>/Pfoto.png" alt="<?php echo htmlspecialchars($product['TypeNummer']); ?>">
+                <a href="/artikelen/<?php echo urlencode($product['TypeNummer']); ?>/index.php" class="product-link">
+                    <div class="product-card">
+                        <h3><?php echo htmlspecialchars($product['TypeNummer']); ?></h3>
+                        <div class="product-image">
+                            <img src="artikelen/<?php echo urlencode($product['TypeNummer']); ?>/Pfoto.png" alt="<?php echo htmlspecialchars($product['TypeNummer']); ?>">
+                        </div>
+                        <p>vanaf prijs: <?php echo getLowestPrice($product['prijsstaffel']); ?></p>
+                        <div class="product-usp">
+                            <?php echo $product['USP']; // USP als HTML weergeven ?>
+                        </div>
                     </div>
-                    <p>vanaf prijs: <?php echo getLowestPrice($product['prijsstaffel']); ?></p>
-                    <div class="product-usp">
-                        <?php echo $product['USP']; // USP als HTML weergeven 
-                        ?>
-                    </div>
-                </div>
+                </a>
             <?php endforeach; ?>
         </div>
     </div>
@@ -61,7 +62,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <style>
     .containerProd {
         width: 100%;
-        background-color: white;
         padding: 10rem 0;
     }
 
@@ -79,17 +79,29 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .random-products .product-grid {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         gap: 1.5rem;
     }
 
+    /* Maak de link een flex-item zodat de hoogte gelijk getrokken kan worden */
+    .product-link {
+        display: flex;
+        text-decoration: none;
+        color: inherit;
+        width: calc(33% - 1rem);
+    }
+
+    /* Zorg dat de productkaart de volledige beschikbare hoogte gebruikt */
     .random-products .product-card {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 1rem;
-        width: calc(33% - 1rem);
+        width: 100%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         cursor: pointer;
+        transition: transform 0.2s;
     }
 
     .product-usp p {
@@ -104,8 +116,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         transition: transform 0.2s;
     }
 
-    /* Vergroot enkel de afbeelding bij hover over de kaart */
+    /* Vergroot de afbeelding bij hover over de kaart */
     .random-products .product-card:hover .product-image img {
         transform: scale(1.05);
     }
 </style>
+

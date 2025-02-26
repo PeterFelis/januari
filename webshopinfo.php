@@ -28,8 +28,6 @@ include_once __DIR__ . '/incs/top.php';
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
 
-
-
     <section class="bovenlicht">
         <div class="bovenlicht__wrapper">
             <div class="bovenlicht__text">

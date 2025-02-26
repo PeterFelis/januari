@@ -116,6 +116,7 @@ include_once __DIR__ . '/incs/top.php';
             <h2>Producten</h2>
             <div class="product-grid" id="productGrid">
                 <!-- Productkaarten worden hier geladen -->
+                <?php include __DIR__ . '/incs/random_products.php'; ?>
             </div>
         </div>
     </div>
@@ -125,6 +126,8 @@ include_once __DIR__ . '/incs/top.php';
         let products = [];
         let currentCategory = "";
         let currentSubcategory = "";
+        // Variabele om de originele (random) producten op te slaan
+        let defaultProductHTML = "";
 
         // Haal alle producten op en toon de grid
         async function fetchProducts() {
@@ -138,11 +141,17 @@ include_once __DIR__ . '/incs/top.php';
         }
 
         function filterAndDisplayProducts() {
+            const grid = document.getElementById('productGrid');
+            // Als er geen categorie of subcategorie is gekozen, herstel de random producten
+            if (currentCategory === "" && currentSubcategory === "") {
+                grid.innerHTML = defaultProductHTML;
+                return;
+            }
+            // Anders: filter de producten
             let filtered = products.filter(p => p.categorie === currentCategory);
             if (currentSubcategory) {
                 filtered = filtered.filter(p => p.subcategorie === currentSubcategory);
             }
-            const grid = document.getElementById('productGrid');
             grid.innerHTML = "";
             if (filtered.length === 0) {
                 grid.innerHTML = "<p>Geen producten gevonden.</p>";
@@ -152,17 +161,17 @@ include_once __DIR__ . '/incs/top.php';
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                    <h3>${product.TypeNummer}</h3>
-                    <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
-                    <div class="card-content">
-                        <div class="card-photo">
-                            <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
-                        </div>
-                        <div class="card-usp">
-                            ${product.USP}
-                        </div>
+                <h3>${product.TypeNummer}</h3>
+                <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
+                <div class="card-content">
+                    <div class="card-photo">
+                        <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
                     </div>
-                `;
+                    <div class="card-usp">
+                        ${product.USP}
+                    </div>
+                </div>
+            `;
                 card.addEventListener('click', () => {
                     window.location.href = 'artikelen/' + encodeURIComponent(product.TypeNummer) + '/index.php';
                 });
@@ -197,6 +206,8 @@ include_once __DIR__ . '/incs/top.php';
         });
 
         window.onload = function() {
+            // Sla de originele random producten op
+            defaultProductHTML = document.getElementById('productGrid').innerHTML;
             fetchProducts();
         };
     </script>

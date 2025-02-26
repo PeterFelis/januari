@@ -34,7 +34,7 @@ if ($method === 'GET') {
     // Voeg nieuw product toe
     $data = json_decode(file_get_contents('php://input'), true);
     $stmt = $pdo->prepare("INSERT INTO products (categorie, subcategorie, TypeNummer, omschrijving, prijsstaffel, aantal_per_doos, USP, sticker_text, leverbaar)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([
         $data['categorie'],
         $data['subcategorie'],
@@ -78,4 +78,3 @@ if ($method === 'GET') {
 } else {
     echo json_encode(['error' => 'Ongeldige methode']);
 }
-?>

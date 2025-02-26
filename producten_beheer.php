@@ -13,8 +13,12 @@ if ($_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// Lees standaardwaarden via de URL
+$defaultCategory = isset($_GET['selectedCategory']) ? $_GET['selectedCategory'] : "";
+$defaultSubcategory = isset($_GET['selectedSubcategory']) ? $_GET['selectedSubcategory'] : "";
+
 if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
-    // (Upload-afhandeling blijft hetzelfde als in jouw originele code)
+    // Upload-afhandeling (zoals eerder)
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Invalid request method']);
@@ -159,7 +163,51 @@ include_once __DIR__ . '/incs/top.php';
         margin-top: 10rem;
     }
 
-    /* Overige formulierstijlen blijven ongewijzigd */
+    /* Snackbar CSS */
+    #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1000;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+        transform: translateX(-50%);
+    }
+
+    #snackbar.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
 </style>
 
 <body>
@@ -180,11 +228,11 @@ include_once __DIR__ . '/incs/top.php';
                     <div class="input-row">
                         <div class="form-group">
                             <label for="categorie">Categorie:</label>
-                            <input type="text" id="categorie">
+                            <input type="text" id="categorie" value="<?php echo htmlspecialchars($defaultCategory); ?>">
                         </div>
                         <div class="form-group">
                             <label for="subcategorie">Subcategorie:</label>
-                            <input type="text" id="subcategorie">
+                            <input type="text" id="subcategorie" value="<?php echo htmlspecialchars($defaultSubcategory); ?>">
                         </div>
                     </div>
                     <div class="input-row">
@@ -242,9 +290,9 @@ include_once __DIR__ . '/incs/top.php';
             </div>
         </div>
         <script src="/incs/selection_component.js"></script>
+
+
         <script>
-            // Globale variabelen en functies voor bewerken
-            let allProducts = [];
             let isEditingNewProduct = false;
 
             function showSnackbar(message) {
@@ -254,11 +302,6 @@ include_once __DIR__ . '/incs/top.php';
                 setTimeout(() => {
                     snackbar.className = snackbar.className.replace("show", "");
                 }, 3000);
-            }
-
-            async function fetchProducts() {
-                const response = await fetch('api_products.php');
-                allProducts = await response.json();
             }
 
             async function fetchProductById(id) {
@@ -278,10 +321,10 @@ include_once __DIR__ . '/incs/top.php';
                 return await response.json();
             }
 
+            // resetForm behoudt categorie en subcategorie
             function resetForm() {
                 document.getElementById('product-id').value = '';
-                document.getElementById('categorie').value = '';
-                document.getElementById('subcategorie').value = '';
+                // Categorie en subcategorie blijven behouden!
                 document.getElementById('TypeNummer').value = '';
                 quill.root.innerHTML = '';
                 quillSticker.root.innerHTML = '';
@@ -292,12 +335,11 @@ include_once __DIR__ . '/incs/top.php';
                 document.getElementById('foto_preview').style.display = 'none';
                 document.getElementById('foto_filename').textContent = "";
                 document.getElementById('save-button').classList.remove('hidden');
-                isEditingNewProduct = false;
+                isEditingNewProduct = true;
             }
 
             function wrapUSP(text) {
-                let lines = text.split('\n').map(line => line.trim()).filter(line => line !== "");
-                return lines.map(line => `<p>${line}</p>`).join("");
+                return text.split('\n').map(line => line.trim()).filter(line => line !== "").map(line => `<p>${line}</p>`).join("");
             }
 
             function stripP(html) {
@@ -380,6 +422,7 @@ include_once __DIR__ . '/incs/top.php';
                     ]
                 }
             });
+
             var quillSticker = new Quill('#sticker_text', {
                 theme: 'snow',
                 modules: {
@@ -395,30 +438,60 @@ include_once __DIR__ . '/incs/top.php';
                 }
             });
 
-            // Initialiseer de selectie-component voor productbeheer
-            var selection = new SelectionComponent({
-                container: document.getElementById('selectionComponent'),
-                showProducts: true,
-                checkProductPage: true,
-                onSelectionChange: async function(selectionData) {
-                    if (selectionData.product) {
-                        const productData = await fetchProductById(selectionData.product.id);
-                        document.getElementById('product-id').value = productData.id;
-                        document.getElementById('categorie').value = productData.categorie;
-                        document.getElementById('subcategorie').value = productData.subcategorie;
-                        document.getElementById('TypeNummer').value = productData.TypeNummer;
-                        quill.root.innerHTML = productData.omschrijving;
-                        quillSticker.root.innerHTML = productData.sticker_text || '';
-                        document.getElementById('prijsstaffel').value = productData.prijsstaffel;
-                        document.getElementById('aantal_per_doos').value = productData.aantal_per_doos;
-                        document.getElementById('USP').value = stripP(productData.USP);
-                        document.getElementById('leverbaar').checked = (productData.leverbaar === 'ja');
-                        document.getElementById('save-button').classList.add('hidden');
-                    }
-                }
-            });
-
             document.addEventListener('DOMContentLoaded', () => {
+                // Initialiseer de SelectionComponent
+                var selection;
+                try {
+                    selection = new SelectionComponent({
+                        container: document.getElementById('selectionComponent'),
+                        showProducts: true,
+                        checkProductPage: true,
+                        onSelectionChange: async function(selectionData) {
+                            if (selectionData.product) {
+                                const productData = await fetchProductById(selectionData.product.id);
+                                document.getElementById('product-id').value = productData.id;
+                                document.getElementById('categorie').value = productData.categorie;
+                                document.getElementById('subcategorie').value = productData.subcategorie;
+                                document.getElementById('TypeNummer').value = productData.TypeNummer;
+                                quill.root.innerHTML = productData.omschrijving;
+                                quillSticker.root.innerHTML = productData.sticker_text || '';
+                                document.getElementById('prijsstaffel').value = productData.prijsstaffel;
+                                document.getElementById('aantal_per_doos').value = productData.aantal_per_doos;
+                                document.getElementById('USP').value = stripP(productData.USP);
+                                document.getElementById('leverbaar').checked = (productData.leverbaar === 'ja');
+                                document.getElementById('save-button').classList.add('hidden');
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error("Fout bij initialiseren van SelectionComponent:", error);
+                    return; // Stop verdere uitvoering als initialisatie faalt
+                }
+
+                // Wacht tot de SelectionComponent klaar is met laden
+                function waitForSelectionComponent() {
+                    return new Promise((resolve) => {
+                        const checkInterval = setInterval(() => {
+                            if (selection && selection.products && selection.products.length > 0) {
+                                clearInterval(checkInterval);
+                                resolve();
+                            }
+                        }, 100);
+                    });
+                }
+
+                // Herstel de selectie na het laden
+                waitForSelectionComponent().then(() => {
+                    const defaultCategory = "<?php echo htmlspecialchars($defaultCategory); ?>";
+                    const defaultSubcategory = "<?php echo htmlspecialchars($defaultSubcategory); ?>";
+                    if (defaultCategory && typeof selection.setSelected === 'function') {
+                        selection.setSelected(defaultCategory, defaultSubcategory);
+                    }
+                }).catch(error => {
+                    console.error("Fout bij wachten op SelectionComponent:", error);
+                });
+
+                // Event listeners voor formulier
                 document.querySelectorAll('#right-pane input, #right-pane textarea').forEach(element => {
                     element.addEventListener('input', () => {
                         detectNewProduct();
@@ -456,7 +529,15 @@ include_once __DIR__ . '/incs/top.php';
                         leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
                     };
                     const newProduct = await saveProduct(data, true);
+                    if (newProduct && newProduct.id) {
+                        document.getElementById('product-id').value = newProduct.id;
+                        isEditingNewProduct = true;
+                    }
                     showSnackbar("Productgegevens gekopieerd en opgeslagen.");
+                    saveCategorySelection();
+                    setTimeout(() => {
+                        window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(data.categorie) + "&selectedSubcategory=" + encodeURIComponent(data.subcategorie);
+                    }, 1500);
                 });
 
                 document.getElementById('delete-button').addEventListener('click', async () => {
@@ -479,7 +560,12 @@ include_once __DIR__ . '/incs/top.php';
                         const result = await response.json();
                         if (result.success) {
                             showSnackbar("Product succesvol verwijderd.");
-                            resetForm();
+                            const cat = document.getElementById('categorie').value;
+                            const subcat = document.getElementById('subcategorie').value;
+                            saveCategorySelection();
+                            setTimeout(() => {
+                                window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(cat) + "&selectedSubcategory=" + encodeURIComponent(subcat);
+                            }, 1500);
                         } else {
                             showSnackbar("Fout bij verwijderen: " + result.error);
                         }
@@ -501,12 +587,42 @@ include_once __DIR__ . '/incs/top.php';
                         leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
                     };
                     await saveProduct(data, true);
-                    resetForm();
-                    document.getElementById('save-button').classList.add('hidden');
+                    showSnackbar("Product opgeslagen.");
+                    saveCategorySelection();
+                    setTimeout(() => {
+                        window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(data.categorie) + "&selectedSubcategory=" + encodeURIComponent(data.subcategorie);
+                    }, 1500);
                 });
 
                 document.getElementById('new-button').addEventListener('click', resetForm);
+
+                // Herstel categorieën vanuit sessionStorage
+                restoreCategorySelection();
             });
+
+            // Optioneel: bewaar en herstel keuze via sessionStorage (indien gewenst)
+            function saveCategorySelection() {
+                sessionStorage.setItem('selectedCategory', document.getElementById('categorie').value);
+                sessionStorage.setItem('selectedSubcategory', document.getElementById('subcategorie').value);
+            }
+
+            function restoreCategorySelection() {
+                const category = sessionStorage.getItem('selectedCategory');
+                const subcategory = sessionStorage.getItem('selectedSubcategory');
+                if (category !== null) {
+                    document.getElementById('categorie').value = category;
+                }
+                if (subcategory !== null) {
+                    document.getElementById('subcategorie').value = subcategory;
+                }
+            }
+
+            // Ververs de pagina met de huidige waarden in de URL
+            function refreshPage() {
+                const cat = document.getElementById('categorie').value;
+                const subcat = document.getElementById('subcategorie').value;
+                window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(cat) + "&selectedSubcategory=" + encodeURIComponent(subcat);
+            }
         </script>
     </main>
     <?php include_once __DIR__ . '/incs/bottom.php'; ?>

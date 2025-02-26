@@ -3,14 +3,7 @@ contact
 13-02 responsive maken
 13-02 bol, trustpilot en socials in een grid naast elkaar zetten
 
-forgot_password:
-13-02 na verzenden naar log in Pagina sturen
-
-reset_password
-13-02 na nieuwe pasworden ingevuld te hebben naar de reset pagina
-
 404 Pagina
-13-02 nog grafish maken
 14-02 testen, werkt niet bij fetum.nl? wel htaccess en 404 geupload
 
 registreer.php
@@ -20,8 +13,6 @@ confirm.php
 14-02 doorsturen naar inlog voor klanten, gaat nu nog naar dashboard
 klantpagina maken, met oa edit mogelijkheden en bekijken winkelmandje
 
-klantform:
-staat nog head in omzetten
 
-shop:
-3 product selector invoegen als default
+
+

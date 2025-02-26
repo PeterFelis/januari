@@ -5,7 +5,6 @@ session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-
 include_once __DIR__ . '/incs/dbConnect.php';
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
@@ -39,29 +38,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($nieuwWachtwoord, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare("UPDATE users SET wachtwoord = ?, password_reset_token = NULL, password_reset_expires = NULL WHERE id = ?");
         $stmt->execute([$hashedPassword, $gebruiker['id']]);
-        $melding = "Je wachtwoord is succesvol bijgewerkt!";
+        // Na een succesvolle update wordt de gebruiker doorgestuurd naar index.php
+        header("Location: index.php");
+        exit();
     } else {
         $melding = "De wachtwoorden komen niet overeen of zijn leeg.";
     }
 }
+
+$title = 'Password reset';
+$menu = 'normaal';
+include_once __DIR__ . '/incs/top.php';
 ?>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Wachtwoord reset</title>
-</head>
-<body>
-    <h2>Reset je wachtwoord</h2>
-    <?php if(isset($melding)) echo "<p>$melding</p>"; ?>
-    <form method="post" action="">
-        <label for="new_password">Nieuw wachtwoord:</label>
-        <input type="password" id="new_password" name="new_password" required>
-        <br>
-        <label for="confirm_password">Bevestig nieuw wachtwoord:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required>
-        <br>
-        <button type="submit">Reset wachtwoord</button>
-    </form>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+</style>
+
+<body class='indexPaginaKleur'>
+    <main>
+        <h2>Reset je wachtwoord</h2>
+        <?php if (isset($melding)) echo "<p>$melding</p>"; ?>
+        <form method="post" action="">
+            <label for="new_password">Nieuw wachtwoord:</label>
+            <input type="password" id="new_password" name="new_password" required>
+            <br>
+            <label for="confirm_password">Bevestig nieuw wachtwoord:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+            <br>
+            <button type="submit">Reset wachtwoord</button>
+        </form>
+    </main>
 </body>
+
 </html>
