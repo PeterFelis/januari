@@ -1,25 +1,58 @@
 <?php
-
 session_start();
 $menu = "beheer";
 
 $title = "HP-305 comfort hoofdtelefoon";
-$TypeNummer = "HP-305";
-include "../artikelkop.php";
-?>
+// Stel de typenummers in voor het hoofdproduct en de variant met zakjes
+$TypeNummerHoofd = "HP-305";
+$TypeNummerZakjes = "HP-305Z"; // Zorg dat dit typenummer in de database bestaat voor de variant
 
+// Include het artikelkop.php script voor databaseverbinding en de getProductData functie
+include "../artikelkop.php";
+
+
+// Haal de productdata op
+$mainProduct = getProductData($TypeNummerHoofd, $pdo);
+$variantProduct = getProductData($TypeNummerZakjes, $pdo);
+
+// Zorg dat er altijd een array met data beschikbaar is
+if (!$mainProduct) {
+    $mainProduct = [
+        'TypeNummer'    => 'Onbekend type',
+        'USP'           => 'Onbekende USP',
+        'omschrijving'  => 'Onbekende omschrijving',
+        'prijsstaffel'  => 'Onbekende prijsstaffel',
+        'aantal_per_doos' => 0
+    ];
+}
+if (!$variantProduct) {
+    $variantProduct = [
+        'TypeNummer'    => 'Onbekend type',
+        'USP'           => 'Onbekende USP',
+        'omschrijving'  => 'Onbekende omschrijving',
+        'prijsstaffel'  => 'Onbekende prijsstaffel',
+        'aantal_per_doos' => 0
+    ];
+}
+// Zorg ervoor dat de renderPriceComponent functie beschikbaar is:
+include '../prijs_component.php';  // pas het pad aan als dat nodig is
+
+?>
 <link rel="stylesheet" href="../prod.css">
 <style>
     .grid-container {
         grid-template-areas:
-            "titel titel twee twee twee twee"
+            "titel titel titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
             "vier vier vijf vijf zes zes"
             "drie drie zeven zeven zeven zeven"
-            "acht acht acht acht negen negen";
+            "acht acht acht acht negen negen"
+            "tien tien tien tien tien tien"
+            "twaalf twaalf elf elf elf elf"
+            "dertien dertien elf elf elf elf";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 2fr 1fr 1fr auto 3fr;
+        grid-template-rows: 1fr 2fr 2fr 2fr auto 3fr 1fr 2fr 2fr;
         height: 200vh;
     }
 </style>
@@ -32,6 +65,7 @@ include "../artikelkop.php";
 
     <div id="selectionComponent"></div>
     <script src="/incs/selection_component.js"></script>
+
     <script>
         var selection = new SelectionComponent({
             container: document.getElementById('selectionComponent'),
@@ -42,6 +76,8 @@ include "../artikelkop.php";
             }
         });
     </script>
+
+
     <article class='grid-container'>
         <div class="een">
             <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
@@ -50,20 +86,21 @@ include "../artikelkop.php";
             <img class='hoog' src="305 met beest samen.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
-        <div class="titel">
-            <h1> <?php echo htmlspecialchars($productType); ?></h1>
+        <div class="titel oranje">
+            <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
         </div>
 
-        <div id="usp">
-            <?php echo $USP; ?>
+        <div id="usp" class='oranje'>
+            <?php echo $mainProduct['USP']; ?>
         </div>
 
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie">
-            <p>[bestel blok]
-            <p> <br>
-                <?php include '../prijs_component.php'; ?>
+        <div class="drie oranje">
+            <p>[bestel blok]</p>
+            <?php
+            renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main');
+            ?>
         </div>
 
 
@@ -73,8 +110,8 @@ include "../artikelkop.php";
         <div class="vijf"> <img class='hoog' src="3053.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
         <div class="zes"><img class='hoog' src="3054.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
-        <div class="zeven cols2 omschrijving">
-            <?php echo $omschrijving; ?>
+        <div class="zeven cols2 omschrijving oranje">
+            <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
         <div class="acht">
@@ -83,7 +120,28 @@ include "../artikelkop.php";
         <div class="negen">
             <img class='hoog' src="hp-305 hangend uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
+
+        <div class="tien oranje">
+            <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>
+        </div>
+
+        <div class="elf">
+            <img class='hoog' src="305 in zakje 27-02-2025.png" alt='HP-305 in een zakje' loading="lazy">
+        </div>
+
+        <div class="twaalf oranje omschrijving">
+            <?php echo $variantProduct['omschrijving']; ?>
+        </div>
+
+        <div class="dertien oranje">
+            <?php
+            renderPriceComponent($variantProduct['prijsstaffel'], $variantProduct['aantal_per_doos'], 'variant');
+            ?>
+        </div>
+
+
     </article>
+
 
     <div id="lightbox-overlay" class="lightbox-overlay">
         <img id="lightbox-image" class="lightbox-image" src="" alt="Uitvergrote afbeelding">
@@ -91,6 +149,8 @@ include "../artikelkop.php";
         <script src="../lightbox.js"></script>
     </div>
 
+
+    <?php include dirname(__DIR__, 2) . "/incs/bottom.php"; ?>
 </body>
-<?php
-include dirname(__DIR__, 2) . "/incs/bottom.php";
+
+</html

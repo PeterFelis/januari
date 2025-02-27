@@ -4,7 +4,34 @@ $menu = "beheer";
 
 $title = "Nekband hoofdtelefoon met verstevigd snoer";
 $TypeNummer = "HP-122";
+$TypeNummerHoofd = "HP-122";
+$variantProduct = null;
 include "../artikelkop.php";
+
+// Haal de productdata op
+$mainProduct = getProductData($TypeNummerHoofd, $pdo);
+
+
+// Zorg dat er altijd een array met data beschikbaar is
+if (!$mainProduct) {
+    $mainProduct = [
+        'TypeNummer'    => 'Onbekend type',
+        'USP'           => 'Onbekende USP',
+        'omschrijving'  => 'Onbekende omschrijving',
+        'prijsstaffel'  => 'Onbekende prijsstaffel',
+        'aantal_per_doos' => 0
+    ];
+}
+if (!$variantProduct) {
+    $variantProduct = [
+        'TypeNummer'    => 'Onbekend type',
+        'USP'           => 'Onbekende USP',
+        'omschrijving'  => 'Onbekende omschrijving',
+        'prijsstaffel'  => 'Onbekende prijsstaffel',
+        'aantal_per_doos' => 0
+    ];
+}
+
 ?>
 
 <link rel="stylesheet" href="../prod.css">
@@ -52,12 +79,12 @@ include "../artikelkop.php";
             <img class='breed' src="hp-122 liggend.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
-        <div class="titel">
-            <h1> <?php echo htmlspecialchars($productType); ?></h1>
+        <div class="titel oranje">
+            <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
         </div>
 
-        <div id="usp">
-            <?php echo $USP; ?>
+        <div id="usp" class="oranje">
+            <?php echo ($mainProduct['USP']); ?>
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
@@ -78,8 +105,8 @@ include "../artikelkop.php";
 
         <div class="zes"><img class='hoog' src="hp-122 staand.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
-        <div class="zeven omschrijving">
-            <?php echo $omschrijving; ?>
+        <div class="zeven omschrijving oranje">
+            <?php echo ($mainProduct['omschrijving']); ?>
         </div>
 
         <div class="twaalf">
