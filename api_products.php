@@ -26,15 +26,15 @@ if ($method === 'GET') {
         $stmt->execute([$_GET['TypeNummer']]);
         echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     } else {
-        // Haal alle producten op (inclusief leverbaar )
-        $stmt = $pdo->query("SELECT id, categorie, subcategorie, TypeNummer, omschrijving, sticker_text, prijsstaffel, aantal_per_doos, USP, leverbaar FROM products ORDER BY TypeNummer");
+        // Haal alle producten op (inclusief hoofd_product)
+        $stmt = $pdo->query("SELECT id, categorie, subcategorie, TypeNummer, omschrijving, sticker_text, prijsstaffel, aantal_per_doos, USP, leverbaar, hoofd_product FROM products ORDER BY TypeNummer");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 } elseif ($method === 'POST') {
     // Voeg nieuw product toe
     $data = json_decode(file_get_contents('php://input'), true);
-    $stmt = $pdo->prepare("INSERT INTO products (categorie, subcategorie, TypeNummer, omschrijving, prijsstaffel, aantal_per_doos, USP, sticker_text, leverbaar)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO products (categorie, subcategorie, TypeNummer, omschrijving, prijsstaffel, aantal_per_doos, USP, sticker_text, leverbaar, hoofd_product)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([
         $data['categorie'],
         $data['subcategorie'],
@@ -44,13 +44,14 @@ if ($method === 'GET') {
         $data['aantal_per_doos'],
         $data['USP'],
         $data['sticker_text'] ?? '',
-        $data['leverbaar'] ?? 'ja'
+        $data['leverbaar'] ?? 'ja',
+        $data['hoofd_product'] ?? ''
     ]);
     echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
 } elseif ($method === 'PUT') {
     // Update bestaand product
     $data = json_decode(file_get_contents('php://input'), true);
-    $stmt = $pdo->prepare("UPDATE products SET categorie = ?, subcategorie = ?, TypeNummer = ?, omschrijving = ?, prijsstaffel = ?, aantal_per_doos = ?, USP = ?, sticker_text = ?, leverbaar = ?
+    $stmt = $pdo->prepare("UPDATE products SET categorie = ?, subcategorie = ?, TypeNummer = ?, omschrijving = ?, prijsstaffel = ?, aantal_per_doos = ?, USP = ?, sticker_text = ?, leverbaar = ?, hoofd_product = ?
                            WHERE id = ?");
     $stmt->execute([
         $data['categorie'],
@@ -62,6 +63,7 @@ if ($method === 'GET') {
         $data['USP'],
         $data['sticker_text'] ?? '',
         $data['leverbaar'] ?? 'ja',
+        $data['hoofd_product'] ?? '',
         intval($data['id'])
     ]);
     echo json_encode(['success' => true]);
@@ -78,3 +80,4 @@ if ($method === 'GET') {
 } else {
     echo json_encode(['error' => 'Ongeldige methode']);
 }
+

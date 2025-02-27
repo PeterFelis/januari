@@ -18,7 +18,7 @@ $defaultCategory = isset($_GET['selectedCategory']) ? $_GET['selectedCategory'] 
 $defaultSubcategory = isset($_GET['selectedSubcategory']) ? $_GET['selectedSubcategory'] : "";
 
 if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
-    // Upload-afhandeling (zoals eerder)
+    // Upload-afhandeling
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Invalid request method']);
@@ -124,27 +124,22 @@ include_once __DIR__ . '/incs/top.php';
         display: flex;
         font-family: Arial, sans-serif;
     }
-
     #left-pane,
     #right-pane {
         width: 50%;
         padding: 20px;
         box-sizing: border-box;
     }
-
-    /* Stijlen voor de selectie-component */
     .selection-category,
     .selection-subcategory,
     .selection-products {
         margin-bottom: 20px;
     }
-
     .selection-category h2,
     .selection-subcategory h3,
     .selection-products h3 {
         margin: 0 0 10px;
     }
-
     .selection-btn {
         padding: 5px 10px;
         margin: 3px;
@@ -152,17 +147,14 @@ include_once __DIR__ . '/incs/top.php';
         background: #f9f9f9;
         cursor: pointer;
     }
-
     .selection-btn.selected {
         background-color: #ffcc66;
         color: #000;
         font-weight: bold;
     }
-
     main {
         margin-top: 10rem;
     }
-
     /* Snackbar CSS */
     #snackbar {
         visibility: hidden;
@@ -179,37 +171,19 @@ include_once __DIR__ . '/incs/top.php';
         font-size: 17px;
         transform: translateX(-50%);
     }
-
     #snackbar.show {
         visibility: visible;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
     }
-
     @keyframes fadein {
-        from {
-            bottom: 0;
-            opacity: 0;
-        }
-
-        to {
-            bottom: 30px;
-            opacity: 1;
-        }
+        from { bottom: 0; opacity: 0; }
+        to { bottom: 30px; opacity: 1; }
     }
-
     @keyframes fadeout {
-        from {
-            bottom: 30px;
-            opacity: 1;
-        }
-
-        to {
-            bottom: 0;
-            opacity: 0;
-        }
+        from { bottom: 30px; opacity: 1; }
+        to { bottom: 0; opacity: 0; }
     }
 </style>
-
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <main>
@@ -251,6 +225,12 @@ include_once __DIR__ . '/incs/top.php';
                             <input type="checkbox" id="leverbaar" checked>
                         </div>
                         <div class="form-group">
+                            <label for="hoofd_product">Hoofd Product:</label>
+                            <input type="text" id="hoofd_product">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="form-group">
                             <label for="avatar">Fotolink:</label>
                             <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
                         </div>
@@ -290,8 +270,6 @@ include_once __DIR__ . '/incs/top.php';
             </div>
         </div>
         <script src="/incs/selection_component.js"></script>
-
-
         <script>
             let isEditingNewProduct = false;
 
@@ -313,9 +291,7 @@ include_once __DIR__ . '/incs/top.php';
                 const method = isNew ? 'POST' : 'PUT';
                 const response = await fetch('api_products.php', {
                     method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
                 return await response.json();
@@ -324,7 +300,6 @@ include_once __DIR__ . '/incs/top.php';
             // resetForm behoudt categorie en subcategorie
             function resetForm() {
                 document.getElementById('product-id').value = '';
-                // Categorie en subcategorie blijven behouden!
                 document.getElementById('TypeNummer').value = '';
                 quill.root.innerHTML = '';
                 quillSticker.root.innerHTML = '';
@@ -332,6 +307,7 @@ include_once __DIR__ . '/incs/top.php';
                 document.getElementById('aantal_per_doos').value = '';
                 document.getElementById('USP').value = '';
                 document.getElementById('leverbaar').checked = true;
+                document.getElementById('hoofd_product').value = '';
                 document.getElementById('foto_preview').style.display = 'none';
                 document.getElementById('foto_filename').textContent = "";
                 document.getElementById('save-button').classList.remove('hidden');
@@ -359,7 +335,8 @@ include_once __DIR__ . '/incs/top.php';
                     prijsstaffel: document.getElementById('prijsstaffel').value,
                     aantal_per_doos: document.getElementById('aantal_per_doos').value,
                     USP: wrapUSP(document.getElementById('USP').value),
-                    leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
+                    leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
+                    hoofd_product: document.getElementById('hoofd_product').value
                 };
                 await saveProduct(data, false);
             }
@@ -404,21 +381,11 @@ include_once __DIR__ . '/incs/top.php';
                 theme: 'snow',
                 modules: {
                     toolbar: [
-                        [{
-                            'header': [1, 2, false]
-                        }],
+                        [{'header': [1, 2, false]}],
                         ['bold', 'italic', 'underline'],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
                         ['link', 'blockquote', 'code-block'],
-                        [{
-                            'color': []
-                        }, {
-                            'background': []
-                        }]
+                        [{'color': []}, {'background': []}]
                     ]
                 }
             });
@@ -428,18 +395,13 @@ include_once __DIR__ . '/incs/top.php';
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline'],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
                         ['link']
                     ]
                 }
             });
 
             document.addEventListener('DOMContentLoaded', () => {
-                // Initialiseer de SelectionComponent
                 var selection;
                 try {
                     selection = new SelectionComponent({
@@ -459,16 +421,16 @@ include_once __DIR__ . '/incs/top.php';
                                 document.getElementById('aantal_per_doos').value = productData.aantal_per_doos;
                                 document.getElementById('USP').value = stripP(productData.USP);
                                 document.getElementById('leverbaar').checked = (productData.leverbaar === 'ja');
+                                document.getElementById('hoofd_product').value = productData.hoofd_product || '';
                                 document.getElementById('save-button').classList.add('hidden');
                             }
                         }
                     });
                 } catch (error) {
                     console.error("Fout bij initialiseren van SelectionComponent:", error);
-                    return; // Stop verdere uitvoering als initialisatie faalt
+                    return;
                 }
 
-                // Wacht tot de SelectionComponent klaar is met laden
                 function waitForSelectionComponent() {
                     return new Promise((resolve) => {
                         const checkInterval = setInterval(() => {
@@ -480,7 +442,6 @@ include_once __DIR__ . '/incs/top.php';
                     });
                 }
 
-                // Herstel de selectie na het laden
                 waitForSelectionComponent().then(() => {
                     const defaultCategory = "<?php echo htmlspecialchars($defaultCategory); ?>";
                     const defaultSubcategory = "<?php echo htmlspecialchars($defaultSubcategory); ?>";
@@ -491,7 +452,6 @@ include_once __DIR__ . '/incs/top.php';
                     console.error("Fout bij wachten op SelectionComponent:", error);
                 });
 
-                // Event listeners voor formulier
                 document.querySelectorAll('#right-pane input, #right-pane textarea').forEach(element => {
                     element.addEventListener('input', () => {
                         detectNewProduct();
@@ -526,7 +486,8 @@ include_once __DIR__ . '/incs/top.php';
                         prijsstaffel: document.getElementById('prijsstaffel').value,
                         aantal_per_doos: document.getElementById('aantal_per_doos').value,
                         USP: wrapUSP(document.getElementById('USP').value),
-                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
+                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
+                        hoofd_product: document.getElementById('hoofd_product').value
                     };
                     const newProduct = await saveProduct(data, true);
                     if (newProduct && newProduct.id) {
@@ -550,12 +511,8 @@ include_once __DIR__ . '/incs/top.php';
                     try {
                         const response = await fetch('api_products.php', {
                             method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                id: productId
-                            })
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: productId })
                         });
                         const result = await response.json();
                         if (result.success) {
@@ -584,7 +541,8 @@ include_once __DIR__ . '/incs/top.php';
                         prijsstaffel: document.getElementById('prijsstaffel').value,
                         aantal_per_doos: document.getElementById('aantal_per_doos').value,
                         USP: wrapUSP(document.getElementById('USP').value),
-                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee'
+                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
+                        hoofd_product: document.getElementById('hoofd_product').value
                     };
                     await saveProduct(data, true);
                     showSnackbar("Product opgeslagen.");
@@ -596,33 +554,28 @@ include_once __DIR__ . '/incs/top.php';
 
                 document.getElementById('new-button').addEventListener('click', resetForm);
 
-                // Herstel categorieën vanuit sessionStorage
+                // Optioneel: bewaar en herstel keuze via sessionStorage
+                function saveCategorySelection() {
+                    sessionStorage.setItem('selectedCategory', document.getElementById('categorie').value);
+                    sessionStorage.setItem('selectedSubcategory', document.getElementById('subcategorie').value);
+                }
+                function restoreCategorySelection() {
+                    const category = sessionStorage.getItem('selectedCategory');
+                    const subcategory = sessionStorage.getItem('selectedSubcategory');
+                    if (category !== null) {
+                        document.getElementById('categorie').value = category;
+                    }
+                    if (subcategory !== null) {
+                        document.getElementById('subcategorie').value = subcategory;
+                    }
+                }
+                function refreshPage() {
+                    const cat = document.getElementById('categorie').value;
+                    const subcat = document.getElementById('subcategorie').value;
+                    window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(cat) + "&selectedSubcategory=" + encodeURIComponent(subcat);
+                }
                 restoreCategorySelection();
             });
-
-            // Optioneel: bewaar en herstel keuze via sessionStorage (indien gewenst)
-            function saveCategorySelection() {
-                sessionStorage.setItem('selectedCategory', document.getElementById('categorie').value);
-                sessionStorage.setItem('selectedSubcategory', document.getElementById('subcategorie').value);
-            }
-
-            function restoreCategorySelection() {
-                const category = sessionStorage.getItem('selectedCategory');
-                const subcategory = sessionStorage.getItem('selectedSubcategory');
-                if (category !== null) {
-                    document.getElementById('categorie').value = category;
-                }
-                if (subcategory !== null) {
-                    document.getElementById('subcategorie').value = subcategory;
-                }
-            }
-
-            // Ververs de pagina met de huidige waarden in de URL
-            function refreshPage() {
-                const cat = document.getElementById('categorie').value;
-                const subcat = document.getElementById('subcategorie').value;
-                window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(cat) + "&selectedSubcategory=" + encodeURIComponent(subcat);
-            }
         </script>
     </main>
     <?php include_once __DIR__ . '/incs/bottom.php'; ?>
