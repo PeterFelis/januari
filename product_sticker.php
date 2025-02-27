@@ -132,6 +132,7 @@ include_once __dir__ . '/incs/top.php';
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s ease-in-out;
+            max-width: 200px;
         }
 
         input[type="text"]:focus,
