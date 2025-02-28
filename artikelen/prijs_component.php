@@ -1,13 +1,21 @@
 <?php
 // file: prijs_component.php
 
-function renderPriceComponent($prijsstaffel, $aantal_per_doos, $prefix = 'pc')
-{
-    // Check binnen de functie: als de parameters leeg zijn, geven we een melding
-    if (empty($prijsstaffel) || empty($aantal_per_doos)) {
-        echo "Prijscomponent niet beschikbaar. Variabelen ontbreken.";
-        return;
-    }
+function renderPriceComponent($prijsstaffel, $aantal_per_doos, $productType) {
+    echo "<div class='price-component'>";
+    // Weergeven van de prijsstaffel en minimale bestelhoeveelheid
+    echo "<p>Prijsstaffel: " . htmlspecialchars($prijsstaffel) . "</p>";
+    echo "<p>Minimale bestelhoeveelheid: " . htmlspecialchars($aantal_per_doos) . "</p>";
+    // Bestelformulier geïntegreerd in de prijscomponent
+    echo "<form method='post' action='/order_process.php'>";
+    echo "<input type='hidden' name='productType' value='" . htmlspecialchars($productType) . "'>";
+    // Indien nodig kun je ook het type nummer of product_id meesturen
+    echo "<label for='aantal'>Aantal:</label>";
+    echo "<input type='number' id='aantal' name='aantal' min='" . htmlspecialchars($aantal_per_doos) . "' step='" . htmlspecialchars($aantal_per_doos) . "' value='" . htmlspecialchars($aantal_per_doos) . "' required>";
+    echo "<button type='submit'>Bestel</button>";
+    echo "</form>";
+    echo "</div>";
+
 ?>
     <div class="prijs-component">
         <!-- Weergave van de prijsstaffel -->

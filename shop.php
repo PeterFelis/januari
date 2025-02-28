@@ -12,11 +12,13 @@ include_once __DIR__ . '/incs/top.php';
     .selection-products {
         margin-bottom: 20px;
     }
+
     .selection-category h2,
     .selection-subcategory h3,
     .selection-products h3 {
         margin: 0 0 10px;
     }
+
     .selection-btn {
         padding: 5px 10px;
         margin: 3px;
@@ -24,30 +26,36 @@ include_once __DIR__ . '/incs/top.php';
         background: #f9f9f9;
         cursor: pointer;
     }
+
     .selection-btn.selected {
         font-weight: bold;
         background-color: #007BFF;
         color: white;
     }
+
     .container {
         display: flex;
         margin-top: 10vh;
     }
+
     .left-pane {
         width: 20%;
         border-right: 1px solid #ccc;
         padding: 20px;
     }
+
     .right-pane {
         width: 80%;
         padding: 20px;
     }
+
     /* Product grid en kaartstijlen */
     .product-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
     }
+
     .product-card {
         border: 1px solid #ddd;
         padding: 10px;
@@ -59,17 +67,20 @@ include_once __DIR__ . '/incs/top.php';
         flex-direction: column;
         justify-content: space-between;
     }
+
     .card-content {
         display: flex;
         flex-direction: column;
         margin-bottom: 10px;
         min-height: 70%;
     }
+
     .card-photo {
         width: 100%;
         height: auto;
         margin-bottom: 5px;
     }
+
     .card-usp {
         display: flex;
         align-items: center;
@@ -77,14 +88,11 @@ include_once __DIR__ . '/incs/top.php';
         text-align: center;
         flex-direction: column;
     }
+
     .product-card:hover {
         transform: scale(1.05);
     }
-    .card-photo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+
     .card-usp p {
         margin: 0;
     }
@@ -130,7 +138,7 @@ include_once __DIR__ . '/incs/top.php';
             const grid = document.getElementById('productGrid');
             // Filter eerst alle producten op leverbaarheid
             let filtered = products.filter(p => p.leverbaar === 'ja');
-            
+
             // Pas verdere filtering toe op categorie en subcategorie
             if (currentCategory !== "") {
                 filtered = filtered.filter(p => p.categorie === currentCategory);
@@ -138,7 +146,7 @@ include_once __DIR__ . '/incs/top.php';
             if (currentSubcategory !== "") {
                 filtered = filtered.filter(p => p.subcategorie === currentSubcategory);
             }
-            
+
             grid.innerHTML = "";
             if (filtered.length === 0) {
                 grid.innerHTML = "<p>Geen producten gevonden.</p>";

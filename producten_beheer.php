@@ -1,5 +1,7 @@
 <?php
 // producten_beheer.php
+ob_start();
+
 $menu = "beheer";
 session_start();
 
@@ -20,11 +22,13 @@ $defaultSubcategory = isset($_GET['selectedSubcategory']) ? $_GET['selectedSubca
 if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
     // Upload-afhandeling
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        ob_clean(); // Verwijder alle eerder opgevangen output
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Invalid request method']);
         exit;
     }
     if (!isset($_FILES['avatar'])) {
+        ob_clean();
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Geen bestand geüpload.']);
         exit;
@@ -41,12 +45,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
     }
     $file = $_FILES['avatar'];
     if ($file['error'] !== UPLOAD_ERR_OK) {
+        ob_clean();
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Upload fout: ' . $file['error']]);
         exit;
     }
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+        ob_clean();
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Alleen JPG, JPEG en PNG bestanden zijn toegestaan.']);
         exit;
@@ -103,11 +109,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
     }
     $resizeSuccess = createResizedImage($file['tmp_name'], $destPath, $extension);
     if ($resizeSuccess) {
+        ob_clean();
         header('Content-Type: application/json');
         $imageUrl = 'artikelen/' . $product . '/Pfoto.' . $extension;
         echo json_encode(['success' => true, 'image_url' => $imageUrl]);
         exit;
     } else {
+        ob_clean();
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Fout bij het verkleinen van de afbeelding.']);
         exit;
@@ -124,22 +132,26 @@ include_once __DIR__ . '/incs/top.php';
         display: flex;
         font-family: Arial, sans-serif;
     }
+
     #left-pane,
     #right-pane {
         width: 50%;
         padding: 20px;
         box-sizing: border-box;
     }
+
     .selection-category,
     .selection-subcategory,
     .selection-products {
         margin-bottom: 20px;
     }
+
     .selection-category h2,
     .selection-subcategory h3,
     .selection-products h3 {
         margin: 0 0 10px;
     }
+
     .selection-btn {
         padding: 5px 10px;
         margin: 3px;
@@ -147,14 +159,17 @@ include_once __DIR__ . '/incs/top.php';
         background: #f9f9f9;
         cursor: pointer;
     }
+
     .selection-btn.selected {
         background-color: #ffcc66;
         color: #000;
         font-weight: bold;
     }
+
     main {
         margin-top: 10rem;
     }
+
     /* Snackbar CSS */
     #snackbar {
         visibility: hidden;
@@ -171,19 +186,37 @@ include_once __DIR__ . '/incs/top.php';
         font-size: 17px;
         transform: translateX(-50%);
     }
+
     #snackbar.show {
         visibility: visible;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
     }
+
     @keyframes fadein {
-        from { bottom: 0; opacity: 0; }
-        to { bottom: 30px; opacity: 1; }
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
     }
+
     @keyframes fadeout {
-        from { bottom: 30px; opacity: 1; }
-        to { bottom: 0; opacity: 0; }
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
     }
 </style>
+
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <main>
@@ -291,7 +324,9 @@ include_once __DIR__ . '/incs/top.php';
                 const method = isNew ? 'POST' : 'PUT';
                 const response = await fetch('api_products.php', {
                     method: method,
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(data)
                 });
                 return await response.json();
@@ -381,11 +416,21 @@ include_once __DIR__ . '/incs/top.php';
                 theme: 'snow',
                 modules: {
                     toolbar: [
-                        [{'header': [1, 2, false]}],
+                        [{
+                            'header': [1, 2, false]
+                        }],
                         ['bold', 'italic', 'underline'],
-                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
                         ['link', 'blockquote', 'code-block'],
-                        [{'color': []}, {'background': []}]
+                        [{
+                            'color': []
+                        }, {
+                            'background': []
+                        }]
                     ]
                 }
             });
@@ -395,7 +440,11 @@ include_once __DIR__ . '/incs/top.php';
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline'],
-                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
                         ['link']
                     ]
                 }
@@ -511,8 +560,12 @@ include_once __DIR__ . '/incs/top.php';
                     try {
                         const response = await fetch('api_products.php', {
                             method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ id: productId })
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: productId
+                            })
                         });
                         const result = await response.json();
                         if (result.success) {
@@ -559,6 +612,7 @@ include_once __DIR__ . '/incs/top.php';
                     sessionStorage.setItem('selectedCategory', document.getElementById('categorie').value);
                     sessionStorage.setItem('selectedSubcategory', document.getElementById('subcategorie').value);
                 }
+
                 function restoreCategorySelection() {
                     const category = sessionStorage.getItem('selectedCategory');
                     const subcategory = sessionStorage.getItem('selectedSubcategory');
@@ -569,6 +623,7 @@ include_once __DIR__ . '/incs/top.php';
                         document.getElementById('subcategorie').value = subcategory;
                     }
                 }
+
                 function refreshPage() {
                     const cat = document.getElementById('categorie').value;
                     const subcat = document.getElementById('subcategorie').value;

@@ -30,32 +30,100 @@
     }
 
     SelectionComponent.prototype.injectCSS = function() {
+        var baseCss = `
+        .product-card img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        `;
         var css = "";
         if (this.orientation === "horizontal") {
             css += `
-            .selection-component-container { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 1rem; width: 100%; height:15rem; margin-bottom: 20px; padding: 30px; padding-top: 5rem; border-bottom:2px solid var(--paars); }
-            .selection-category-heading, .selection-subcategory-heading, .selection-products-heading { text-align: center; font-weight: bold; font-size: 3rem; }
+            .selection-component-container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: auto auto;
+                gap: 1rem;
+                width: 100%;
+                height: 15rem;
+                margin-bottom: 20px;
+                padding: 30px;
+                padding-top: 5rem;
+                border-bottom: 2px solid var(--paars);
+            }
+            .selection-category-heading,
+            .selection-subcategory-heading,
+            .selection-products-heading {
+                text-align: center;
+                font-weight: bold;
+                font-size: 3rem;
+            }
             .selection-category-heading { grid-column: 1; grid-row: 1; }
             .selection-subcategory-heading { grid-column: 2; grid-row: 1; }
             .selection-products-heading { grid-column: 3; grid-row: 1; }
-            .selection-category-list { grid-column: 1; grid-row: 2; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-            .selection-subcategory-list { grid-column: 2; grid-row: 2; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-            .selection-products-list { grid-column: 3; grid-row: 2; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-            .selection-btn { padding: 2px 6px; font-size: 2rem; line-height: 1.2; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; }
-            .selection-btn.selected { color: var(--paars); }
-            button:hover { color: red; }
+            .selection-category-list,
+            .selection-subcategory-list,
+            .selection-products-list {
+                grid-column: span 1;
+                grid-row: 2;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: center;
+            }
+            /* Nieuwe stijl voor tekst (geen knop) */
+            .selection-text {
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+            .selection-text.selected {
+                font-weight: bold;
+                color: var(--paars);
+            }
             `;
         } else {
             css += `
             .selection-component-container { display: block; }
             .selection-category, .selection-subcategory, .selection-products { margin-bottom: 20px; }
             .selection-category h2, .selection-subcategory h3, .selection-products h3 { margin: 0 0 10px; }
-            .selection-btn { padding: 5px 10px; margin: 3px; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; }
-            .selection-btn.selected { font-weight: bold; background-color: #007BFF; color: white; }
+            /* Standaard stijl voor categorie- en subcategorieknoppen */
+            .selection-btn {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 5px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                text-align: left;
+                font-size: 1.5rem;
+            }
+            .selection-btn:hover { background-color: #f0f0f0; }
+            .selection-btn.selected {
+                font-weight: bold;
+                background-color: #007BFF;
+                color: white;
+            }
+            /* Wijziging voor de productweergave: gebruik grid met 4 kolommen */
+            .selection-products .product-list {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 5px;
+            }
+            .selection-products .product-list .product-card {
+                width: 100%;
+            }
+            .selection-products .product-list .product-card img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+            }
             `;
         }
+        var finalCss = baseCss + css;
         var styleTag = document.createElement("style");
-        styleTag.appendChild(document.createTextNode(css));
+        styleTag.appendChild(document.createTextNode(finalCss));
         document.head.appendChild(styleTag);
     };
 
@@ -132,15 +200,16 @@
             if (!this.categoryListDiv) return;
             this.categoryListDiv.innerHTML = '';
             categories.forEach(category => {
-                var btn = document.createElement('button');
-                btn.textContent = category;
-                btn.className = 'selection-btn';
-                btn.id = "category_" + sanitizeForId(category);
-                btn.addEventListener('click', function() {
+                // Gebruik een <span> in plaats van een knop
+                var span = document.createElement('span');
+                span.textContent = category;
+                span.className = 'selection-text';
+                span.id = "category_" + sanitizeForId(category);
+                span.addEventListener('click', function() {
                     self.selectedCategory = category;
                     self.selectedSubcategory = null;
                     self.selectedProduct = null;
-                    self.highlightSelection(self.categoryListDiv, btn);
+                    self.highlightSelection(self.categoryListDiv, span);
                     self.renderSubcategories(category);
                     self.onSelectionChange({
                         category: self.selectedCategory,
@@ -148,10 +217,9 @@
                         product: self.selectedProduct
                     });
                 });
-                self.categoryListDiv.appendChild(btn);
+                self.categoryListDiv.appendChild(span);
             });
         } else {
-            // Voor verticale modus: render categorieën in de 'category-list' container
             var categoryListDiv = this.categoryContainer.querySelector('.category-list');
             categoryListDiv.innerHTML = '';
             categories.forEach(category => {
@@ -176,6 +244,57 @@
         }
     };
 
+    SelectionComponent.prototype.renderSubcategories = function(category) {
+        var subcategories = [...new Set(this.products
+            .filter(p => p.categorie === category)
+            .map(p => p.subcategorie))];
+        var self = this;
+        
+        if (this.orientation === "horizontal") {
+            if (!this.subcategoryListDiv) return;
+            this.subcategoryListDiv.innerHTML = '';
+            
+            subcategories.forEach(subcat => {
+                var span = document.createElement('span');
+                span.textContent = subcat;
+                span.className = 'selection-text';
+                span.id = "subcategory_" + sanitizeForId(subcat);
+                span.addEventListener('click', function() {
+                    self.selectedSubcategory = subcat;
+                    self.highlightSelection(self.subcategoryListDiv, span);
+                    if (self.showProducts) self.renderProducts(category, subcat);
+                    self.onSelectionChange({
+                        category: self.selectedCategory,
+                        subcategory: self.selectedSubcategory,
+                        product: self.selectedProduct
+                    });
+                });
+                self.subcategoryListDiv.appendChild(span);
+            });
+        } else {
+            var subcategoryListDiv = this.subcategoryContainer.querySelector('.subcategory-list');
+            subcategoryListDiv.innerHTML = '';
+            
+            subcategories.forEach(subcat => {
+                var btn = document.createElement('button');
+                btn.textContent = subcat;
+                btn.className = 'selection-btn';
+                btn.id = "subcategory_" + sanitizeForId(subcat);
+                btn.addEventListener('click', function() {
+                    self.selectedSubcategory = subcat;
+                    self.highlightSelection(subcategoryListDiv, btn);
+                    if (self.showProducts) self.renderProducts(category, subcat);
+                    self.onSelectionChange({
+                        category: self.selectedCategory,
+                        subcategory: self.selectedSubcategory,
+                        product: self.selectedProduct
+                    });
+                });
+                subcategoryListDiv.appendChild(btn);
+            });
+        }
+    };
+
     SelectionComponent.prototype.renderProducts = function(category, subcategory) {
         var filtered = this.products.filter(p => p.categorie === category && p.subcategorie === subcategory);
         var self = this;
@@ -183,17 +302,17 @@
             if (!this.productListDiv) return;
             this.productListDiv.innerHTML = '';
             filtered.forEach(product => {
-                var btn = document.createElement('button');
-                btn.textContent = product.TypeNummer;
-                btn.className = 'selection-btn';
-                btn.addEventListener('click', function() {
+                var span = document.createElement('span');
+                span.textContent = product.TypeNummer;
+                span.className = 'selection-text';
+                span.addEventListener('click', function() {
                     self.selectedProduct = product;
-                    self.highlightSelection(self.productListDiv, btn);
+                    self.highlightSelection(self.productListDiv, span);
                     var target = product.hoofd_product && product.hoofd_product.trim() !== "" ? product.hoofd_product : product.TypeNummer;
                     window.location.href = '/artikelen/' + encodeURIComponent(target) + '/index.php';
                 });
-                self.productListDiv.appendChild(btn);
-                if (self.checkProductPage) self.checkProductPageExists(product.TypeNummer, btn);
+                self.productListDiv.appendChild(span);
+                if (self.checkProductPage) self.checkProductPageExists(product.TypeNummer, span);
             });
         } else {
             var productListDiv = this.productContainer.querySelector('.product-list');
@@ -205,7 +324,6 @@
                 btn.addEventListener('click', function() {
                     self.selectedProduct = product;
                     self.highlightSelection(productListDiv, btn);
-                    // In plaats van te redirecten, de callback aanroepen zodat de gegevens in het formulier geladen worden:
                     self.onSelectionChange({
                         category: self.selectedCategory,
                         subcategory: self.selectedSubcategory,
@@ -218,48 +336,7 @@
         }
     };
 
-    SelectionComponent.prototype.renderProducts = function(category, subcategory) {
-        var filtered = this.products.filter(p => p.categorie === category && p.subcategorie === subcategory);
-        var self = this;
-        if (this.orientation === "horizontal") {
-            if (!this.productListDiv) return;
-            this.productListDiv.innerHTML = '';
-            filtered.forEach(product => {
-                var btn = document.createElement('button');
-                btn.textContent = product.TypeNummer;
-                btn.className = 'selection-btn';
-                btn.addEventListener('click', function() {
-                    self.selectedProduct = product;
-                    self.highlightSelection(self.productListDiv, btn);
-                    var target = product.hoofd_product && product.hoofd_product.trim() !== "" ? product.hoofd_product : product.TypeNummer;
-                    window.location.href = '/artikelen/' + encodeURIComponent(target) + '/index.php';
-                });
-                self.productListDiv.appendChild(btn);
-                if (self.checkProductPage) self.checkProductPageExists(product.TypeNummer, btn);
-            });
-        } else {
-            var productListDiv = this.productContainer.querySelector('.product-list');
-            productListDiv.innerHTML = '';
-            filtered.forEach(product => {
-                var btn = document.createElement('button');
-                btn.textContent = product.TypeNummer;
-                btn.className = 'selection-btn';
-                btn.addEventListener('click', function() {
-                    self.selectedProduct = product;
-                    self.highlightSelection(productListDiv, btn);
-                    self.onSelectionChange({
-                        category: self.selectedCategory,
-                        subcategory: self.selectedSubcategory,
-                        product: self.selectedProduct
-                    });
-                });
-                productListDiv.appendChild(btn);
-                if (self.checkProductPage) self.checkProductPageExists(product.TypeNummer, btn);
-            });
-        }
-    };
-
-    SelectionComponent.prototype.checkProductPageExists = function(productType, button) {
+    SelectionComponent.prototype.checkProductPageExists = function(productType, element) {
         fetch('artikelen/' + encodeURIComponent(productType) + '/index.php', { method: 'HEAD' })
             .then(response => {
                 if (response.ok) {
@@ -272,22 +349,21 @@
                         e.stopPropagation();
                         window.open('artikelen/' + encodeURIComponent(productType) + '/index.php', '_blank');
                     });
-                    button.appendChild(linkIcon);
+                    element.appendChild(linkIcon);
                 }
             })
             .catch(() => {});
     };
 
-    SelectionComponent.prototype.highlightSelection = function(container, selectedButton) {
-        var buttons = container.querySelectorAll('button');
-        buttons.forEach(btn => btn.classList.remove('selected'));
-        selectedButton.classList.add('selected');
+    SelectionComponent.prototype.highlightSelection = function(container, selectedElement) {
+        var elements = container.querySelectorAll('*');
+        elements.forEach(el => el.classList.remove('selected'));
+        selectedElement.classList.add('selected');
     };
 
     SelectionComponent.prototype.setSelected = function(category, subcategory) {
         var self = this;
         if (!this.products.length) {
-            // Wacht tot producten zijn geladen
             this.fetchProducts().then(() => {
                 self.applySelection(category, subcategory);
             });
@@ -299,15 +375,15 @@
     SelectionComponent.prototype.applySelection = function(category, subcategory) {
         var catId = "category_" + sanitizeForId(category);
         var subId = "subcategory_" + sanitizeForId(subcategory);
-        var catBtn = document.getElementById(catId);
-        if (catBtn) {
+        var catElement = document.getElementById(catId);
+        if (catElement) {
             this.selectedCategory = category;
-            this.highlightSelection(this.orientation === "horizontal" ? this.categoryListDiv : this.categoryContainer.querySelector('.category-list'), catBtn);
+            this.highlightSelection(this.orientation === "horizontal" ? this.categoryListDiv : this.categoryContainer.querySelector('.category-list'), catElement);
             this.renderSubcategories(category);
-            var subBtn = document.getElementById(subId);
-            if (subBtn) {
+            var subElement = document.getElementById(subId);
+            if (subElement) {
                 this.selectedSubcategory = subcategory;
-                this.highlightSelection(this.orientation === "horizontal" ? this.subcategoryListDiv : this.subcategoryContainer.querySelector('.subcategory-list'), subBtn);
+                this.highlightSelection(this.orientation === "horizontal" ? this.subcategoryListDiv : this.subcategoryContainer.querySelector('.subcategory-list'), subElement);
                 if (this.showProducts) this.renderProducts(category, subcategory);
                 this.onSelectionChange({
                     category: this.selectedCategory,

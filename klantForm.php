@@ -77,75 +77,90 @@ $title = $pageTitle;
 include_once __DIR__ . '/incs/top.php';
 ?>
 
-    <style>
-        /* Basis styling voor het formulier */
-        form.registration-form {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 2rem;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        main {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-        }
-        h3 {
-            border-bottom: 2px dashed #008000;
-            padding-bottom: 5px;
-            color: #800080;
-        }
-        .instructions {
-            text-align: center;
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
-        .required {
-            color: red;
-        }
-        .adres-regel, .adres-regel2 {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 15px;
-        }
-        .adres-regel > div, .adres-regel2 > div {
-            flex: 1;
-        }
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .cancelBtn {
-            background-color: red;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .cancelBtn:hover {
-            background-color: darkred;
-        }
-        .accordion-content {
-            display: none;
-            padding: 0 10px;
-            margin-top: 10px;
-            border-left: 2px solid #ccc;
-        }
-        .form-step {
-            display: none;
-        }
-        .form-step.active {
-            display: block;
-        }
-        .radio-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-    </style>
+<style>
+    /* Basis styling voor het formulier */
+    form.registration-form {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 2rem;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    main {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    h3 {
+        border-bottom: 2px dashed #008000;
+        padding-bottom: 5px;
+        color: #800080;
+    }
+
+    .instructions {
+        text-align: center;
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+
+    .required {
+        color: red;
+    }
+
+    .adres-regel,
+    .adres-regel2 {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .adres-regel>div,
+    .adres-regel2>div {
+        flex: 1;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .cancelBtn {
+        background-color: red;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .cancelBtn:hover {
+        background-color: darkred;
+    }
+
+    .accordion-content {
+        display: none;
+        padding: 0 10px;
+        margin-top: 10px;
+        border-left: 2px solid #ccc;
+    }
+
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+</style>
 
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
@@ -157,15 +172,19 @@ include_once __DIR__ . '/incs/top.php';
             <?php } ?>
 
             <?php if (!$edit) { ?>
-            <!-- Stap 0: Uitleg over hoe wij werken (alleen bij registratie) -->
-            <div class="form-step active" id="step-intro">
-                <h3>Hoe werken wij?</h3>
-                <p>Hier komt later de uitleg over hoe wij werken.</p>
-                <div class="button-group">
-                    <button type="button" class="cancelBtn" onclick="window.location.href='dashboard.php';">Cancel</button>
-                    <button type="button" id="nextBtnIntro">Volgende</button>
+                <!-- Stap 0: Uitleg over hoe wij werken (alleen bij registratie) -->
+                <div class="form-step active" id="step-intro">
+                    <h3>Hoe werken wij?</h3>
+                    <p>Welkom bij onze webshop! We zijn blij dat u interesse heeft in onze producten en diensten. Om uw winkelervaring zo persoonlijk en efficiënt mogelijk te maken, vragen wij u om het onderstaande registratieformulier in te vullen. Met de door u opgegeven gegevens kunnen wij uw bestellingen nauwkeurig verwerken, u op de hoogte houden van speciale aanbiedingen en u een account op maat bieden.
+
+                        Ons registratieproces is eenvoudig en overzichtelijk, met meerdere stappen die u stap voor stap begeleiden. Let op: de velden gemarkeerd met een rood sterretje (*) zijn verplicht. Wij hechten veel waarde aan uw privacy; al uw gegevens worden veilig en vertrouwelijk behandeld.
+
+                        Mocht u vragen hebben of hulp nodig hebben tijdens het registratieproces, aarzel dan niet om contact op te nemen met onze klantenservice. Na registratie kunt u direct beginnen met bestellen en profiteren van onze exclusieve voordelen!</p>
+                    <div class="button-group">
+                        <button type="button" class="cancelBtn" onclick="window.location.href='dashboard.php';">Cancel</button>
+                        <button type="button" id="nextBtnIntro">Volgende</button>
+                    </div>
                 </div>
-            </div>
             <?php } ?>
 
             <!-- Stap: Noodzakelijke klant info -->
@@ -173,7 +192,7 @@ include_once __DIR__ . '/incs/top.php';
                 <h3>Noodzakelijke klant info</h3>
                 <label for="naam">Klantnaam: <span class="required">*</span></label>
                 <input type="text" id="naam" name="naam" required value="<?php echo htmlspecialchars($klantData['naam'] ?? ''); ?>">
-                
+
                 <div class="adres-regel">
                     <div>
                         <label for="postcode">Postcode: <span class="required">*</span></label>
@@ -188,7 +207,7 @@ include_once __DIR__ . '/incs/top.php';
                         <input type="text" id="land" name="land" required value="<?php echo htmlspecialchars($klantData['land'] ?? 'Nederland'); ?>">
                     </div>
                 </div>
-                
+
                 <div class="adres-regel2">
                     <div>
                         <label for="straat">Straat: <span class="required">*</span></label>
@@ -306,13 +325,13 @@ include_once __DIR__ . '/incs/top.php';
         let currentStep = 0;
         let steps = document.querySelectorAll('.form-step');
         const isEdit = <?php echo $edit ? 'true' : 'false'; ?>;
-        
+
         function showStep(stepIndex) {
             steps.forEach((step, index) => {
                 step.classList.toggle('active', index === stepIndex);
             });
         }
-        
+
         if (!isEdit) {
             // Registratie modus: de stappen zijn:
             // 0: Intro, 1: Noodzakelijke klant info, 2: Besteller, 3: Aanvullende info.
@@ -376,7 +395,7 @@ include_once __DIR__ . '/incs/top.php';
                 showStep(currentStep);
             });
         }
-        
+
         // Zorg dat de website-URL begint met http:// als dat nog niet zo is
         document.getElementById('multiStepForm').addEventListener('submit', function(event) {
             const websiteField = document.getElementById('website');
@@ -385,7 +404,7 @@ include_once __DIR__ . '/incs/top.php';
                 websiteField.value = 'http://' + websiteValue;
             }
         });
-        
+
         // Functie om adresgegevens op te halen
         function fetchAddress() {
             let postcode = document.getElementById('postcode').value.trim();
@@ -422,10 +441,10 @@ include_once __DIR__ . '/incs/top.php';
                 document.getElementById('land').value = 'België';
             }
         }
-        
+
         document.getElementById('postcode').addEventListener('blur', fetchAddress);
         document.getElementById('nummer').addEventListener('blur', fetchAddress);
-        
+
         // Toggle voor optionele adressen
         document.getElementById('toggleFactuur').addEventListener('click', function() {
             let acc = document.getElementById('factuurAccordion');
@@ -449,5 +468,5 @@ include_once __DIR__ . '/incs/top.php';
         });
     </script>
 </body>
-</html>
 
+</html>

@@ -44,6 +44,9 @@ body{
     max-height: auto;
 }
 
+.grid-container .geenpad {
+    padding: 0;
+}
 
 .grid-container .oranje{
     background-color: #EC7D10;
