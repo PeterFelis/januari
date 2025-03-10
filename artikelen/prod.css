@@ -1,0 +1,200 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+/* common.css */
+.grid-container {
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    min-width: 1200px;
+    width:95vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Algemene eigenschappen, maar niet de grid-template-areas of grid-template-rows die per pagina kunnen verschillen */
+}
+
+
+.grid-container > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    padding:20px
+}
+
+.grid-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.grid-container .hoog {
+    width: auto;
+    max-height: 100%;
+}
+
+.grid-container .breed {
+    max-width: 100%;
+    max-height: auto;
+}
+
+.grid-container .geenpad {
+    padding: 0;
+}
+
+.grid-container .oranje{
+    background-color: #EC7D10;
+    color:white;
+}
+
+.een {
+    grid-area: een;
+    background-color: white;
+}
+
+.twee {
+    grid-area: twee;
+    background-color: white;
+}
+
+.titel {
+    grid-area: titel;
+}
+
+
+.price-component p{
+    margin: 0;
+    padding: 0;
+}
+
+.price-component label{
+    display:inline-block;
+    padding-right: 2rem;
+}
+
+.price-component input{
+    min-width: 100px;
+    width: auto;
+}
+
+#usp, .usp {
+    grid-area: usp;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 18px;
+    line-height: 26px;
+    flex-direction: column;
+}
+
+
+.omschrijving p, #usp P, .usp p {
+    margin: 0;
+}
+
+.omschrijving h3 {
+    line-height: 1.2;
+}
+
+
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* bijna volledig ondoorzichtig wit */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.lightbox-overlay.active {
+    display: flex;
+}
+
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.drie {
+    grid-area: drie;
+    flex-direction: column;
+}
+
+.vier {
+    grid-area: vier;
+}
+
+.vijf {
+    grid-area: vijf;
+}
+
+.zes {
+    grid-area: zes;
+}
+
+.grid-container > .omschrijving {  
+    font-size: 18px;
+    padding: 4rem;
+    display:block;
+   
+    line-height: 1.2;
+}
+
+.col2{
+    columns: 2;
+    column-gap: 40px;
+}
+
+.zeven{
+    grid-area: zeven;
+}
+
+.acht {
+    grid-area: acht;
+}
+
+.negen {
+    grid-area: negen;
+}
+
+.tien {
+    grid-area: tien;
+
+}
+
+.hero {
+    grid-area: hero;
+
+}
+
+.elf {
+    grid-area: elf;
+
+}
+
+.twaalf {
+    grid-area: twaalf;
+}
+
+.dertien {
+    grid-area: dertien;
+}
+
+.veertien {
+    grid-area: veertien;
+}   
+
