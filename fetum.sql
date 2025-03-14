@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 10 mrt 2025 om 16:13
+-- Gegenereerd op: 14 mrt 2025 om 16:19
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -179,7 +179,8 @@ INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschr
 (54, 'Soundcard', 'USB', 'USB Sound', '<p><br></p>', '', 5, '2025-03-06 12:00:19', '<p>USB soundcard</p><p>Te gebruiken bij verstopte koptelefoon aansluiting</p><p>plug en play</p><p>Apple/chromebook/windows</p>', '<p>USB soundcard</p><p>Te gebruiken bij verstopte koptelefoon aansluiting</p><p>plug en play</p><p>Apple/chromebook/windows</p>', 'ja', ''),
 (57, 'Hoofdtelefoons', 'Budget met zakje', 'HP-2710Z', '<p>Onze HP-2710 maar nut met een gerycyled stoffen bewaarzakje.</p><p><br></p><p>Zakje is afsluitbaar en beschrijfbaar en zorgt ervoor dat de hoofdtelefoon netjes opgeruimd kan worden.</p>', '125 1,95\n250 1,85 \n500 1,75', 125, '2025-03-06 15:14:55', '<p>Budget koptelefoon</p><p>4 vrolijke kleuren</p><p>Geen bliser - geen afval</p><p>met opruimzakje</p>', '<p>Budget hoofdtelefoon</p><p>4 verschillende vrolijke kleuren</p><p>rood - groen - blauw en zwart</p><p>met opruimzakje</p>', 'ja', 'HP-2710'),
 (58, 'Hoofdtelefoons', 'Budget met zakje', 'HP-2706Z', '<p>Onze HP-2706 maar nut met een gerycyled stoffen bewaarzakje.</p><p><br></p><p>Zakje is afsluitbaar en beschrijfbaar en zorgt ervoor dat de hoofdtelefoon netjes opgeruimd kan worden.</p><p><br></p>', '125 1,95\n250 1,80\n500 1,70', 125, '2025-03-06 15:21:13', '<p>Budget hoofdtelefoon</p><p>2 meter snoer, stereo stekker</p><p>Geen blister verpakking</p><p>Met bewaarzakjes</p>', '<p>Budget hoofdtelefoon</p><p>2 meter snoer, stereo stekker</p><p>Geen blister verpakking</p>', 'ja', 'HP-2706'),
-(59, 'Hoofdtelefoons', 'Comfort met zakje', 'HP-112Z', '<p>De HP-112 met gerecyclede en beschrijfbare opbergtas.</p><p>Verder helemaal gelijk aan de HP-112.</p>', '32 4,91\n64 4,65\n128 4,52', 50, '2025-03-07 15:07:47', '<p>Met beschijfbare bewaar tast</p><p>Metalen hoofdband</p><p>Grote halfopen oorschelpen</p><p>1 meter snoer</p>', '<p>Metalen hoofdband</p><p>Grote halfopen oorschelpen</p><p>1 meter snoer</p><p><br></p>', 'ja', 'HP-112');
+(59, 'Hoofdtelefoons', 'Comfort met zakje', 'HP-112Z', '<p>De HP-112 met gerecyclede en beschrijfbare opbergtas.</p><p>Verder helemaal gelijk aan de HP-112.</p>', '32 4,91\n64 4,65\n128 4,52', 50, '2025-03-07 15:07:47', '<p>Met beschijfbare bewaar tast</p><p>Metalen hoofdband</p><p>Grote halfopen oorschelpen</p><p>1 meter snoer</p>', '<p>Metalen hoofdband</p><p>Grote halfopen oorschelpen</p><p>1 meter snoer</p><p><br></p>', 'ja', 'HP-112'),
+(60, 'Hoofdtelefoons', 'Bluetooth', 'BT-7', '<p><strong>BT hoofdtelefoon</strong></p>', '32 7,86\n64 7,64\n128 7,24\n256 6.95', 5, '2025-03-13 14:04:53', '<p>Vast snoer</p><p>Verstelbare oorschelpen</p><p>Nylon verstevigd snoer</p><p>Inclusief naamsticker</p>', '<p>Witte Bluetooth Koptelefoon</p><p>Opklapbaar</p><p>Degelijk</p>', 'ja', '');
 
 -- --------------------------------------------------------
 
@@ -346,7 +347,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT voor een tabel `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT voor een tabel `settings`
