@@ -38,16 +38,21 @@ function renderPriceComponent($prijsstaffel, $aantal_per_doos, $productType, $ty
         <!-- Weergave van de berekende totaalprijs -->
         <div id="<?= $prefix ?>_prijsDisplay" style="margin-bottom:1rem; font-weight:bold;"></div>
 
-        <!-- Bestelformulier -->
-        <form method="post" action="/cart_process.php">
-            <!-- Producttype meesturen -->
-            <input type="hidden" name="productType" value="<?= htmlspecialchars($productType) ?>">
-            <!-- TypeNummer (of productnummer) meesturen -->
-            <input type="hidden" name="TypeNummer" value="<?= htmlspecialchars($typeNummer) ?>">
-            <!-- Verborgen veld dat het uiteindelijke aantal stuks bevat -->
-            <input type="hidden" id="<?= $prefix ?>_hiddenAantal" name="aantal" value="">
-            <button type="submit">Bestel</button>
-        </form>
+        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+            <!-- Bestelformulier voor reguliere gebruikers -->
+            <form method="post" action="/cart_process.php">
+                <!-- Producttype meesturen -->
+                <input type="hidden" name="productType" value="<?= htmlspecialchars($productType) ?>">
+                <!-- TypeNummer (of productnummer) meesturen -->
+                <input type="hidden" name="TypeNummer" value="<?= htmlspecialchars($typeNummer) ?>">
+                <!-- Verborgen veld dat het uiteindelijke aantal stuks bevat -->
+                <input type="hidden" id="<?= $prefix ?>_hiddenAantal" name="aantal" value="">
+                <button type="submit">Bestel</button>
+            </form>
+        <?php else: ?>
+            <!-- Melding voor admin gebruikers -->
+            <p style="color:red; font-weight:bold;">Als admin kunt u geen aankopen doen.</p>
+        <?php endif; ?>
 
         <!-- Verborgen data voor de JavaScript -->
         <div id="<?= $prefix ?>_hiddenData"

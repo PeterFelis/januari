@@ -58,9 +58,6 @@ if (isset($_SESSION['klant_id'])) {
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'producten_beheer') echo '<a href="/producten_beheer.php">Productenbeheer</a>'; ?>
             <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'product_sticker') echo '<a href="/product_sticker.php">Sticker Afdrukken</a>'; ?>
             <a href="/klantForm.php">Registreren</a>
-            <a href="/contact.php">Contact</a>
-            <a href="/leveringsvoorwaarden.php">Leveringsvoorwaarden</a>
-            <a href="/webshopinfo.php">Webshopinfo</a>
             <?php if ($cartCount > 0): ?>
                 <a href="/cart.php" class="cart-indicator">
                     Winkelwagen: <?php echo $cartCount; ?> soorten producten
