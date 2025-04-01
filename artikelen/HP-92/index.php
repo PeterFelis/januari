@@ -49,8 +49,8 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "een een een een een een";
             
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 3fr auto 2fr auto 5fr;
-        height: 3000px;
+        grid-template-rows: 1fr 5fr auto 2fr auto 5fr;
+        height: 3500px;
     }
 </style>
 <script>

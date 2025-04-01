@@ -206,7 +206,7 @@ include_once __dir__ . '/incs/top.php';
             .large {
                 margin-left: 10cm;
                 /* horizontaal 10 cm */
-                margin-top: 10cm;
+                margin-top: 13cm;
                 /* verticaal  10 cm */
 
             }

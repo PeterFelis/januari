@@ -1,23 +1,55 @@
-body{
+/* prod.css */
+
+/* Reset van body */
+body {
     margin: 0;
     padding: 0;
 }
 
-
-/* common.css */
+/* Basis grid layout voor grote schermen */
 .grid-container {
     padding: 4rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    /* We hebben in de PHP een specifieke grid-template-areas staan,
+       hier alleen de basisopmaak. */
+    grid-template-columns: repeat(6, 1fr);
     gap: 20px;
-    min-width: 1200px;
-    width:95vw;
+    width: 95vw;
     max-width: 1200px;
     margin: 0 auto;
-    /* Algemene eigenschappen, maar niet de grid-template-areas of grid-template-rows die per pagina kunnen verschillen */
 }
 
+/* Aanpassing voor tablets */
+@media only screen and (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 100%;
+        padding: 2rem;
+        /* Als je andere grid-template-areas wilt gebruiken voor tablets,
+           kun je die hier overschrijven. */
+    }
+}
 
+/* Aanpassing voor mobiele telefoons */
+@media only screen and (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 1rem;
+    }
+
+    /* Zorg ervoor dat afbeeldingen en tekst netjes gestapeld worden */
+    .grid-container > div {
+        padding: 10px;
+    }
+
+    /* Als je niet in 2 kolommen wilt op mobiel */
+    .col2 {
+        columns: 1;
+    }
+}
+
+/* Algemene styling voor grid items */
 .grid-container > div {
     display: flex;
     justify-content: center;
@@ -26,9 +58,10 @@ body{
     background-color: white;
     border-radius: 12px;
     overflow: hidden;
-    padding:20px
+    padding: 20px;
 }
 
+/* Afbeeldingen */
 .grid-container img {
     width: 100%;
     height: 100%;
@@ -45,45 +78,88 @@ body{
     max-height: auto;
 }
 
+/* Geen padding (bepaalde elementen) */
 .grid-container .geenpad {
     padding: 0;
 }
 
-.grid-container .oranje{
+/* Oranje achtergrond */
+.grid-container .oranje {
     background-color: #EC7D10;
-    color:white;
+    color: white;
 }
 
+/* Als je in 2 kolommen tekst wilt op grote schermen */
+.grid-container .col2 {
+    display: block;
+    columns: 2;
+    column-gap: 40px;
+}
+
+
+/* Specifieke grid-areas (namen komen uit je inline style in de PHP) */
 .een {
     grid-area: een;
-    background-color: white;
 }
-
 .twee {
     grid-area: twee;
-    background-color: white;
 }
-
 .titel {
     grid-area: titel;
 }
+.drie {
+    grid-area: drie;
+    flex-direction: column;
+}
+.vier {
+    grid-area: vier;
+}
+.vijf {
+    grid-area: vijf;
+}
+.zes {
+    grid-area: zes;
+}
+.zeven {
+    grid-area: zeven;
+}
+.acht {
+    grid-area: acht;
+}
+.negen {
+    grid-area: negen;
+}
+.tien {
+    grid-area: tien;
+}
+.elf {
+    grid-area: elf;
+}
+.twaalf {
+    grid-area: twaalf;
+}
+.dertien {
+    grid-area: dertien;
+}
+.veertien {
+    grid-area: veertien;
+}
 
-
-.price-component p{
+/* Price component styling */
+.price-component p {
     margin: 0;
     padding: 0;
 }
-
-.price-component label{
-    display:inline-block;
+.price-component label {
+    display: inline-block;
     padding-right: 2rem;
 }
-
-.price-component input{
+.price-component input {
     min-width: 100px;
     width: auto;
 }
 
+/* USP / Omschrijving */
 #usp, .usp {
     grid-area: usp;
     display: flex;
@@ -97,8 +173,9 @@ body{
     flex-direction: column;
 }
 
-
-.omschrijving p, #usp P, .usp p {
+.omschrijving p,
+#usp p,
+.usp p {
     margin: 0;
 }
 
@@ -107,6 +184,8 @@ body{
 }
 
 
+
+/* Lightbox */
 .lightbox-overlay {
     display: none;
     position: fixed;
@@ -119,82 +198,10 @@ body{
     align-items: center;
     z-index: 1000;
 }
-
 .lightbox-overlay.active {
     display: flex;
 }
-
 .lightbox-image {
     max-width: 90%;
     max-height: 90%;
 }
-
-.drie {
-    grid-area: drie;
-    flex-direction: column;
-}
-
-.vier {
-    grid-area: vier;
-}
-
-.vijf {
-    grid-area: vijf;
-}
-
-.zes {
-    grid-area: zes;
-}
-
-.grid-container > .omschrijving {  
-    font-size: 18px;
-    padding: 4rem;
-    display:block;
-   
-    line-height: 1.2;
-}
-
-.col2{
-    columns: 2;
-    column-gap: 40px;
-}
-
-.zeven{
-    grid-area: zeven;
-}
-
-.acht {
-    grid-area: acht;
-}
-
-.negen {
-    grid-area: negen;
-}
-
-.tien {
-    grid-area: tien;
-
-}
-
-.hero {
-    grid-area: hero;
-
-}
-
-.elf {
-    grid-area: elf;
-
-}
-
-.twaalf {
-    grid-area: twaalf;
-}
-
-.dertien {
-    grid-area: dertien;
-}
-
-.veertien {
-    grid-area: veertien;
-}   
-

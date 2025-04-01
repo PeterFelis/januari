@@ -10,7 +10,6 @@ $TypeNummerZakjes = "HP-30 Pouch"; // Zorg dat dit typenummer in de database bes
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie
 include_once __DIR__ . '/../../incs/artikelkop.php';
 
-
 // Haal de productdata op
 $mainProduct = getProductData($TypeNummerHoofd, $pdo);
 $variantProduct = getProductData($TypeNummerZakjes, $pdo);
@@ -40,6 +39,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 ?>
 <link rel="stylesheet" href="../prod.css">
 <style>
+    /* Desktop grid-indeling */
     .grid-container {
         grid-template-areas:
             "titel titel titel titel titel titel"
@@ -55,6 +55,28 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 2fr 2fr 4fr auto 3fr 1fr 5fr 2fr;
         height: 3000px;
+    }
+
+    /* Mobiel: alles in één kolom */
+    @media only screen and (max-width: 600px) {
+        .grid-container {
+            grid-template-areas:
+                "titel"
+                "een"
+                "twee"
+                "usp"
+                "drie"
+                "vier"
+                "vijf"
+                "zes"
+                "zeven"
+                "acht"
+                "negen"
+                "tien"
+                "elf"
+                "twaalf"
+                "dertien";
+        }
     }
 </style>
 <script>
@@ -95,22 +117,27 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <?php echo $mainProduct['USP']; ?>
         </div>
 
-
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
         <div class="drie oranje">
             <?php
-           renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer'], 'main');
+            renderPriceComponent(
+                $mainProduct['prijsstaffel'],
+                $mainProduct['aantal_per_doos'],
+                'main',
+                $mainProduct['TypeNummer'],
+                'main'
+            );
             ?>
         </div>
-
 
         <div class="vier">
             <img class='hoog' src="HP-30 wit uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        <div class="vijf"> <img class='hoog' src="hp-30 uitgeknipt twee.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+        <div class="vijf">
+            <img class='hoog' src="hp-30 uitgeknipt twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
 
-
-        <div class="zeven cols2 omschrijving oranje col2">
+        <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
@@ -133,27 +160,27 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <img class='hoog' src="pouch.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
-
-
         <div class="elf">
             <img class='hoog' src="hp-30 half in pouch.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
-        <div class="twaalf oranje omschrijving">
+        <div class="twaalf oranje omschrijving col2">
             <?php echo $variantProduct['omschrijving']; ?>
         </div>
 
         <div class="dertien oranje">
             <?php
             // Voor het variantproduct:
-            renderPriceComponent($variantProduct['prijsstaffel'], $variantProduct['aantal_per_doos'], 'variant', $variantProduct['TypeNummer'], 'variant');
-
+            renderPriceComponent(
+                $variantProduct['prijsstaffel'],
+                $variantProduct['aantal_per_doos'],
+                'variant',
+                $variantProduct['TypeNummer'],
+                'variant'
+            );
             ?>
         </div>
-
-
     </article>
-
 
     <div id="lightbox-overlay" class="lightbox-overlay">
         <img id="lightbox-image" class="lightbox-image" src="" alt="Uitvergrote afbeelding">
@@ -161,8 +188,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         <script src="../lightbox.js"></script>
     </div>
 
-
     <?php include dirname(__DIR__, 2) . "/incs/bottom.php"; ?>
 </body>
 
-</html
+</html>
