@@ -57,25 +57,63 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         height: 3000px;
     }
 
-    /* Mobiel: alles in één kolom */
+    /* Responsive aanpassingen per pagina */
+    @media only screen and (max-width: 1024px) {
+        .grid-container {
+            height: 2000px;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-areas:
+                "titel titel"
+                "een twee "
+                "usp twee"
+                "vier vijf"
+                "drie zeven"
+                "acht negen"
+                "tien tien "
+                "zes veertien"
+                "twaalf elf"
+                "dertien elf";
+        }
+    }
+
+    /* Responsive aanpassingen per pagina */
     @media only screen and (max-width: 600px) {
         .grid-container {
+            height: 3000px;
+            font-size: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr 2fr 4fr 4fr 4fr 5fr 2fr 2fr 2fr 2fr 4fr 2fr;
             grid-template-areas:
-                "titel"
-                "een"
-                "twee"
-                "usp"
-                "drie"
-                "vier"
-                "vijf"
-                "zes"
-                "zeven"
-                "acht"
-                "negen"
-                "tien"
-                "elf"
-                "twaalf"
-                "dertien";
+                "titel titel"
+                "een usp "
+                "twee twee"
+                "vier vijf"
+                "drie drie"
+                "zeven zeven"
+                "acht negen"
+                "tien tien "
+                "zes veertien"
+                "twaalf twaalf"
+                "dertien dertien"
+                "elf elf";
+        }
+
+        .grid-container .col2 {
+            columns: 1;
+        }
+
+
+        h1 {
+            font-size: 2.2em;
+        }
+
+        #usp {
+            font-size: 1.3rem;
+            line-height: 1.8rem;
+        }
+
+        p {
+            font-size: 1.4rem;
         }
     }
 </style>
@@ -144,6 +182,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         <div class="acht">
             <img class='hoog' src="HP-30 oorschelpen.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
+
         <div class="negen">
             <img class='hoog' src="zakje.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
