@@ -52,150 +52,167 @@ if (!empty($imageText)) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
+<title><?php echo $title; ?></title>
+<style>
+    /* Algemene instellingen */
+    body {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <title><?php echo $title; ?></title>
-    <style>
-        /* Algemene instellingen */
-        body {
-            display: flex;
-            flex-direction: column;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
-        }
+    /* Hero Section vult de volledige breedte, position: relative voor absolute elementen */
+    .hero-section {
+        width: 100%;
+        min-height: 90vh;
+        position: relative;
+        overflow: hidden;
+    }
 
-        /* Hero Section vult de volledige breedte, position: relative voor absolute elementen */
-        .hero-section {
-            width: 100%;
-            min-height: 90vh;
-            position: relative;
-            overflow: hidden;
-        }
+    /* Hero-image: standaard 100% breed, tenzij .has-text (2/3 breed) */
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* of contain, naar smaak */
+    }
 
-        /* Hero-image: standaard 100% breed, tenzij .has-text (2/3 breed) */
-        .hero-image {
-            float: left;
-            width: 100%;
-            height: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    .hero-image.has-text {
+        width: 66.66%;
+    }
 
-        .hero-image.has-text {
-            width: 66.66%;
-        }
+    /* Standaard arrow-box: positie rechts, pijl wijst naar links */
+    .arrow-box {
+        position: absolute;
+        bottom: 25%;
+        /* ongeveer 1/4 vanaf de onderkant */
+        right: 10%;
+        width: 20%;
+        background: rgba(33, 150, 243, 0.6);
+        color: #fff;
+        padding: 20px;
+        font-size: 1.6rem;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+    }
 
-        /* Standaard arrow-box: positie rechts, pijl wijst naar links */
-        .arrow-box {
-            position: absolute;
-            bottom: 33%;
-            /* ongeveer 1/3 vanaf de onderkant */
-            right: 10%;
-            width: 20%;
-            background: #2196f3;
-            color: #fff;
-            padding: 20px;
-            font-size: 1.6rem;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-            z-index: 2;
-        }
+    .arrow-box::after {
+        content: "";
+        position: absolute;
+        left: -20px;
+        /* pijl aan de linkerkant */
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-right: 20px solid rgba(33, 150, 243, 0.6);
+    }
 
-        .arrow-box::after {
-            content: "";
-            position: absolute;
-            left: -20px;
-            /* pijl aan de linkerkant */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-right: 20px solid #2196f3;
-        }
+    /* Voor over-layout: geen pijl en andere positie/breedte */
+    .arrow-box.over-layout {
+        bottom: 40%;
+        right: 20%;
+        width: 25%;
+    }
 
-        /* Voor over-layout: geen pijl en andere positie/breedte */
-        .arrow-box.over-layout {
-            bottom: 40%;
-            right: 20%;
-            width: 25%;
-        }
+    .arrow-box.over-layout::after {
+        content: none;
+    }
 
-        .arrow-box.over-layout::after {
-            content: none;
-        }
+    /* PDF Downloads Strip: Horizontale layout */
 
-        /* PDF Downloads Strip: Horizontale layout */
-        .pdf-strip {
-            background-color: var(--superlichtpaars);
-            padding: 10px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
+    .pdf-strip {
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: space-between;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .pdf-strip ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .pdf-strip li {
+        margin: 0 15px;
+        /* event. text-align: center; */
+    }
+
+    /* Tablet (tot 1024px) → 2 kolommen, 3 items per rij */
+    @media (max-width: 1024px) {
+        
         .pdf-strip ul {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(1, 1fr);
+            justify-items: left;
         }
 
         .pdf-strip li {
-            margin: 0 15px;
+            margin: 0;
+        }
+    }
+
+    .pdf-strip a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--paars);
+        font-size: 1.6rem;
+        transition: color 0.2s;
+    }
+
+    .pdf-strip a:hover {
+        color: black;
+    }
+
+    .pdf-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Onderste balk met adres */
+    .bottom-bar {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .adres {
+        font-size: 1.8rem;
+        color: #333;
+    }
+
+    /* Responsive gedrag voor kleinere schermen */
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 50vh;
         }
 
-        .pdf-strip a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            color: var(--paars);
-            font-size: 1.8rem;
-            transition: color 0.2s;
+        .arrow-box,
+        .arrow-box.over-layout {
+            width: 70%;
+            right: 15%;
+            bottom: 10%;
         }
 
-        .pdf-strip a:hover {
-            color: black;
-        }
-
-        .pdf-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Onderste balk met adres */
-        .bottom-bar {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .adres {
-            font-size: 1.8rem;
-            color: #333;
-        }
-
-        /* Responsive gedrag voor kleinere schermen */
-        @media (max-width: 768px) {
-            .hero-section {
-                min-height: 50vh;
-            }
-
-            .arrow-box,
-            .arrow-box.over-layout {
-                width: 70%;
-                right: 15%;
-                bottom: 10%;
-            }
-        }
-    </style>
-</head>
+    }
+</style>
 
 <body>
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
@@ -230,7 +247,7 @@ if (!empty($imageText)) {
         <?php endif; ?>
     </section>
 
-    <main>
+    
         <!-- PDF Downloads Strip: Horizontale layout -->
         <section class="pdf-strip">
             <ul>
@@ -261,8 +278,6 @@ if (!empty($imageText)) {
                 </li>
             </ul>
         </section>
-    </main>
-
     <section>
         <?php include __DIR__ . '/incs/random_products.php'; ?>
 
@@ -270,6 +285,7 @@ if (!empty($imageText)) {
         <div class="bottom-bar">
             <div class="adres">
                 <p>
+                    Fetum<br>
                     Grote waard 36<br>
                     2675 BX Honselersdijk<br>
                     Tel: 0174 769 132<br>

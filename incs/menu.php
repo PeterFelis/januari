@@ -3,9 +3,9 @@
 // $menu kan 'geen', 'normaal', 'beheer' of 'logo' zijn
 
 // Zorg dat de sessie gestart is, indien nog niet gebeurd.
-//if (session_status() === PHP_SESSION_NONE) {
-//    session_start();
-//}
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Bepaal het aantal winkelwagen-items:
 // Als de klant is ingelogd (klant_id aanwezig), halen we het aantal uit de database.
@@ -20,7 +20,6 @@ if (isset($_SESSION['klant_id'])) {
         die('Databaseverbinding mislukt: ' . $e->getMessage());
     }
 
-
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM shopping_cart WHERE klant_id = ?");
     $stmt->execute([$_SESSION['klant_id']]);
     $cartCount = $stmt->fetchColumn();
@@ -34,71 +33,50 @@ if (isset($_SESSION['klant_id'])) {
     <header>
         <nav>
             <div class="logo">
-                <img src="/afbeeldingen/fetumlogo.png" alt="Fetum logo" />
+                <img src="afbeeldingen/fetumlogo.png" alt="Fetum logo" />
             </div>
             <?php if ($cartCount > 0): ?>
-                <a href="/cart.php" class="cart-indicator">
-                    Winkelwagen: <?php echo $cartCount; ?> soorten producten
+                <a href="cart.php" class="cart-indicator">
+                    Winkelwagen: <?= $cartCount ?> producten
                 </a>
             <?php endif; ?>
         </nav>
     </header>
-<?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-    <!-- Admin: toon beheermenu -->
+<?php else: ?>
+    <!-- Volledig responsive menu voor normaal/beheer/admin -->
     <header>
         <nav>
             <a class="logo" href="/">
-                <img src="/afbeeldingen/fetumlogo.png" alt="Fetum logo" />
+                <img src="afbeeldingen/fetumlogo.png" alt="Fetum logo" />
             </a>
-            <?php
-            // Toon altijd de uitlogknop bij een admin
-            echo '<a href="/logout.php">Uitloggen</a>';
-            ?>
-            <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'dashboard') echo '<a href="/dashboard.php">Dashboard</a>'; ?>
-            <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'producten_beheer') echo '<a href="/producten_beheer.php">Productenbeheer</a>'; ?>
-            <?php if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'product_sticker') echo '<a href="/product_sticker.php">Sticker Afdrukken</a>'; ?>
-            <a href="/klantForm.php">Registreren</a>
-            <?php if ($cartCount > 0): ?>
-                <a href="/cart.php" class="cart-indicator">
-                    Winkelwagen: <?php echo $cartCount; ?> soorten producten
-                </a>
-            <?php endif; ?>
-        </nav>
-    </header>
-<?php elseif (isset($menu) && ($menu == 'normaal' || $menu == 'beheer')): ?>
-    <!-- Niet-admin: toon het normale menu -->
-    <header>
-        <nav>
-            <a class="logo" href="/">
-                <img src="/afbeeldingen/fetumlogo.png" alt="Fetum logo" />
-            </a>
-            <a href="/onderwijs.php">Onderwijs</a>
-            <a href="/zorg.php">Zorg</a>
-            <a href="/news.php">NIEUWS</a>
-            <a href="/webshopinfo.php">Webshop Info</a>
-            <a href="/contact.php">Contact</a>
-            <a href="/shop.php">Webshop</a>
-            <a href="/timeline.php">Timeline</a>
-            <?php
-            // Als de gebruiker ingelogd is, tonen we de uitlogknop.
-            if (isset($_SESSION['user_id'])) {
-                echo '<a href="/dashboard.php">Dashboard</a>';
-                echo '<a href="/logout.php">Uitloggen</a>';
-            } else {
-                // Alleen tonen als we niet op het klantForm-pagina zitten.
-                if (basename($_SERVER['SCRIPT_NAME'], ".php") !== 'klantForm') {
-                    echo '<a href="/klantForm.php">Wordt klant</a>';
-                }
-                if (strtolower(basename($_SERVER['SCRIPT_NAME'], ".php")) !== 'loginform') {
-                    echo '<a href="/loginForm.php">Inloggen</a>';
-                }
-            }
-            ?>
-            <?php if ($cartCount > 0): ?>
-                <a href="/cart.php" class="cart-indicator">
-                    Winkelwagen: <?php echo $cartCount; ?> producten
-                </a>
-            <?php endif; ?>
+            <button class="hamburger" onclick="document.body.classList.toggle('menu-open')">&#9776;</button>
+            <div class="menu-items">
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <a href="dashboard.php">Dashboard</a>
+                    <a href="producten_beheer.php">Productenbeheer</a>
+                    <a href="product_sticker.php">Sticker Afdrukken</a>
+                    <a href="klantForm.php">Registreren</a>
+                    <a href="logout.php">Uitloggen</a>
+                <?php elseif (isset($menu) && ($menu === 'normaal' || $menu === 'beheer')): ?>
+                    <a href="/">Onderwijs</a>
+                    <a href="/">Zorg</a>
+                    <a href="news.php">NIEUWS</a>
+                    <a href="webshopinfo.php">Webshop Info</a>
+                    <a href="contact.php">Contact</a>
+                    <a href="shop.php">Webshop</a>
+                    <a href="timeline.php">Timeline</a>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a href="dashboard.php">Dashboard</a>
+                        <a href="logout.php">Uitloggen</a>
+                    <?php else: ?>
+                        <a href="klantForm.php">Wordt klant</a>
+                        <a href="loginForm.php">Inloggen</a>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($cartCount > 0): ?>
+                    <a href="cart.php" class="cart-indicator">Winkelwagen: <?= $cartCount ?> producten</a>
+                <?php endif; ?>
+            </div>
         </nav>
     </header>
 <?php endif; ?>
@@ -110,7 +88,6 @@ if (isset($_SESSION['klant_id'])) {
     header {
         width: 100vw;
         margin: 0 auto;
-        background-color: transparent;
         background-color: var(--paars);
         font-size: 1.4rem;
         position: relative;
@@ -147,7 +124,6 @@ if (isset($_SESSION['klant_id'])) {
         position: relative;
         margin-top: 1rem;
         z-index: 20;
-        /* Zorg ervoor dat het logo altijd boven het vlak staat */
     }
 
     .logo img {
@@ -157,7 +133,6 @@ if (isset($_SESSION['klant_id'])) {
         position: relative;
     }
 
-    /* Gekanteld vlak */
     .logo::after {
         content: '';
         display: block;
@@ -166,12 +141,81 @@ if (isset($_SESSION['klant_id'])) {
         background: var(--accent);
         position: absolute;
         z-index: 15;
-        /* Boven de hero, onder het logo */
         top: -100%;
         left: -10%;
         transform: rotate(-15deg);
         border-radius: 0% 0% 20% 20%;
         pointer-events: none;
-        /* Voorkom flikkeren bij hover */
+    }
+
+    .hamburger {
+        background: none;
+        border: none;
+        font-size: 2.5rem;
+        color: white;
+        cursor: pointer;
+        display: none;
+        z-index: 100;
+    }
+
+    .menu-items {
+        display: flex;
+        gap: 1rem;
+    }
+
+
+    /* Tablet (tot 1024px) → 2 kolommen, 3 items per rij */
+    @media (max-width: 1024px) {
+        .logo {
+            height: 100%;    
+            margin-top: 1rem;
+            margin-left: 1rem;
+        }
+    }
+
+
+    @media (max-width: 768px) {
+        .logo {
+            height: 80%;          
+            top:-10%
+        }
+
+        nav {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 1rem;
+        }
+
+        .hamburger {
+            display: block;
+            position: absolute;
+            top: 5rem;
+            right: 2rem;
+            color:white;
+            mix-blend-mode: difference;
+        }
+
+        .menu-items {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100vh;
+            width: 70vw;
+            max-width: 300px;
+            background: var(--paars);
+            flex-direction: column;
+            padding: 4rem 1rem;
+            gap: 1.5rem;
+            transition: left 0.3s ease-in-out;
+            z-index: 90;
+        }
+
+        body.menu-open .menu-items {
+            left: 0;
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
     }
 </style>

@@ -50,7 +50,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <p>vanaf prijs: <?php echo getLowestPrice($product['prijsstaffel']); ?></p>
                         <div class="product-usp">
-                            <?php echo $product['USP']; // USP als HTML weergeven ?>
+                            <?php echo $product['USP']; // USP als HTML weergeven 
+                            ?>
                         </div>
                     </div>
                 </a>
@@ -80,10 +81,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         display: flex;
         flex-wrap: wrap;
         gap: 1.5rem;
+        justify-content: center;
     }
 
     /* Maak de link een flex-item zodat de hoogte gelijk getrokken kan worden */
-    .product-link {
+    .random-products .product-link {
         display: flex;
         text-decoration: none;
         color: inherit;
@@ -120,5 +122,32 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .random-products .product-card:hover .product-image img {
         transform: scale(1.05);
     }
-</style>
 
+    /* Tablet (max 1024px): 3 kolommen */
+    @media (max-width: 1024px) {
+
+        .random-products .product-card h3 {
+            font-size: 1.4rem;
+            /* net iets kleiner */
+        }
+
+        .random-products .product-card p {
+            font-size: 1rem;
+        }
+    }
+
+    /* Mobiel (max 768px): 1 kolom */
+    @media (max-width: 768px) {
+        .random-products .product-link {
+            width: 90%;
+        }
+
+        .random-products .product-card h3 {
+            font-size: 3rem;
+        }
+
+        .random-products .product-card p {
+            font-size: 1.4rem;
+        }
+    }
+</style>

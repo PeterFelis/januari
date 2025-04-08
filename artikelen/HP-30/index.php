@@ -38,6 +38,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
 <link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     /* Desktop grid-indeling */
     .grid-container {
@@ -52,7 +53,6 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "zes zes zes zes veertien veertien"
             "twaalf twaalf twaalf elf elf elf"
             "dertien dertien dertien elf elf elf";
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 2fr 2fr 4fr auto 3fr 1fr 5fr 2fr;
         height: 3000px;
     }
@@ -60,19 +60,21 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
     /* Responsive aanpassingen per pagina */
     @media only screen and (max-width: 1024px) {
         .grid-container {
-            height: 2000px;
-            grid-template-columns: repeat(2, 1fr);
+            height: 3000px;
             grid-template-areas:
-                "titel titel"
-                "een twee "
-                "usp twee"
-                "vier vijf"
-                "drie zeven"
-                "acht negen"
-                "tien tien "
-                "zes veertien"
-                "twaalf elf"
-                "dertien elf";
+                "titel titel titel titel"
+                "een twee twee twee"
+                "usp twee twee twee"
+                "vier vier vijf vijf"
+                "drie drie drie drie"
+                "zeven zeven zeven zeven"
+                "acht acht negen negen"
+                "tien tien tien tien"
+                "zes zes veertien veertien" 
+                "elf elf elf elf"
+                "twaalf twaalf twaalf twaalf"
+                "dertien dertien dertien dertien";
+            grid-template-rows: 1fr 2fr 2fr 3fr auto auto 3fr 1fr 5fr 4fr auto auto;
         }
     }
 
@@ -81,18 +83,19 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         .grid-container {
             height: 3000px;
             font-size: 1rem;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: 1fr 2fr 4fr 4fr 4fr 5fr 2fr 2fr 2fr 2fr 4fr 2fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr auto auto 1fr 1fr 1fr 1fr auto auto 1fr;
             grid-template-areas:
                 "titel titel"
                 "een usp "
                 "twee twee"
-                "vier vijf"
+                "vier vier"
+                "vijf vijf"
                 "drie drie"
                 "zeven zeven"
                 "acht negen"
                 "tien tien "
-                "zes veertien"
+                "zes zes"
+                "veertien veertien"
                 "twaalf twaalf"
                 "dertien dertien"
                 "elf elf";

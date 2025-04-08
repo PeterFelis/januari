@@ -172,8 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     .kaart {
-        width: 1200px;
-        height: 70vh;
+        width: 100vw;
+        height: 90vh;
         margin: 0 auto;
     }
 
