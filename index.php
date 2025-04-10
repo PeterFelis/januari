@@ -91,12 +91,12 @@ if (!empty($imageText)) {
         bottom: 25%;
         /* ongeveer 1/4 vanaf de onderkant */
         right: 10%;
-        width: 20%;
+        width: auto;
         background: rgba(33, 150, 243, 0.6);
         color: #fff;
         padding: 20px;
         font-size: 1.6rem;
-        text-align: center;
+        text-align: left;
         border-radius: 8px;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
         z-index: 2;
@@ -206,10 +206,13 @@ if (!empty($imageText)) {
 
         .arrow-box,
         .arrow-box.over-layout {
-            width: 70%;
-            right: 15%;
+            right: 5%;
             bottom: 10%;
+            font-size: 1.2rem;
         }
+
+
+        
 
     }
 </style>

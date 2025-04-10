@@ -114,8 +114,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .random-products .product-image img {
         width: 100%;
         height: auto;
-        border-radius: 4px;
-        transition: transform 0.2s;
+        max-height: 200px;
+        /* of een waarde die jij passend vindt */
+        object-fit: contain;
     }
 
     /* Vergroot de afbeelding bij hover over de kaart */
@@ -125,6 +126,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     /* Tablet (max 1024px): 3 kolommen */
     @media (max-width: 1024px) {
+
+        
 
         .random-products .product-card h3 {
             font-size: 1.4rem;

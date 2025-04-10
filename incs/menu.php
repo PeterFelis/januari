@@ -33,7 +33,7 @@ if (isset($_SESSION['klant_id'])) {
     <header>
         <nav>
             <div class="logo">
-                <img src="afbeeldingen/fetumlogo.png" alt="Fetum logo" />
+                <img src="\afbeeldingen/fetumlogo.png" alt="Fetum logo" />
             </div>
             <?php if ($cartCount > 0): ?>
                 <a href="cart.php" class="cart-indicator">
@@ -47,30 +47,30 @@ if (isset($_SESSION['klant_id'])) {
     <header>
         <nav>
             <a class="logo" href="/">
-                <img src="afbeeldingen/fetumlogo.png" alt="Fetum logo" />
+                <img src="\afbeeldingen/fetumlogo.png" alt="Fetum logo" />
             </a>
             <button class="hamburger" onclick="document.body.classList.toggle('menu-open')">&#9776;</button>
             <div class="menu-items">
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <a href="dashboard.php">Dashboard</a>
-                    <a href="producten_beheer.php">Productenbeheer</a>
-                    <a href="product_sticker.php">Sticker Afdrukken</a>
-                    <a href="klantForm.php">Registreren</a>
-                    <a href="logout.php">Uitloggen</a>
+                    <a href="/dashboard.php">Dashboard</a>
+                    <a href="/producten_beheer.php">Productenbeheer</a>
+                    <a href="/product_sticker.php">Sticker Afdrukken</a>
+                    <a href="/klantForm.php">Registreren</a>
+                    <a href="/logout.php">Uitloggen</a>
                 <?php elseif (isset($menu) && ($menu === 'normaal' || $menu === 'beheer')): ?>
                     <a href="/">Onderwijs</a>
                     <a href="/">Zorg</a>
-                    <a href="news.php">NIEUWS</a>
-                    <a href="webshopinfo.php">Webshop Info</a>
-                    <a href="contact.php">Contact</a>
-                    <a href="shop.php">Webshop</a>
-                    <a href="timeline.php">Timeline</a>
+                    <a href="/news.php">NIEUWS</a>
+                    <a href="/webshopinfo.php">Webshop Info</a>
+                    <a href="/contact.php">Contact</a>
+                    <a href="/shop.php">Webshop</a>
+                    <a href="/timeline.php">Timeline</a>
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="dashboard.php">Dashboard</a>
-                        <a href="logout.php">Uitloggen</a>
+                        <a href="/dashboard.php">Dashboard</a>
+                        <a href="/logout.php">Uitloggen</a>
                     <?php else: ?>
-                        <a href="klantForm.php">Wordt klant</a>
-                        <a href="loginForm.php">Inloggen</a>
+                        <a href="/klantForm.php">Wordt klant</a>
+                        <a href="/loginForm.php">Inloggen</a>
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($cartCount > 0): ?>
@@ -167,7 +167,7 @@ if (isset($_SESSION['klant_id'])) {
     /* Tablet (tot 1024px) → 2 kolommen, 3 items per rij */
     @media (max-width: 1024px) {
         .logo {
-            height: 100%;    
+            height: 100%;
             margin-top: 1rem;
             margin-left: 1rem;
         }
@@ -176,8 +176,8 @@ if (isset($_SESSION['klant_id'])) {
 
     @media (max-width: 768px) {
         .logo {
-            height: 80%;          
-            top:-10%
+            height: 80%;
+            top: -10%
         }
 
         nav {
@@ -191,7 +191,7 @@ if (isset($_SESSION['klant_id'])) {
             position: absolute;
             top: 5rem;
             right: 2rem;
-            color:white;
+            color: white;
             mix-blend-mode: difference;
         }
 

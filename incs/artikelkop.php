@@ -27,4 +27,3 @@ function getProductData($typenummer, $pdo) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>
-<link rel="stylesheet" href="../prod.css">
