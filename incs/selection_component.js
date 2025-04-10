@@ -1,4 +1,4 @@
-/* selection_component.js */
+/* selection_component.js - Responsive version */
 (function(window, document) {
     function sanitizeForId(str) {
         return str.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
@@ -19,6 +19,7 @@
         this.categoryContainer = null;
         this.subcategoryContainer = null;
         this.productContainer = null;
+        this.mobileMenuOpen = false;
 
         this.products = [];
         this.selectedCategory = null;
@@ -27,6 +28,7 @@
 
         this.injectCSS();
         this.init();
+        this.setupResponsiveMenu();
     }
 
     SelectionComponent.prototype.injectCSS = function() {
@@ -46,18 +48,19 @@
                 gap: 1rem;
                 width: 1200px;
                 margin: 0 auto;
-                height: 15rem;
                 margin-bottom: 20px;
-                padding: 30px;
-                padding-top: 5rem;
+                padding: 20px;
+                padding-top: 2rem;
                 border-bottom: 2px solid var(--paars);
+                position: relative; /* Voor positionering van mobiele menu knop */
             }
             .selection-category-heading,
             .selection-subcategory-heading,
             .selection-products-heading {
                 text-align: center;
                 font-weight: bold;
-                font-size: 3rem;
+                font-size: 2rem;
+                margin: 0;
             }
             .selection-category-heading { grid-column: 1; grid-row: 1; }
             .selection-subcategory-heading { grid-column: 2; grid-row: 1; }
@@ -75,12 +78,121 @@
             /* Nieuwe stijl voor tekst (geen knop) */
             .selection-text {
                 font-size: 1.5rem;
+                line-height: 1.2rem;
                 cursor: pointer;
                 padding: 0.5rem;
             }
             .selection-text.selected {
                 font-weight: bold;
                 color: var(--paars);
+            }
+            
+            /* Mobiele menu stijlen */
+            .mobile-menu-toggle {
+                display: none;
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                z-index: 1000;
+                background-color: var(--paars);
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 10px 15px;
+                font-size: 16px;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+            
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 998;
+            }
+            
+            .mobile-menu-container {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: -280px;
+                width: 280px;
+                height: 100%;
+                background-color: white;
+                z-index: 999;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+                padding: 20px;
+            }
+            
+            .mobile-menu-container.open {
+                left: 0;
+            }
+            
+            .mobile-menu-close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--paars);
+            }
+            
+            /* Responsieve stijlen */
+            @media (max-width: 1200px) {
+                .selection-component-container {
+                    width: 100%;
+                    padding: 15px;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .selection-component-container {
+                    display: none;
+                }
+                
+                .mobile-menu-toggle {
+                    display: block;
+                }
+                
+                .mobile-menu-container, .mobile-menu-overlay {
+                    display: block;
+                }
+                
+                .mobile-menu-section {
+                    margin-bottom: 20px;
+                }
+                
+                .mobile-menu-section h3 {
+                    font-size: 1.5rem;
+                    margin-bottom: 10px;
+                    color: var(--paars);
+                }
+                
+                .mobile-menu-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                }
+                
+                .mobile-menu-item {
+                    padding: 8px 0;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    border-bottom: 1px solid #eee;
+                }
+                
+                .mobile-menu-item.selected {
+                    font-weight: bold;
+                    color: var(--paars);
+                }
             }
             `;
         } else {
@@ -119,54 +231,6 @@
                 max-width: 100%;
                 height: auto;
                 display: block;
-            }
-            `;
-        }
-        if (this.orientation === "horizontal") {
-            css += `
-            .selection-component-container {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: auto auto;
-                gap: 1rem;
-                width: 1200px;
-                margin: 0 auto;
-                /* height: 15rem;  - Verwijderen of uitcommentariëren */
-                margin-bottom: 20px;
-                padding: 20px;          /* iets minder padding */
-                padding-top: 2rem;      /* ipv 5rem, iets lager */
-                border-bottom: 2px solid var(--paars);
-            }
-            .selection-category-heading,
-            .selection-subcategory-heading,
-            .selection-products-heading {
-                text-align: center;
-                font-weight: bold;
-                font-size: 2rem; /* ipv 3rem */
-                margin: 0;       /* optioneel: als er standaard marge op headings zit */
-            }
-            .selection-category-heading { grid-column: 1; grid-row: 1; }
-            .selection-subcategory-heading { grid-column: 2; grid-row: 1; }
-            .selection-products-heading { grid-column: 3; grid-row: 1; }
-            .selection-category-list,
-            .selection-subcategory-list,
-            .selection-products-list {
-                grid-column: span 1;
-                grid-row: 2;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-                justify-content: center;
-            }
-            /* Nieuwe stijl voor tekst (geen knop) */
-            .selection-text {
-                font-size: 1.5rem; /* iets kleiner dan 1.5rem */
-                line-height:1.2rem;  /* optioneel: regelhoogte aanpassen */
-                cursor: pointer;
-            }
-            .selection-text.selected {
-                font-weight: bold;
-                color: var(--paars);
             }
             `;
         }
@@ -231,6 +295,247 @@
         this.fetchProducts();
     };
 
+    SelectionComponent.prototype.setupResponsiveMenu = function() {
+        if (this.orientation !== "horizontal") return;
+        
+        var self = this;
+        
+        // Maak de mobiele menu toggle knop
+        var menuToggle = document.createElement('button');
+        menuToggle.className = 'mobile-menu-toggle';
+        menuToggle.textContent = 'Keuze';
+        document.body.appendChild(menuToggle);
+        
+        // Maak de overlay voor het mobiele menu
+        var overlay = document.createElement('div');
+        overlay.className = 'mobile-menu-overlay';
+        document.body.appendChild(overlay);
+        
+        // Maak de container voor het mobiele menu
+        var mobileMenu = document.createElement('div');
+        mobileMenu.className = 'mobile-menu-container';
+        document.body.appendChild(mobileMenu);
+        
+        // Voeg een sluitknop toe aan het mobiele menu
+        var closeButton = document.createElement('button');
+        closeButton.className = 'mobile-menu-close';
+        closeButton.innerHTML = '&times;';
+        mobileMenu.appendChild(closeButton);
+        
+        // Maak secties voor categorieën, subcategorieën en producten
+        var categorySection = document.createElement('div');
+        categorySection.className = 'mobile-menu-section';
+        categorySection.innerHTML = '<h3>Soort</h3>';
+        var categoryList = document.createElement('div');
+        categoryList.className = 'mobile-menu-list category-list';
+        categorySection.appendChild(categoryList);
+        mobileMenu.appendChild(categorySection);
+        
+        var subcategorySection = document.createElement('div');
+        subcategorySection.className = 'mobile-menu-section';
+        subcategorySection.innerHTML = '<h3>Type</h3>';
+        var subcategoryList = document.createElement('div');
+        subcategoryList.className = 'mobile-menu-list subcategory-list';
+        subcategorySection.appendChild(subcategoryList);
+        mobileMenu.appendChild(subcategorySection);
+        
+        if (this.showProducts) {
+            var productSection = document.createElement('div');
+            productSection.className = 'mobile-menu-section';
+            productSection.innerHTML = '<h3>Typenummer</h3>';
+            var productList = document.createElement('div');
+            productList.className = 'mobile-menu-list product-list';
+            productSection.appendChild(productList);
+            mobileMenu.appendChild(productSection);
+        }
+        
+        // Event listeners voor het openen en sluiten van het menu
+        menuToggle.addEventListener('click', function() {
+            self.toggleMobileMenu(true);
+        });
+        
+        closeButton.addEventListener('click', function() {
+            self.toggleMobileMenu(false);
+        });
+        
+        overlay.addEventListener('click', function() {
+            self.toggleMobileMenu(false);
+        });
+        
+        // Sla referenties op naar de mobiele menu elementen
+        this.mobileMenuToggle = menuToggle;
+        this.mobileMenuOverlay = overlay;
+        this.mobileMenuContainer = mobileMenu;
+        this.mobileCategoryList = categoryList;
+        this.mobileSubcategoryList = subcategoryList;
+        this.mobileProductList = this.showProducts ? productList : null;
+    };
+    
+    SelectionComponent.prototype.toggleMobileMenu = function(open) {
+        if (open) {
+            this.mobileMenuContainer.classList.add('open');
+            this.mobileMenuOverlay.style.display = 'block';
+            this.mobileMenuOpen = true;
+            
+            // Vul het menu met de huidige data
+            this.renderMobileCategories();
+            if (this.selectedCategory) {
+                this.renderMobileSubcategories(this.selectedCategory);
+                if (this.selectedSubcategory && this.showProducts) {
+                    this.renderMobileProducts(this.selectedCategory, this.selectedSubcategory);
+                }
+            }
+        } else {
+            this.mobileMenuContainer.classList.remove('open');
+            this.mobileMenuOverlay.style.display = 'none';
+            this.mobileMenuOpen = false;
+        }
+    };
+    
+    SelectionComponent.prototype.renderMobileCategories = function() {
+        if (!this.mobileCategoryList) return;
+        
+        var categories = [...new Set(this.products.map(p => p.categorie))];
+        var self = this;
+        
+        this.mobileCategoryList.innerHTML = '';
+        categories.forEach(category => {
+            var item = document.createElement('div');
+            item.textContent = category;
+            item.className = 'mobile-menu-item';
+            if (this.selectedCategory === category) {
+                item.classList.add('selected');
+            }
+            
+            item.addEventListener('click', function() {
+                self.selectedCategory = category;
+                self.selectedSubcategory = null;
+                self.selectedProduct = null;
+                
+                // Update selectie in mobiel menu
+                self.highlightMobileSelection(self.mobileCategoryList, item);
+                self.renderMobileSubcategories(category);
+                
+                // Update selectie in desktop menu als die zichtbaar is
+                if (window.innerWidth > 768) {
+                    var desktopItem = document.getElementById("category_" + sanitizeForId(category));
+                    if (desktopItem) {
+                        self.highlightSelection(self.categoryListDiv, desktopItem);
+                        self.renderSubcategories(category);
+                    }
+                }
+                
+                self.onSelectionChange({
+                    category: self.selectedCategory,
+                    subcategory: self.selectedSubcategory,
+                    product: self.selectedProduct
+                });
+            });
+            
+            self.mobileCategoryList.appendChild(item);
+        });
+    };
+    
+    SelectionComponent.prototype.renderMobileSubcategories = function(category) {
+        if (!this.mobileSubcategoryList) return;
+        
+        var subcategories = [...new Set(this.products
+            .filter(p => p.categorie === category)
+            .map(p => p.subcategorie))];
+        var self = this;
+        
+        this.mobileSubcategoryList.innerHTML = '';
+        subcategories.forEach(subcat => {
+            var item = document.createElement('div');
+            item.textContent = subcat;
+            item.className = 'mobile-menu-item';
+            if (this.selectedSubcategory === subcat) {
+                item.classList.add('selected');
+            }
+            
+            item.addEventListener('click', function() {
+                self.selectedSubcategory = subcat;
+                
+                // Update selectie in mobiel menu
+                self.highlightMobileSelection(self.mobileSubcategoryList, item);
+                if (self.showProducts) self.renderMobileProducts(category, subcat);
+                
+                // Update selectie in desktop menu als die zichtbaar is
+                if (window.innerWidth > 768) {
+                    var desktopItem = document.getElementById("subcategory_" + sanitizeForId(subcat));
+                    if (desktopItem) {
+                        self.highlightSelection(self.subcategoryListDiv, desktopItem);
+                        if (self.showProducts) self.renderProducts(category, subcat);
+                    }
+                }
+                
+                self.onSelectionChange({
+                    category: self.selectedCategory,
+                    subcategory: self.selectedSubcategory,
+                    product: self.selectedProduct
+                });
+            });
+            
+            self.mobileSubcategoryList.appendChild(item);
+        });
+    };
+    
+    SelectionComponent.prototype.renderMobileProducts = function(category, subcategory) {
+        if (!this.mobileProductList || !this.showProducts) return;
+        
+        var filtered = this.products.filter(p => p.categorie === category && p.subcategorie === subcategory);
+        var self = this;
+        
+        this.mobileProductList.innerHTML = '';
+        filtered.forEach(product => {
+            var item = document.createElement('div');
+            item.textContent = product.TypeNummer;
+            item.className = 'mobile-menu-item';
+            if (this.selectedProduct && this.selectedProduct.TypeNummer === product.TypeNummer) {
+                item.classList.add('selected');
+            }
+            
+            item.addEventListener('click', function() {
+                self.selectedProduct = product;
+                
+                // Update selectie in mobiel menu
+                self.highlightMobileSelection(self.mobileProductList, item);
+                
+                // Update selectie in desktop menu als die zichtbaar is
+                if (window.innerWidth > 768 && self.productListDiv) {
+                    var productLinks = self.productListDiv.querySelectorAll('a');
+                    for (var i = 0; i < productLinks.length; i++) {
+                        if (productLinks[i].textContent === product.TypeNummer) {
+                            self.highlightSelection(self.productListDiv, productLinks[i]);
+                            break;
+                        }
+                    }
+                }
+                
+                // Sluit het mobiele menu na productselectie
+                self.toggleMobileMenu(false);
+                
+                // Als er een hoofdproduct is, gebruik dat als doellink, anders het TypeNummer
+                var targetType = product.hoofd_product && product.hoofd_product.trim() !== "" ? product.hoofd_product : product.TypeNummer;
+                window.location.href = '/artikelen/' + encodeURIComponent(targetType) + '/index.php';
+                
+                self.onSelectionChange({
+                    category: self.selectedCategory,
+                    subcategory: self.selectedSubcategory,
+                    product: self.selectedProduct
+                });
+            });
+            
+            self.mobileProductList.appendChild(item);
+        });
+    };
+    
+    SelectionComponent.prototype.highlightMobileSelection = function(container, selectedElement) {
+        var elements = container.querySelectorAll('.mobile-menu-item');
+        elements.forEach(el => el.classList.remove('selected'));
+        selectedElement.classList.add('selected');
+    };
+
     SelectionComponent.prototype.fetchProducts = function() {
         var self = this;
         return fetch(this.endpoint)
@@ -269,6 +574,13 @@
                     self.selectedProduct = null;
                     self.highlightSelection(self.categoryListDiv, span);
                     self.renderSubcategories(category);
+                    
+                    // Update mobiele menu als het open is
+                    if (self.mobileMenuOpen) {
+                        self.renderMobileCategories();
+                        self.renderMobileSubcategories(category);
+                    }
+                    
                     self.onSelectionChange({
                         category: self.selectedCategory,
                         subcategory: self.selectedSubcategory,
@@ -321,6 +633,13 @@
                     self.selectedSubcategory = subcat;
                     self.highlightSelection(self.subcategoryListDiv, span);
                     if (self.showProducts) self.renderProducts(category, subcat);
+                    
+                    // Update mobiele menu als het open is
+                    if (self.mobileMenuOpen) {
+                        self.renderMobileSubcategories(category);
+                        if (self.showProducts) self.renderMobileProducts(category, subcat);
+                    }
+                    
                     self.onSelectionChange({
                         category: self.selectedCategory,
                         subcategory: self.selectedSubcategory,
@@ -375,6 +694,12 @@
                 productLink.addEventListener('click', function() {
                     self.selectedProduct = product;
                     self.highlightSelection(self.productListDiv, productLink);
+                    
+                    // Update mobiele menu als het open is
+                    if (self.mobileMenuOpen && self.showProducts) {
+                        self.renderMobileProducts(category, subcategory);
+                    }
+                    
                     self.onSelectionChange({
                         category: self.selectedCategory,
                         subcategory: self.selectedSubcategory,
