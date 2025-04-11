@@ -14,6 +14,16 @@ $password = '';
 //$password = 'bafSmd3qwB';
 
 
+
+//hosting test op felis  11-04-2025
+//$host = 'sql214.hostingdiscounter.nl';
+//$dbname = 'company';
+//$user = 'peter';
+//$password = 'ErjED8nWfP';
+
+
+
+
 //toegestane login
 $toegestane_login = array(
     'peter' => 'Joop',
