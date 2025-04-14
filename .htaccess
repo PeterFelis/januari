@@ -1,0 +1,22 @@
+# Zorg ervoor dat mod_rewrite is ingeschakeld
+RewriteEngine On
+
+# Automatisch index.php laden in directories
+DirectoryIndex index.php
+
+# Als het een bestaande directory is met een index.php, laad die
+RewriteCond %{REQUEST_URI} !/index\.php$
+RewriteCond %{REQUEST_FILENAME}/index.php -f
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+
+# Zorg dat een URL zonder extensie verwijst naar het corresponderende .php-bestand
+RewriteCond %{REQUEST_URI} !/index\.php$
+RewriteCond %{REQUEST_FILENAME}/index.php -f
+RewriteRule ^(.+?)/?$ $1/index.php [L]
+
+
+# Optioneel: Zorg dat alle URLs zonder slash eindigen
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+ErrorDocument 404 /404.php

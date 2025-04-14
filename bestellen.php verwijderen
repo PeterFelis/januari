@@ -1,0 +1,205 @@
+<?php
+session_start();
+// file: bestellen.php
+$menu = "beheer";
+$title = "Bestellen of offerte maken";
+
+// Gebruiker moet ingelogd zijn
+if (!isset($_SESSION['klant_id'])) {
+    header("Location: /loginForm.php");
+    exit();
+}
+
+// Databaseconnectie & styling
+include_once __DIR__ . '/incs/dbConnect.php';
+include_once __DIR__ . '/incs/top.php';
+
+// PHPMailer-libs inladen
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Databaseverbinding mislukt: " . $e->getMessage());
+}
+
+require __DIR__ . '/PHPMailer/src/Exception.php';
+require __DIR__ . '/PHPMailer/src/PHPMailer.php';
+require __DIR__ . '/PHPMailer/src/SMTP.php';
+
+// Winkelwagen ophalen: voor ingelogde gebruikers halen we de data uit de database
+$stmt = $pdo->prepare("SELECT * FROM shopping_cart WHERE klant_id = ? ORDER BY id ASC");
+$stmt->execute([$_SESSION['klant_id']]);
+$cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Als er geen items in de winkelwagen zitten, terugsturen naar cart.php
+if (empty($cart)) {
+    header("Location: /cart.php");
+    exit();
+}
+
+// Totaalprijs berekenen
+$total_order_price = 0;
+foreach ($cart as $item) {
+    $total_order_price += $item['totaal_prijs'];
+}
+
+// Functie om productdata op te halen (pas de query aan aan jouw structuur)
+function getProductData($typeNummer, $pdo)
+{
+    $stmt = $pdo->prepare("SELECT id FROM products WHERE TypeNummer = ?");
+    $stmt->execute([$typeNummer]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Afhandeling van het formulier
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Keuze van de klant: offerte of bestelling (default: offerte)
+    $keuze = $_POST['keuze'] ?? 'offerte';
+
+    try {
+        $pdo->beginTransaction();
+
+        $klant_id = $_SESSION['klant_id'];
+        $user_id  = $_SESSION['user_id'] ?? null; // eventueel de contactpersoon
+
+        // Maak een nieuwe order aan
+        $stmt = $pdo->prepare("
+            INSERT INTO orders (klant_id, contactpersoon_id, status, totaal_prijs)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt->execute([$klant_id, $user_id, $keuze, $total_order_price]);
+        $order_id = $pdo->lastInsertId();
+
+        // Voeg elk winkelwagen-item toe aan de order_items
+        foreach ($cart as $item) {
+            $productData = getProductData($item['TypeNummer'], $pdo);
+            $product_id = $productData['id'] ?? 0;
+            $stmt = $pdo->prepare("
+                INSERT INTO order_items (order_id, product_id, aantal, prijs_per_stuk)
+                VALUES (?, ?, ?, ?)
+            ");
+            $stmt->execute([
+                $order_id,
+                $product_id,
+                $item['aantal'],
+                $item['prijs_per_stuk']
+            ]);
+        }
+
+        $pdo->commit();
+
+        // Winkelwagen leegmaken: voor ingelogde gebruikers verwijderen we alle records
+        $stmt = $pdo->prepare("DELETE FROM shopping_cart WHERE klant_id = ?");
+        $stmt->execute([$klant_id]);
+        unset($_SESSION['cart']); // mocht deze er nog zijn
+
+        // E-mails versturen
+        $klantEmail = getKlantEmail($klant_id, $pdo);
+        $beheerderEmail = "info@fetum.nl";
+
+        if ($keuze === 'offerte') {
+            // E-mail naar de klant
+            $onderwerpKlant = "Uw offerteaanvraag bij Fetum";
+            $bodyKlant = "Beste klant,\n\n"
+                . "Hartelijk dank voor uw offerteaanvraag. Uw offerte is succesvol geplaatst.\n"
+                . "Het totaalbedrag van uw offerte bedraagt: €" . number_format($total_order_price, 2, ',', '.') . "\n\n"
+                . "Wij nemen zo spoedig mogelijk contact met u op voor verdere afstemming.\n\n"
+                . "Met vriendelijke groet,\n"
+                . "Fetum";
+
+            // E-mail naar de beheerder
+            $onderwerpBeheerder = "Nieuwe offerte van klant #$klant_id";
+            $bodyBeheerder = "Geachte beheerder,\n\n"
+                . "Er is een nieuwe offerte geplaatst door klant #$klant_id.\n"
+                . "Het totaalbedrag van deze offerte is: €" . number_format($total_order_price, 2, ',', '.') . "\n\n"
+                . "Bekijk de offerte in het beheerderspaneel voor meer details.\n\n"
+                . "Met vriendelijke groet,\n"
+                . "Fetum";
+        } else {
+            $onderwerpKlant = "Uw bestelling bij Fetum";
+            $bodyKlant = "Beste klant,\n\nHartelijk dank voor uw bestelling.\n" .
+                "Hierbij sturen wij u een overzicht van uw order.\n" .
+                "Totaal: €" . number_format($total_order_price, 2, ',', '.') . "\n\n" .
+                "Met vriendelijke groet,\nFetum\n";
+
+            $onderwerpBeheerder = "Nieuwe bestelling van klant #$klant_id";
+            $bodyBeheerder = "Er is een nieuwe bestelling geplaatst door klant #$klant_id.\n" .
+                "Totaal: €" . number_format($total_order_price, 2, ',', '.') . "\n\n";
+        }
+
+        sendMailViaSMTP($klantEmail, $onderwerpKlant, $bodyKlant);
+        sendMailViaSMTP($beheerderEmail, $onderwerpBeheerder, $bodyBeheerder);
+
+        header("Location: /order_overview.php");
+        exit();
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        die("Fout bij het verwerken: " . $e->getMessage());
+    }
+}
+
+// Functie om klant e-mail op te halen (let op: gebruik het veld dat in de database staat)
+function getKlantEmail($klant_id, $pdo)
+{
+    $stmt = $pdo->prepare("SELECT algemene_email FROM klanten WHERE id = ?");
+    $stmt->execute([$klant_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row ? $row['algemene_email'] : 'onbekend@domein.nl';
+}
+
+// Functie om mail te versturen via SMTP
+function sendMailViaSMTP($ontvanger, $onderwerp, $body)
+{
+    try {
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host       = 'mail225.hostingdiscounter.nl';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'info@fetum.nl';
+        $mail->Password   = 'rNqjQ2h4EC';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+        $mail->isHTML(false);
+
+        $mail->setFrom('info@fetum.nl', 'Fetum');
+        $mail->addAddress($ontvanger);
+
+        $mail->Subject = $onderwerp;
+        $mail->Body    = $body;
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Fout bij mailen: " . $e->getMessage());
+    }
+}
+?>
+
+<!-- HTML-output -->
+<main>
+    <div class="page-container">
+        <h1>Bestellen of Offerte aanvragen</h1>
+        <p>Totaal te betalen (excl. eventuele BTW/verzend):
+            €<?php echo number_format($total_order_price, 2, ',', '.'); ?>
+        </p>
+
+        <form method="post" action="">
+            <p>Kies een van de opties:</p>
+            <label>
+                <input type="radio" name="keuze" value="offerte" checked> Offerte
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="keuze" value="bestelling"> Bestelling
+            </label>
+            <br><br>
+            <button type="submit" style="padding:1rem; background: #007bff; color:#fff; border:none; cursor:pointer;">
+                Verwerken
+            </button>
+        </form>
+
+        <p><a href="/cart.php">Terug naar winkelwagen</a></p>
+    </div>
+</main>
+<?php include_once __DIR__ . '/incs/bottom.php'; ?>

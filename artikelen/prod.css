@@ -1,0 +1,207 @@
+/* prod.css */
+
+/* Reset van body */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Basis grid layout voor grote schermen */
+.grid-container {
+    padding: 4rem;
+    display: grid;
+    /* We hebben in de PHP een specifieke grid-template-areas staan,
+       hier alleen de basisopmaak. */
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    width: 95vw;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Aanpassing voor tablets */
+@media only screen and (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 100%;
+        padding: 2rem;
+        /* Als je andere grid-template-areas wilt gebruiken voor tablets,
+           kun je die hier overschrijven. */
+    }
+}
+
+/* Aanpassing voor mobiele telefoons */
+@media only screen and (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 1rem;
+    }
+
+    /* Zorg ervoor dat afbeeldingen en tekst netjes gestapeld worden */
+    .grid-container > div {
+        padding: 10px;
+    }
+
+    /* Als je niet in 2 kolommen wilt op mobiel */
+    .col2 {
+        columns: 1;
+    }
+}
+
+/* Algemene styling voor grid items */
+.grid-container > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Afbeeldingen */
+.grid-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.grid-container .hoog {
+    width: auto;
+    max-height: 100%;
+}
+
+.grid-container .breed {
+    max-width: 100%;
+    max-height: auto;
+}
+
+/* Geen padding (bepaalde elementen) */
+.grid-container .geenpad {
+    padding: 0;
+}
+
+/* Oranje achtergrond */
+.grid-container .oranje {
+    background-color: #EC7D10;
+    color: white;
+}
+
+/* Als je in 2 kolommen tekst wilt op grote schermen */
+.grid-container .col2 {
+    display: block;
+    columns: 2;
+    column-gap: 40px;
+}
+
+
+/* Specifieke grid-areas (namen komen uit je inline style in de PHP) */
+.een {
+    grid-area: een;
+}
+.twee {
+    grid-area: twee;
+}
+.titel {
+    grid-area: titel;
+}
+.drie {
+    grid-area: drie;
+    flex-direction: column;
+}
+.vier {
+    grid-area: vier;
+}
+.vijf {
+    grid-area: vijf;
+}
+.zes {
+    grid-area: zes;
+}
+.zeven {
+    grid-area: zeven;
+}
+.acht {
+    grid-area: acht;
+}
+.negen {
+    grid-area: negen;
+}
+.tien {
+    grid-area: tien;
+}
+.elf {
+    grid-area: elf;
+}
+.twaalf {
+    grid-area: twaalf;
+}
+.dertien {
+    grid-area: dertien;
+}
+.veertien {
+    grid-area: veertien;
+}
+
+/* Price component styling */
+.price-component p {
+    margin: 0;
+    padding: 0;
+}
+.price-component label {
+    display: inline-block;
+    padding-right: 2rem;
+}
+.price-component input {
+    min-width: 100px;
+    width: auto;
+}
+
+/* USP / Omschrijving */
+#usp, .usp {
+    grid-area: usp;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 18px;
+    line-height: 26px;
+    flex-direction: column;
+}
+
+.omschrijving p,
+#usp p,
+.usp p {
+    margin: 0;
+}
+
+.omschrijving h3 {
+    line-height: 1.2;
+}
+
+
+
+/* Lightbox */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* bijna volledig ondoorzichtig wit */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.lightbox-overlay.active {
+    display: flex;
+}
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+}

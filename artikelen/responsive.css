@@ -1,0 +1,51 @@
+/* responsive.css */
+
+/* === Tablet: 4 kolommen layout (max 1024px) === */
+@media only screen and (max-width: 1024px) {
+    .grid-container {
+      grid-template-columns: repeat(4, 1fr);
+      /* Jouw pagina regelt zelf de areas en rows */
+      padding: 2rem;
+      gap: 1rem;
+      max-width: 100%;
+    }
+  }
+  
+  /* === Mobiel: 2 kolommen layout (max 600px) === */
+  @media only screen and (max-width: 600px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 1rem;
+      gap: 0.8rem;
+      max-width: 100%;
+    }
+  
+    .col2 {
+      column-count: 1 !important;
+    }
+  
+    h1 {
+      font-size: 1.6rem;
+      text-align: center;
+    }
+  
+    p, #usp {
+      font-size: 1rem;
+      line-height: 1.4rem;
+    }
+  
+    .oranje {
+      padding: 1rem;
+      border-radius: 8px;
+    }
+  
+    .grid-container img {
+      max-height: 240px;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+  

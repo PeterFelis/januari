@@ -1,0 +1,71 @@
+<?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Verzenden van het contactformulier
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+$melding = "";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $naam = htmlspecialchars($_POST['naam'] ?? '');
+    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : '';
+    $bericht = htmlspecialchars($_POST['bericht'] ?? '');
+    $ontvanger = "info@fetum.nl";
+
+    if ($naam && $email && $bericht) {
+        $onderwerp = "Nieuw contactformulier bericht van " . $naam;
+        $body = "Naam: $naam\nEmail: $email\n\nBericht:\n$bericht";
+
+        try {
+            // Eerste e-mail: naar de beheerder
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host       = 'mail225.hostingdiscounter.nl';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'info@fetum.nl';
+            $mail->Password   = 'rNqjQ2h4EC';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+            $mail->isHTML(false);
+
+            // Zet de afzender en ontvanger
+            $mail->setFrom('info@fetum.nl', 'Fetum');
+            $mail->addAddress($ontvanger);
+            $mail->addReplyTo($email, $naam);
+
+            // Inhoud van de e-mail
+            $mail->Subject = $onderwerp;
+            $mail->Body    = $body;
+
+            $mail->send();
+
+            // Tweede e-mail: kopie naar de afzender
+            $mailCopy = new PHPMailer(true);
+            $mailCopy->isSMTP();
+            $mailCopy->Host       = 'mail225.hostingdiscounter.nl';
+            $mailCopy->SMTPAuth   = true;
+            $mailCopy->Username   = 'info@fetum.nl';
+            $mailCopy->Password   = 'rNqjQ2h4EC';
+            $mailCopy->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mailCopy->Port       = 587;
+            $mailCopy->isHTML(false);
+
+            $mailCopy->setFrom('info@fetum.nl', 'Fetum');
+            $mailCopy->addAddress($email, $naam);
+            $mailCopy->Subject = "Kopie van uw bericht";
+            $mailCopy->Body    = $body;
+
+            $mailCopy->send();
+
+            $melding = "<div class='snackbar success'>Uw bericht is succesvol verzonden.</div>";
+        } catch (Exception $e) {
+            $melding = "<div class='snackbar error'>Er is een fout opgetreden bij het verzenden: {$mail->ErrorInfo}</div>";
+        }
+    } else {
+        $melding = "<div class='snackbar error'>Vul alle velden correct in.</div>";
+    }
+}
+?>

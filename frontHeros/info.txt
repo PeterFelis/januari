@@ -1,0 +1,15 @@
+21-02-2025
+
+Fotos die in deze dir worden geplaatst (max breedte 1200 px) worden de opstart hero Fotos
+het systeem kiest hier een foto strickt random
+foto toevoegen om zo nu en dan te tonen, verwijderen als hij niet meer mee doet
+
+wil je een tekstje bij de foto?
+maak een naamfoto.txt file en zet daar de HMTL tekst in
+bijvoorbeeld:
+HP 305.png -> Foto
+HP 305.txt -> de tekst
+
+afmetingen:
+*.jpg files worden 100% breedt geplaatst, kan ten koste van de hoogte gaan.
+*.png files worden op hoogte geplaatst. alles is dus zichtbaar. gebruik een .png met transparante achtergrond

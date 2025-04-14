@@ -1,0 +1,18 @@
+Pagina:
+contact
+13-02 responsive maken
+13-02 bol, trustpilot en socials in een grid naast elkaar zetten
+
+404 Pagina
+14-02 testen, werkt niet bij fetum.nl? wel htaccess en 404 geupload
+
+registreer.php
+14-02 opvangen foutmelding als email al gebruikt is. dus eerder testen. gaat nu naar andere pagina met foutmelding
+
+confirm.php
+14-02 doorsturen naar inlog voor klanten, gaat nu nog naar dashboard
+klantpagina maken, met oa edit mogelijkheden en bekijken winkelmandje
+
+
+
+
