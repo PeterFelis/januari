@@ -127,7 +127,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     /* Tablet (max 1024px): 3 kolommen */
     @media (max-width: 1024px) {
 
-        
+
 
         .random-products .product-card h3 {
             font-size: 1.4rem;

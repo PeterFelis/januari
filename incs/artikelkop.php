@@ -21,9 +21,9 @@ try {
  * @param PDO $pdo De PDO-databaseverbinding.
  * @return array|false Associatieve array met productdata of false als niet gevonden.
  */
-function getProductData($typenummer, $pdo) {
+function getProductData($typenummer, $pdo)
+{
     $stmt = $pdo->prepare("SELECT TypeNummer, USP, omschrijving, prijsstaffel, aantal_per_doos FROM products WHERE TypeNummer = ?");
     $stmt->execute([$typenummer]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-?>
