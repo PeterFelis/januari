@@ -146,106 +146,6 @@ include_once __DIR__ . '/incs/top.php';
     </main>
 
 
-    <script src="incs/selection_component.js">
-    </script>
-    <script>
-        // Bepaal of de klant is ingelogd
-        var isLoggedIn = <?php echo isset($_SESSION['klant_id']) ? 'true' : 'false'; ?>;
-        let products = [];
-        let currentCategory = "";
-        let currentSubcategory = "";
-        let defaultProductHTML = "";
-
-        // Haal de producten op en toon ze
-        async function fetchProducts() {
-            try {
-                const response = await fetch('api_products.php');
-                products = await response.json();
-                filterAndDisplayProducts();
-            } catch (error) {
-                console.error("Fout bij ophalen van producten:", error);
-            }
-        }
-
-        function filterAndDisplayProducts() {
-            const grid = document.getElementById('productGrid');
-            // Filter eerst op leverbaarheid
-            let filtered = products.filter(p => p.leverbaar === 'ja');
-
-            // Filter op categorie en subcategorie
-            if (currentCategory !== "") {
-                filtered = filtered.filter(p => p.categorie === currentCategory);
-            }
-            if (currentSubcategory !== "") {
-                filtered = filtered.filter(p => p.subcategorie === currentSubcategory);
-            }
-
-            grid.innerHTML = "";
-            if (filtered.length === 0) {
-                grid.innerHTML = "<p>Geen producten gevonden.</p>";
-                return;
-            }
-            filtered.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <h3>${product.TypeNummer}</h3>
-                    <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
-                    <div class="card-content">
-                        <div class="card-photo">
-                            <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
-                        </div>
-                        <div class="card-usp">
-                            ${product.USP}
-                        </div>
-                    </div>
-                `;
-                let targetType = product.TypeNummer;
-                if (product.hoofd_product && product.hoofd_product.trim() !== "") {
-                    targetType = product.hoofd_product;
-                }
-                card.addEventListener('click', () => {
-                    if (!isLoggedIn) {
-                        window.location.href = '/loginForm.php';
-                    } else {
-                        window.location.href = 'artikelen/' + encodeURIComponent(targetType) + '/index.php';
-                    }
-                });
-                grid.appendChild(card);
-            });
-        }
-
-        function getLowestPrice(prijsstaffel) {
-            const lines = prijsstaffel.split('\n');
-            let lowest = Number.POSITIVE_INFINITY;
-            lines.forEach(line => {
-                const parts = line.trim().split(' ');
-                if (parts.length >= 2) {
-                    let price = parseFloat(parts[1].replace(',', '.'));
-                    if (!isNaN(price) && price < lowest) {
-                        lowest = price;
-                    }
-                }
-            });
-            return (lowest !== Number.POSITIVE_INFINITY) ? lowest.toFixed(2) : "n.v.t.";
-        }
-
-        // Initialiseer de selectie-component zodat het filtermenu wordt weergegeven
-        var selection = new SelectionComponent({
-            container: document.getElementById('selectionComponent'),
-            showProducts: false,
-            onSelectionChange: function(selectionData) {
-                currentCategory = selectionData.category || "";
-                currentSubcategory = selectionData.subcategory || "";
-                filterAndDisplayProducts();
-            }
-        });
-
-        window.onload = function() {
-            defaultProductHTML = document.getElementById('productGrid').innerHTML;
-            fetchProducts();
-        };
-    </script>
     <script src="incs/selection_component.js"></script>
     <script>
         // Bepaal of de klant is ingelogd
@@ -254,11 +154,13 @@ include_once __DIR__ . '/incs/top.php';
         let currentCategory = "";
         let currentSubcategory = "";
 
-        // Haal de producten op en toon ze
         async function fetchProducts() {
             try {
                 const response = await fetch('api_products.php');
                 products = await response.json();
+                console.log("📦 Producten opgehaald:", products.length);
+
+                // Hier moet je ook opnieuw filteren
                 filterAndDisplayProducts();
             } catch (error) {
                 console.error("Fout bij ophalen van producten:", error);
@@ -267,10 +169,8 @@ include_once __DIR__ . '/incs/top.php';
 
         function filterAndDisplayProducts() {
             const grid = document.getElementById('productGrid');
-            // Begin met alle leverbare producten
             let filtered = products.filter(p => p.leverbaar === 'ja');
 
-            // Vergelijk met gestructureerde (trimmed en lowercase) waarden
             const filterCat = currentCategory.trim().toLowerCase();
             const filterSub = currentSubcategory.trim().toLowerCase();
 
@@ -279,17 +179,21 @@ include_once __DIR__ . '/incs/top.php';
                     p.categorie && p.categorie.trim().toLowerCase() === filterCat
                 );
             }
+
             if (filterSub !== "") {
                 filtered = filtered.filter(p =>
                     p.subcategorie && p.subcategorie.trim().toLowerCase() === filterSub
                 );
             }
 
+            console.log("🔎 Filterresultaat:", filtered.length, "producten");
             grid.innerHTML = "";
+
             if (filtered.length === 0) {
                 grid.innerHTML = "<p>Geen producten gevonden.</p>";
                 return;
             }
+
             filtered.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -335,27 +239,38 @@ include_once __DIR__ . '/incs/top.php';
             return (lowest !== Number.POSITIVE_INFINITY) ? lowest.toFixed(2) : "n.v.t.";
         }
 
-        // Initialiseer de selectie-component zodat het filtermenu wordt weergegeven
+        // Initialiseer de selectie-component
         var selection = new SelectionComponent({
             container: document.getElementById('selectionComponent'),
             showProducts: false,
             onSelectionChange: function(selectionData) {
-                // Werk de globale variabelen alleen bij als er expliciet een waarde is meegegeven
-                if (selectionData.hasOwnProperty('category')) {
+                if (products.length === 0) {
+                    console.warn("⚠️ Productlijst leeg — opnieuw ophalen");
+                    fetchProducts(); // <- dit vult 'products[]' en roept daarna filterAndDisplayProducts() aan
+                    return;
+                }
+
+                // Vervang deze logica:
+                // currentCategory = selectionData.category ? selectionData.category.trim() : "";
+
+                if ('category' in selectionData) {
                     currentCategory = selectionData.category ? selectionData.category.trim() : "";
                 }
-                if (selectionData.hasOwnProperty('subcategory')) {
+                if ('subcategory' in selectionData) {
                     currentSubcategory = selectionData.subcategory ? selectionData.subcategory.trim() : "";
                 }
-                console.log("Filterinstellingen:", {
+
+                console.log("📌 Filterinstellingen:", {
                     category: currentCategory,
-                    subcategory: currentSubcategory,
-                    callbackData: selectionData
+                    subcategory: currentSubcategory
                 });
+
+                // Forceer altijd opnieuw filteren — ongeacht of iets veranderd is
                 filterAndDisplayProducts();
             }
         });
 
+        // Laad producten bij eerste paginabezoek
         window.onload = function() {
             fetchProducts();
         };
