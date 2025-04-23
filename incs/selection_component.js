@@ -19,8 +19,22 @@
 
         this.injectCSS();
         this.setupSlideInMenu();
+        this.initFromURL();
         this.fetchProducts();
     }
+
+    SelectionComponent.prototype.initFromURL = function() {
+        var params = new URLSearchParams(window.location.search);
+        var cat = params.get('category');
+        var sub = params.get('subcategory');
+        if (cat) {
+            this.selectedCategory = cat;
+        }
+        if (sub) {
+            this.selectedSubcategory = sub;
+            this.showProducts = true;
+        }
+    };
 
     SelectionComponent.prototype.injectCSS = function() {
         var css =`
@@ -172,18 +186,7 @@
             div.textContent = cat;
 
             div.addEventListener('click', function() {
-                self.selectedCategory = cat;
-                self.selectedSubcategory = null;
-                self.selectedProduct = null;
-            
-                self.renderMenu();
-            
-                // Geef altijd volledig object mee
-                self.onSelectionChange({
-                    category: self.selectedCategory,
-                    subcategory: null,
-                    product: null
-                });
+                window.location.href = '/shop.php?category=' + encodeURIComponent(cat);
             });
 
             div.addEventListener('dblclick', function() {
@@ -213,16 +216,9 @@
                 div.textContent = sub;
 
                 div.addEventListener('click', function() {
-                    self.selectedSubcategory = sub;
-                    self.selectedProduct = null;
-                
-                    self.renderMenu();
-                
-                    self.onSelectionChange({
-                        category: self.selectedCategory,
-                        subcategory: self.selectedSubcategory,
-                        product: null
-                    });
+                    window.location.href =
+                      '/shop.php?category='   + encodeURIComponent(self.selectedCategory) +
+                      '&subcategory='         + encodeURIComponent(sub);
                 });
 
                 div.addEventListener('dblclick', function() {

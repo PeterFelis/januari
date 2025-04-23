@@ -1,11 +1,17 @@
 <?php
 // shop.php
 include_once __DIR__ . '/incs/sessie.php';
+
+// Lees eventuele selectie uit de URL
+$selCat = isset($_GET['category']) ? $_GET['category'] : '';
+$selSub = isset($_GET['subcategory']) ? $_GET['subcategory'] : '';
+
 $title = "Fetum - webshop";
 $statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
 ?>
+
 <style>
     /* Algemene reset */
     body {
@@ -108,9 +114,6 @@ include_once __DIR__ . '/incs/top.php';
         .shop-page main {
             width: 100%;
             padding: 0 1rem;
-            /* Als je aan de linker kant extra ruimte nodig hebt, kan je dit toevoegen,
-           maar houd wel in de gaten dat dit de totale breedte niet te veel vergroot. */
-            /* padding-left: 40px; */
         }
 
         .shop-page .product-grid {
@@ -131,36 +134,30 @@ include_once __DIR__ . '/incs/top.php';
 </style>
 
 <body class="shop-page">
-    <?php include_once __DIR__ . '/incs/menu.php';
-    ?>
+    <?php include_once __DIR__ . '/incs/menu.php'; ?>
     <main>
-        <!-- We gebruiken nu enkel een right-pane. Hierin staat zowel het selectie-menu als de productgrid -->
         <div class="right-pane">
             <!-- Selectie-component container: Hiermee filter je de producten -->
             <div id="selectionComponent"></div>
-            <!-- Productgrid: de titel "Producten" is verwijderd -->
-            <div class="product-grid" id="productGrid">
-                <!-- Hier komen de producten -->
-            </div>
+            <!-- Productgrid: hier komen de producten -->
+            <div class="product-grid" id="productGrid"></div>
         </div>
     </main>
 
-
     <script src="incs/selection_component.js"></script>
     <script>
-        // Bepaal of de klant is ingelogd
-        var isLoggedIn = <?php echo isset($_SESSION['klant_id']) ? 'true' : 'false'; ?>;
+        // Maak huidige selectie beschikbaar in JS
+        const currentCategory = <?= json_encode($selCat) ?>;
+        const currentSubcategory = <?= json_encode($selSub) ?>;
+
+        // Globale productlijst
         let products = [];
-        let currentCategory = "";
-        let currentSubcategory = "";
 
         async function fetchProducts() {
             try {
                 const response = await fetch('api_products.php');
                 products = await response.json();
-                console.log("📦 Producten opgehaald:", products.length);
-
-                // Hier moet je ook opnieuw filteren
+                // Na ophalen: filter direct met de URL-initialisatie
                 filterAndDisplayProducts();
             } catch (error) {
                 console.error("Fout bij ophalen van producten:", error);
@@ -171,19 +168,11 @@ include_once __DIR__ . '/incs/top.php';
             const grid = document.getElementById('productGrid');
             let filtered = products.filter(p => p.leverbaar === 'ja');
 
-            const filterCat = currentCategory.trim().toLowerCase();
-            const filterSub = currentSubcategory.trim().toLowerCase();
-
-            if (filterCat !== "") {
-                filtered = filtered.filter(p =>
-                    p.categorie && p.categorie.trim().toLowerCase() === filterCat
-                );
+            if (currentCategory) {
+                filtered = filtered.filter(p => p.categorie && p.categorie.trim().toLowerCase() === currentCategory.trim().toLowerCase());
             }
-
-            if (filterSub !== "") {
-                filtered = filtered.filter(p =>
-                    p.subcategorie && p.subcategorie.trim().toLowerCase() === filterSub
-                );
+            if (currentSubcategory) {
+                filtered = filtered.filter(p => p.subcategorie && p.subcategorie.trim().toLowerCase() === currentSubcategory.trim().toLowerCase());
             }
 
             console.log("🔎 Filterresultaat:", filtered.length, "producten");
@@ -198,27 +187,21 @@ include_once __DIR__ . '/incs/top.php';
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                <h3>${product.TypeNummer}</h3>
-                <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
-                <div class="card-content">
-                    <div class="card-photo">
-                        <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
+                    <h3>${product.TypeNummer}</h3>
+                    <p>vanaf prijs: ${getLowestPrice(product.prijsstaffel)}</p>
+                    <div class="card-content">
+                        <div class="card-photo">
+                            <img src="artikelen/${encodeURIComponent(product.TypeNummer)}/Pfoto.png" alt="${product.TypeNummer}">
+                        </div>
+                        <div class="card-usp">
+                            ${product.USP}
+                        </div>
                     </div>
-                    <div class="card-usp">
-                        ${product.USP}
-                    </div>
-                </div>
-            `;
-                let targetType = product.TypeNummer;
-                if (product.hoofd_product && product.hoofd_product.trim() !== "") {
-                    targetType = product.hoofd_product;
-                }
+                `;
+                let targetType = product.hoofd_product && product.hoofd_product.trim() !== "" ? product.hoofd_product : product.TypeNummer;
                 card.addEventListener('click', () => {
-                    if (!isLoggedIn) {
-                        window.location.href = '/loginForm.php';
-                    } else {
-                        window.location.href = 'artikelen/' + encodeURIComponent(targetType) + '/index.php';
-                    }
+                    // Afhankelijk van login direct naar detailpagina
+                    window.location.href = `artikelen/${encodeURIComponent(targetType)}/index.php`;
                 });
                 grid.appendChild(card);
             });
@@ -244,36 +227,34 @@ include_once __DIR__ . '/incs/top.php';
             container: document.getElementById('selectionComponent'),
             showProducts: false,
             onSelectionChange: function(selectionData) {
-                if (products.length === 0) {
-                    console.warn("⚠️ Productlijst leeg — opnieuw ophalen");
-                    fetchProducts(); // <- dit vult 'products[]' en roept daarna filterAndDisplayProducts() aan
-                    return;
+                // Bouw URL met selectie
+                let url = '/shop.php';
+                let params = [];
+                if (selectionData.category) {
+                    params.push('category=' + encodeURIComponent(selectionData.category));
                 }
-
-                // Vervang deze logica:
-                // currentCategory = selectionData.category ? selectionData.category.trim() : "";
-
-                if ('category' in selectionData) {
-                    currentCategory = selectionData.category ? selectionData.category.trim() : "";
+                if (selectionData.subcategory) {
+                    params.push('subcategory=' + encodeURIComponent(selectionData.subcategory));
                 }
-                if ('subcategory' in selectionData) {
-                    currentSubcategory = selectionData.subcategory ? selectionData.subcategory.trim() : "";
-                }
-
-                console.log("📌 Filterinstellingen:", {
-                    category: currentCategory,
-                    subcategory: currentSubcategory
-                });
-
-                // Forceer altijd opnieuw filteren — ongeacht of iets veranderd is
-                filterAndDisplayProducts();
+                window.location.href = url + (params.length ? '?' + params.join('&') : '');
             }
         });
 
+        // Na initialisatie menu open trekken én highlight toepassen
+        selection.selectedCategory = currentCategory;
+        selection.selectedSubcategory = currentSubcategory;
+        selection.renderMenu();
+
+        if (currentCategory) {
+            selection.menu.classList.add('open');
+        }
         // Laad producten bij eerste paginabezoek
         window.onload = function() {
             fetchProducts();
         };
     </script>
+
     <?php include_once __DIR__ . '/incs/bottom.php'; ?>
 </body>
+
+</html>
