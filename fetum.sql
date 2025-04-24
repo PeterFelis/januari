@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 11 apr 2025 om 13:43
+-- Gegenereerd op: 24 apr 2025 om 18:22
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -42,25 +42,25 @@ CREATE TABLE `crm_notes` (
 
 CREATE TABLE `klanten` (
   `id` int NOT NULL,
-  `naam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `extra_veld` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `algemeen_telefoonnummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `algemene_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `factuur_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `factuur_extra_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `factuur_straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `factuur_nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `factuur_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `factuur_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `aflever_straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `aflever_nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `aflever_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `aflever_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `naam` varchar(100) NOT NULL,
+  `straat` varchar(100) NOT NULL,
+  `nummer` varchar(20) NOT NULL,
+  `postcode` varchar(20) NOT NULL,
+  `plaats` varchar(100) NOT NULL,
+  `extra_veld` text,
+  `algemeen_telefoonnummer` varchar(20) DEFAULT NULL,
+  `algemene_email` varchar(150) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `factuur_email` varchar(150) DEFAULT NULL,
+  `factuur_extra_info` text,
+  `factuur_straat` varchar(100) DEFAULT NULL,
+  `factuur_nummer` varchar(20) DEFAULT NULL,
+  `factuur_postcode` varchar(20) DEFAULT NULL,
+  `factuur_plaats` varchar(100) DEFAULT NULL,
+  `aflever_straat` varchar(100) DEFAULT NULL,
+  `aflever_nummer` varchar(20) DEFAULT NULL,
+  `aflever_postcode` varchar(20) DEFAULT NULL,
+  `aflever_plaats` varchar(100) DEFAULT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `land` varchar(50) NOT NULL DEFAULT 'Nederland'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -138,7 +138,7 @@ CREATE TABLE `products` (
   `USP` text,
   `sticker_text` text,
   `leverbaar` enum('ja','nee') NOT NULL DEFAULT 'ja',
-  `hoofd_product` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `hoofd_product` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -185,7 +185,7 @@ INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschr
 (62, 'Hoofdtelefoons', 'Kids', 'Ki 100 blauw', '<h3>Speciale kinderhoofdtelefoon</h3><p>Met volume begrenzing </p><p>En voorzien van leuke cartoon bedrukking</p><p><br></p><p>De volume begrenzing houdt het maximale volume altijd op een veilig niveau voor kinderen, maximaal 85 db.</p><p><br></p><p>Comfortabel te dragen hoofdtelefoon met zachte oorschelpen en verstelbare hoofdband.</p><p><br></p><p>Enkelzijdig 1,2 meter snoer met een kleine rechte stereo stekker.</p><p><br></p><p>Geschikt voor telefoons, chromebooks, ipads (met hoofdtelefoon aansluiting) </p><p><br></p><p>Dit is de Blauwe uitvoering, ook leverbaar in wit.</p><p><br></p><p><br></p><p><br></p><p><br></p>', '8 6,98\n16 6,42\n24 5,90', 8, '2025-03-21 14:12:58', '<p>Kids hoofdtelefoon</p><p>Maximale volume begrenzing</p><p>Lang comfortabel te dragen</p><p>Leverbaar in wit en blauw</p>', '<p><strong>Kids hoofdtelefoon</strong></p><p>Witte uitvoering</p><p>Enkelzijdig snoer</p><p>Verstelbare hoofdband</p>', 'ja', ''),
 (63, 'Hoofdtelefoons', 'Degelijk', 'HP-92', '<p>Half open degelijke hoofdtelefoon</p><p><br></p><p>Inklapbaar en dat is makkelijk bij het opruimen</p><p>Zelf stellende oorschelpen met zachte kussens en de hoofdband is in hoogte verstelbaar.</p><p><br></p><p>1,2 meter enkelzijdig met nylon verstevigd snoer met kleine 3,5 mm stereo stekker.</p><p><br></p><p>Impedantie: 32 ohm</p><p>frequentiebereik: 20-20.000 Hz</p><p>Gevoeligheid: 105db/mw</p><p><br></p><p>Deze hoofdtelefoon heeft geen microfoon.</p><p><br></p><p>Verpakking: per 8 in een overdoos</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', '12 8,65 \n24 8,26\n36 7,99', 12, '2025-03-21 14:39:00', '<p>Nylon verstevigd snoer</p><p>Inklapbaar</p><p>Zelfstellend</p>', '<p>Inklapbaar</p><p>1,2 meter verstevigde kabel</p>', 'ja', ''),
 (64, 'Hoofdtelefoons', 'Budget', 'HP-2706-KOPIE', '<p>Budget hoofdtelefoon</p><p><br></p><p>De meest basis hoofdtelefoon die we verkopen.</p><p>Met twee meter snoer een verstelbare hoofdband en automatisch stellende oorschelpen.</p><p><br></p><p>Het snoer is voorzien van een kleine, rechte stereo stekker.</p><p>Deze hoofdtelefoon heeft geen microfoon</p><p><br></p><p>Oorschelpen voorzien van een zachte comfortabele spons.</p><p><br></p><p>Per stuk verpakt in eenzakje, per 125 in een doos en per 250 in een overdoos</p><p><br></p><p>uitstekend geschikt voor scholen, ziekenhuizen, musea, rondvaarten, bibliotheken en revalidatiecentra.</p><p><br></p><p><br></p><p><br></p>', '125 1,15\n250 1,10\n500 1,00', 125, '2025-04-09 14:34:36', '<p>Budget hoofdtelefoon</p><p>2 meter snoer, stereo stekker</p><p>Geen blister verpakking</p><p>zachte oorschelpen</p>', '<p>Budget hoofdtelefoon</p><p>2 meter snoer, stereo stekker</p><p>Geen blister verpakking</p>', 'ja', ''),
-(65, 'Hoofdtelefoons', 'Stilte Koptelefoon', 'Stil 100', '<p>🎧 Stilte koptelefoon – Rust in het koppie, focus in de klas!</p><p> </p><p>Voor kinderen die snel zijn afgeleid, is een beetje stilte soms precies wat ze nodig hebben. De stilte koptelefoon helpt leerlingen zich beter te concentreren in een drukke klas, zonder zich helemaal af te sluiten. Minder prikkels, meer rust.</p><p>Waarom leerkrachten (en kinderen) fan zijn:</p><p>🔇 Dempt storend geluid en harde muziek tot wel 29dB</p><p>🧠 Ideaal bij overprikkeling of concentratieproblemen</p><p>🎉 Ook superhandig bij feestjes, muziekles of drukke momenten</p><p>👦👧 Voor kinderen vanaf 5 jaar</p><p>💺 Comfortabele zachte hoofdband, voelt fijn en licht</p><p>📏 Makkelijk verstelbaar – one size fits all</p><p>🎒 Opvouwbaar, dus makkelijk mee te nemen</p><p>Tip uit de klas: Zet een paar stilte koptelefoons klaar in een mandje. Kinderen kunnen ze zelf pakken als het even te druk wordt in hun hoofd. Werkt verrassend goed – en geeft rust voor de hele klas. 🌈</p>', '1 17,90\n5 16,20\n10 15,70', 5, '2025-04-09 14:38:11', '<p>Verhoogt concentratie</p><p>Opklapbaar</p><p>29 db demping</p>', '<p>29 db demping</p><p>kleur: mint groen</p><p><br></p>', 'ja', '');
+(65, 'Hoofdtelefoons', 'Stilte Koptelefoon', 'Stil 100', '<p>🎧 Stilte koptelefoon – Rust in het koppie, focus in de klas!</p><p> </p><p>Voor kinderen die snel zijn afgeleid, is een beetje stilte soms precies wat ze nodig hebben. De stilte koptelefoon helpt leerlingen zich beter te concentreren in een drukke klas, zonder zich helemaal af te sluiten. Minder prikkels, meer rust.</p><p>Waarom leerkrachten (en kinderen) fan zijn:</p><p>🔇 Dempt storend geluid en harde muziek tot wel 29dB</p><p>🧠 Ideaal bij overprikkeling of concentratieproblemen</p><p>🎉 Ook superhandig bij feestjes, muziekles of drukke momenten</p><p>👦👧 Voor kinderen vanaf 5 jaar</p><p>💺 Comfortabele zachte hoofdband, voelt fijn en licht</p><p>📏 Makkelijk verstelbaar – one size fits all</p><p>🎒 Opvouwbaar, dus makkelijk mee te nemen</p><p>Tip uit de klas: Zet een paar stilte koptelefoons klaar in een mandje. Kinderen kunnen ze zelf pakken als het even te druk wordt in hun hoofd. Werkt verrassend goed – en geeft rust voor de hele klas. 🌈</p>', '1 17,90\n5 16,20\n10 15,70', 5, '2025-04-09 14:38:11', '<p>Verhoogt concentratie</p><p>Opklapbaar</p><p>29 db demping</p>', '<p>Verhoogt concentratie</p><p>Opklapbaar</p><p>29 db demping</p><p><br></p>', 'ja', '');
 
 -- --------------------------------------------------------
 
@@ -228,18 +228,18 @@ CREATE TABLE `shopping_cart` (
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `voornaam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `achternaam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `geslacht` enum('M','V','X') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `wachtwoord` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `rol` enum('klant','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'klant',
-  `google_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `voornaam` varchar(100) NOT NULL,
+  `achternaam` varchar(100) NOT NULL,
+  `geslacht` enum('M','V','X') NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `wachtwoord` varchar(255) NOT NULL,
+  `rol` enum('klant','admin') NOT NULL DEFAULT 'klant',
+  `google_id` varchar(255) DEFAULT NULL,
+  `avatar_url` varchar(255) DEFAULT NULL,
   `klant_id` int DEFAULT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
-  `confirmation_token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `confirmation_token` varchar(64) DEFAULT NULL,
   `password_reset_token` varchar(32) DEFAULT NULL,
   `password_reset_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -357,7 +357,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT voor een tabel `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT voor een tabel `users`

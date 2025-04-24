@@ -225,7 +225,9 @@ include_once __DIR__ . '/incs/top.php';
             <!-- Linkerpaneel: selectie-component -->
             <div id="left-pane">
                 <h2>Producten</h2>
-                <div id="selectionComponent"></div>
+                <div id="cats"></div>
+                <div id="subs"></div>
+                <div id="prods"></div>
             </div>
             <!-- Rechterpaneel: bewerkformulier -->
             <div id="right-pane">
@@ -303,7 +305,7 @@ include_once __DIR__ . '/incs/top.php';
                 </form>
             </div>
         </div>
-        <script src="/incs/selection_component.js"></script>
+
         <script>
             let isEditingNewProduct = false;
 
@@ -417,11 +419,21 @@ include_once __DIR__ . '/incs/top.php';
                 theme: 'snow',
                 modules: {
                     toolbar: [
-                        [{ 'header': [1, 2, false] }],
+                        [{
+                            'header': [1, 2, false]
+                        }],
                         ['bold', 'italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
                         ['link', 'blockquote', 'code-block'],
-                        [{ 'color': [] }, { 'background': [] }]
+                        [{
+                            'color': []
+                        }, {
+                            'background': []
+                        }]
                     ]
                 }
             });
@@ -431,7 +443,11 @@ include_once __DIR__ . '/incs/top.php';
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
                         ['link']
                     ]
                 }
@@ -444,6 +460,7 @@ include_once __DIR__ . '/incs/top.php';
                         container: document.getElementById('selectionComponent'),
                         showProducts: true,
                         checkProductPage: true,
+                        redirectOnProductClick: false, // <— hier belangrijk
                         onSelectionChange: async function(selectionData) {
                             if (selectionData.product) {
                                 const productData = await fetchProductById(selectionData.product.id);
@@ -600,6 +617,114 @@ include_once __DIR__ . '/incs/top.php';
                 restoreCategorySelection();
             });
         </script>
+
+
+        <script>
+            let allProducts = [];
+            let selCat = "<?php echo htmlspecialchars($defaultCategory); ?>";
+            let selSub = "<?php echo htmlspecialchars($defaultSubcategory); ?>";
+
+            async function initSelection() {
+                try {
+                    const resp = await fetch('api_products.php');
+                    allProducts = await resp.json();
+                    renderCats();
+                } catch (e) {
+                    console.error('Fout bij laden producten:', e);
+                }
+            }
+
+            function renderCats() {
+                const c = document.getElementById('cats');
+                c.innerHTML = '<h3>Categorieën</h3>';
+                const cats = [...new Set(allProducts.map(p => p.categorie))];
+                cats.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.textContent = cat;
+                    btn.className = selCat === cat ? 'selection-btn selected' : 'selection-btn';
+                    btn.onclick = () => {
+                        selCat = cat;
+                        selSub = null;
+                        renderCats();
+                        renderSubs();
+                        clearProds();
+                    };
+                    c.appendChild(btn);
+                });
+                renderSubs();
+            }
+
+            function renderSubs() {
+                const s = document.getElementById('subs');
+                s.innerHTML = '';
+                if (!selCat) return;
+                s.innerHTML = '<h4>Subcategorieën</h4>';
+                const subs = [...new Set(
+                    allProducts
+                    .filter(p => p.categorie === selCat)
+                    .map(p => p.subcategorie)
+                )];
+                subs.forEach(sub => {
+                    const btn = document.createElement('button');
+                    btn.textContent = sub;
+                    btn.className = selSub === sub ? 'selection-btn selected' : 'selection-btn';
+                    btn.onclick = () => {
+                        selSub = sub;
+                        renderSubs();
+                        renderProds();
+                    };
+                    s.appendChild(btn);
+                });
+            }
+
+            function renderProds() {
+                const p = document.getElementById('prods');
+                p.innerHTML = '';
+                if (!selCat || !selSub) return;
+                p.innerHTML = '<h4>Producten</h4>';
+                const prods = allProducts.filter(prod =>
+                    prod.categorie === selCat && prod.subcategorie === selSub
+                );
+                prods.forEach(prod => {
+                    const btn = document.createElement('button');
+                    btn.textContent = prod.TypeNummer;
+                    btn.className = 'selection-btn';
+                    btn.onclick = async () => {
+                        try {
+                            const data = await fetch(`api_products.php?id=${prod.id}`).then(r => r.json());
+                            // vul formulier:
+                            document.getElementById('product-id').value = data.id;
+                            document.getElementById('categorie').value = data.categorie;
+                            document.getElementById('subcategorie').value = data.subcategorie;
+                            document.getElementById('TypeNummer').value = data.TypeNummer;
+                            quill.root.innerHTML = data.omschrijving;
+                            quillSticker.root.innerHTML = data.sticker_text || '';
+                            document.getElementById('prijsstaffel').value = data.prijsstaffel;
+                            document.getElementById('aantal_per_doos').value = data.aantal_per_doos;
+                            document.getElementById('USP').value = data.USP
+                                .replace(/<\/p>\s*<p>/g, "\n")
+                                .replace(/<\/?p>/g, '');
+                            document.getElementById('leverbaar').checked = (data.leverbaar === 'ja');
+                            document.getElementById('hoofd_product').value = data.hoofd_product || '';
+                            document.getElementById('save-button').classList.add('hidden');
+                        } catch (e) {
+                            console.error('Fout bij ophalen productdetails:', e);
+                        }
+                    };
+                    p.appendChild(btn);
+                });
+            }
+
+            function clearProds() {
+                document.getElementById('prods').innerHTML = '';
+            }
+
+            document.addEventListener('DOMContentLoaded', initSelection);
+        </script>
+
+
+
+
     </main>
     <?php include_once __DIR__ . '/incs/bottom.php'; ?>
 </body>

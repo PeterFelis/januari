@@ -227,17 +227,13 @@ include_once __DIR__ . '/incs/top.php';
             container: document.getElementById('selectionComponent'),
             showProducts: false,
             onSelectionChange: function(selectionData) {
-                // Bouw URL met selectie
+                // redirect via URL
                 let url = '/shop.php';
                 let params = [];
-                if (selectionData.category) {
-                    params.push('category=' + encodeURIComponent(selectionData.category));
-                }
-                if (selectionData.subcategory) {
-                    params.push('subcategory=' + encodeURIComponent(selectionData.subcategory));
-                }
+                if (selectionData.category) params.push('category=' + encodeURIComponent(selectionData.category));
+                if (selectionData.subcategory) params.push('subcategory=' + encodeURIComponent(selectionData.subcategory));
                 window.location.href = url + (params.length ? '?' + params.join('&') : '');
-            }
+            },
         });
 
         // Na initialisatie menu open trekken én highlight toepassen
