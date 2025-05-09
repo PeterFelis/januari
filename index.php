@@ -4,6 +4,23 @@
 // 05-03-2025
 
 include_once __DIR__ . '/incs/sessie.php';
+
+include_once __DIR__ . '/incs/sessie.php';
+
+// 1% kans dat we de cleanup uitvoeren
+if (mt_rand(1, 100) === 1) {
+    // bepaal waar sessies staan
+    $sessDir = session_save_path() ?: sys_get_temp_dir();
+    $maxAge  = 3600; // 1 uur in seconden
+
+    // vind alle sessiebestanden en ruim oude op
+    foreach (glob($sessDir . '/sess_*') ?: [] as $file) {
+        if (filemtime($file) + $maxAge < time()) {
+            @unlink($file);
+        }
+    }
+}
+
 $title = "Fetum - Since 1985";
 $statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
 $menu = 'normaal';
