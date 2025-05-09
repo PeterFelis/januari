@@ -30,12 +30,7 @@ if (!empty($images)) {
     $imageText = 'Geen tekst beschikbaar';
 }
 
-// Stel de achtergrondgrootte van de foto in, afhankelijk van de extensie
-if ($imageExtension === 'png') {
-    $bgSize = "background-size: auto 100%;";
-} else {
-    $bgSize = "background-size: 100% auto;";
-}
+
 
 // Check of $imageText begint met 'over'
 $overLayout = false;
@@ -63,27 +58,6 @@ if (!empty($imageText)) {
         padding: 0;
     }
 
-    /* Hero Section vult de volledige breedte, position: relative voor absolute elementen */
-    .hero-section {
-        width: 100%;
-        min-height: 90vh;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Hero-image: standaard 100% breed, tenzij .has-text (2/3 breed) */
-    .hero-image {
-        width: 100%;
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        /* of contain, naar smaak */
-    }
-
-    .hero-image.has-text {
-        width: 66.66%;
-    }
 
     /* Standaard arrow-box: positie rechts, pijl wijst naar links */
     .arrow-box {
@@ -155,7 +129,7 @@ if (!empty($imageText)) {
 
     /* Tablet (tot 1024px) → 2 kolommen, 3 items per rij */
     @media (max-width: 1024px) {
-        
+
         .pdf-strip ul {
             display: grid;
             gap: 1rem;
@@ -212,7 +186,7 @@ if (!empty($imageText)) {
         }
 
 
-        
+
 
     }
 </style>
@@ -223,64 +197,58 @@ if (!empty($imageText)) {
     <!-- Hero Section -->
     <section class="hero-section">
         <?php
-        // Bepaal extra class voor de hero-image
-        // Als er tekst is en NIET 'over' → class .has-text (2/3 breed)
-        // Anders volledige breedte
+        // bepaal classes
         $heroClass = 'hero-image';
         if (!empty($imageText) && !$overLayout) {
             $heroClass .= ' has-text';
         }
+        if ($imageExtension === 'png') {
+            $heroClass .= ' png-image';
+        }
         ?>
-        <div class="<?php echo $heroClass; ?>"
-            style="background-image: url('frontHeros/<?php echo $randomImage; ?>'); <?php echo $bgSize; ?>">
-        </div>
-
-        <?php if (!empty($imageText)) : ?>
-            <?php if ($overLayout): ?>
-                <!-- Over-layout: box zonder pijl -->
-                <div class="arrow-box over-layout">
-                    <?php echo $imageText; ?>
-                </div>
-            <?php else: ?>
-                <!-- Standaard layout: box met pijl -->
-                <div class="arrow-box">
-                    <?php echo $imageText; ?>
-                </div>
-            <?php endif; ?>
+        <!-- ECHTE IMG: container krimpt tot deze hoogte -->
+        <img
+            src="frontHeros/<?= $randomImage ?>"
+            alt=""
+            class="<?= $heroClass ?>">
+        <?php if (!empty($imageText)): ?>
+            <div class="arrow-box <?= $overLayout ? 'over-layout' : '' ?>">
+                <?= nl2br(htmlspecialchars($imageText)) ?>
+            </div>
         <?php endif; ?>
     </section>
 
-    
-        <!-- PDF Downloads Strip: Horizontale layout -->
-        <section class="pdf-strip">
-            <ul>
-                <li>
-                    <a href="pdf/oort.pdf" target="_blank">
-                        <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> oortjes
-                    </a>
-                </li>
-                <li>
-                    <a href="pdf/hoofd.pdf" target="_blank">
-                        <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> hoofdtelefoons
-                    </a>
-                </li>
-                <li>
-                    <a href="pdf/muis.pdf" target="_blank">
-                        <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> muizen
-                    </a>
-                </li>
-                <li>
-                    <a href="pdf/bt.pdf" target="_blank">
-                        <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> bluetooth hoofdtelefoon
-                    </a>
-                </li>
-                <li>
-                    <a href="pdf/pat.pdf" target="_blank">
-                        <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> toilet (patienten) etui
-                    </a>
-                </li>
-            </ul>
-        </section>
+
+    <!-- PDF Downloads Strip: Horizontale layout -->
+    <section class="pdf-strip">
+        <ul>
+            <li>
+                <a href="pdf/oort.pdf" target="_blank">
+                    <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> oortjes
+                </a>
+            </li>
+            <li>
+                <a href="pdf/hoofd.pdf" target="_blank">
+                    <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> hoofdtelefoons
+                </a>
+            </li>
+            <li>
+                <a href="pdf/muis.pdf" target="_blank">
+                    <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> muizen
+                </a>
+            </li>
+            <li>
+                <a href="pdf/bt.pdf" target="_blank">
+                    <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> bluetooth hoofdtelefoon
+                </a>
+            </li>
+            <li>
+                <a href="pdf/pat.pdf" target="_blank">
+                    <img class="pdf-icon" src="afbeeldingen/pdf.svg" alt="PDF"> toilet (patienten) etui
+                </a>
+            </li>
+        </ul>
+    </section>
     <section>
         <?php include __DIR__ . '/incs/random_products.php'; ?>
 

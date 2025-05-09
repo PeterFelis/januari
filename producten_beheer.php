@@ -127,6 +127,7 @@ include_once __DIR__ . '/incs/top.php';
 ?>
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
 <style>
     .container {
         display: flex;
@@ -158,6 +159,7 @@ include_once __DIR__ . '/incs/top.php';
         border: 1px solid #ccc;
         background: #f9f9f9;
         cursor: pointer;
+        color: #333;
     }
 
     .selection-btn.selected {
@@ -454,56 +456,7 @@ include_once __DIR__ . '/incs/top.php';
             });
 
             document.addEventListener('DOMContentLoaded', () => {
-                var selection;
-                try {
-                    selection = new SelectionComponent({
-                        container: document.getElementById('selectionComponent'),
-                        showProducts: true,
-                        checkProductPage: true,
-                        redirectOnProductClick: false, // <— hier belangrijk
-                        onSelectionChange: async function(selectionData) {
-                            if (selectionData.product) {
-                                const productData = await fetchProductById(selectionData.product.id);
-                                document.getElementById('product-id').value = productData.id;
-                                document.getElementById('categorie').value = productData.categorie;
-                                document.getElementById('subcategorie').value = productData.subcategorie;
-                                document.getElementById('TypeNummer').value = productData.TypeNummer;
-                                quill.root.innerHTML = productData.omschrijving;
-                                quillSticker.root.innerHTML = productData.sticker_text || '';
-                                document.getElementById('prijsstaffel').value = productData.prijsstaffel;
-                                document.getElementById('aantal_per_doos').value = productData.aantal_per_doos;
-                                document.getElementById('USP').value = stripP(productData.USP);
-                                document.getElementById('leverbaar').checked = (productData.leverbaar === 'ja');
-                                document.getElementById('hoofd_product').value = productData.hoofd_product || '';
-                                document.getElementById('save-button').classList.add('hidden');
-                            }
-                        }
-                    });
-                } catch (error) {
-                    console.error("Fout bij initialiseren van SelectionComponent:", error);
-                    return;
-                }
 
-                function waitForSelectionComponent() {
-                    return new Promise((resolve) => {
-                        const checkInterval = setInterval(() => {
-                            if (selection && selection.products && selection.products.length > 0) {
-                                clearInterval(checkInterval);
-                                resolve();
-                            }
-                        }, 100);
-                    });
-                }
-
-                waitForSelectionComponent().then(() => {
-                    const defaultCategory = "<?php echo htmlspecialchars($defaultCategory); ?>";
-                    const defaultSubcategory = "<?php echo htmlspecialchars($defaultSubcategory); ?>";
-                    if (defaultCategory && typeof selection.setSelected === 'function') {
-                        selection.setSelected(defaultCategory, defaultSubcategory);
-                    }
-                }).catch(error => {
-                    console.error("Fout bij wachten op SelectionComponent:", error);
-                });
 
                 document.querySelectorAll('#right-pane input, #right-pane textarea').forEach(element => {
                     element.addEventListener('input', () => {
