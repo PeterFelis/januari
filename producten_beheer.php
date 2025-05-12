@@ -3,10 +3,10 @@
 ob_start();
 
 $menu = "beheer";
-include_once __DIR__ . '/incs/sessie.php';
+include_once __DIR__ . '/incs/sessie.php'; // Zorg dat dit pad correct is
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: loginForm.php");
+    header("Location: loginForm.php"); // Zorg dat dit pad correct is
     exit;
 }
 
@@ -16,13 +16,13 @@ if ($_SESSION['role'] !== 'admin') {
 }
 
 // Lees standaardwaarden via de URL
-$defaultCategory = isset($_GET['selectedCategory']) ? $_GET['selectedCategory'] : "";
-$defaultSubcategory = isset($_GET['selectedSubcategory']) ? $_GET['selectedSubcategory'] : "";
+$defaultCategory = isset($_GET['selectedCategory']) ? htmlspecialchars($_GET['selectedCategory'], ENT_QUOTES, 'UTF-8') : "";
+$defaultSubcategory = isset($_GET['selectedSubcategory']) ? htmlspecialchars($_GET['selectedSubcategory'], ENT_QUOTES, 'UTF-8') : "";
 
+// Afhandeling van afbeelding upload
 if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
-    // Upload-afhandeling
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        ob_clean(); // Verwijder alle eerder opgevangen output
+        ob_clean();
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Invalid request method']);
         exit;
@@ -34,15 +34,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
         exit;
     }
     if (!isset($_GET['product']) || empty($_GET['product'])) {
+        ob_clean();
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Product niet gespecificeerd.']);
         exit;
     }
-    $product = $_GET['product'];
-    $directory = __DIR__ . '/artikelen/' . $product;
+    $product = $_GET['product']; // TypeNummer
+    $directory = __DIR__ . '/artikelen/' . $product; // Zorg dat dit pad correct is
+
     if (!is_dir($directory)) {
-        mkdir($directory, 0777, true);
+        if (!mkdir($directory, 0777, true)) {
+            ob_clean();
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Kon map niet aanmaken: ' . $directory]);
+            exit;
+        }
     }
+
     $file = $_FILES['avatar'];
     if ($file['error'] !== UPLOAD_ERR_OK) {
         ob_clean();
@@ -50,6 +58,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
         echo json_encode(['success' => false, 'error' => 'Upload fout: ' . $file['error']]);
         exit;
     }
+
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
         ob_clean();
@@ -57,62 +66,68 @@ if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
         echo json_encode(['success' => false, 'error' => 'Alleen JPG, JPEG en PNG bestanden zijn toegestaan.']);
         exit;
     }
+
     $destPath = $directory . '/Pfoto.' . $extension;
-    function createResizedImage($srcPath, $destPath, $extension)
+
+    function createResizedImage($srcPath, $destPath, $extension, $newWidth = 300)
     {
+        $sourceImage = null;
         switch ($extension) {
             case 'jpg':
             case 'jpeg':
-                $srcImage = imagecreatefromjpeg($srcPath);
+                $sourceImage = @imagecreatefromjpeg($srcPath);
                 break;
             case 'png':
-                $srcImage = imagecreatefrompng($srcPath);
+                $sourceImage = @imagecreatefrompng($srcPath);
                 break;
             default:
                 return false;
         }
-        if (!$srcImage) {
+
+        if (!$sourceImage) return false;
+
+        list($width, $height) = @getimagesize($srcPath);
+        if ($width == 0 || $height == 0) { // Voorkom division by zero
+            imagedestroy($sourceImage);
             return false;
         }
-        list($width, $height) = getimagesize($srcPath);
-        $newWidth = 300;
         $newHeight = intval(($height / $width) * $newWidth);
-        $newImage = imagecreatetruecolor($newWidth, $newHeight);
-        if ($extension === 'png') {
-            imagealphablending($newImage, false);
-            imagesavealpha($newImage, true);
+        $newImage = @imagecreatetruecolor($newWidth, $newHeight);
+
+        if (!$newImage) {
+            imagedestroy($sourceImage);
+            return false;
         }
-        imagecopyresampled(
-            $newImage,
-            $srcImage,
-            0,
-            0,
-            0,
-            0,
-            $newWidth,
-            $newHeight,
-            $width,
-            $height
-        );
+
+        if ($extension === 'png') {
+            @imagealphablending($newImage, false);
+            @imagesavealpha($newImage, true);
+        }
+
+        @imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+        $saveSuccess = false;
         switch ($extension) {
             case 'jpg':
             case 'jpeg':
-                imagejpeg($newImage, $destPath, 90);
+                $saveSuccess = @imagejpeg($newImage, $destPath, 90);
                 break;
             case 'png':
-                imagepng($newImage, $destPath);
+                $saveSuccess = @imagepng($newImage, $destPath); // Compressie optioneel: , 9
                 break;
         }
-        imagedestroy($srcImage);
-        imagedestroy($newImage);
-        return true;
+
+        @imagedestroy($sourceImage);
+        @imagedestroy($newImage);
+        return $saveSuccess;
     }
-    $resizeSuccess = createResizedImage($file['tmp_name'], $destPath, $extension);
-    if ($resizeSuccess) {
+
+    if (createResizedImage($file['tmp_name'], $destPath, $extension)) {
         ob_clean();
         header('Content-Type: application/json');
-        $imageUrl = 'artikelen/' . $product . '/Pfoto.' . $extension;
-        echo json_encode(['success' => true, 'image_url' => $imageUrl]);
+        // Stuur de URL relatief aan de webroot
+        $webRootRelativePath = 'artikelen/' . rawurlencode($product) . '/Pfoto.' . $extension;
+        echo json_encode(['success' => true, 'image_url' => $webRootRelativePath]);
         exit;
     } else {
         ob_clean();
@@ -123,7 +138,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'upload_image') {
 }
 
 $title = 'Product beheer';
-include_once __DIR__ . '/incs/top.php';
+include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
 ?>
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
@@ -153,13 +168,16 @@ include_once __DIR__ . '/incs/top.php';
         margin: 0 0 10px;
     }
 
+    /* Styling voor Categorie/Subcategorie knoppen */
     .selection-btn {
         padding: 5px 10px;
         margin: 3px;
         border: 1px solid #ccc;
-        background: #f9f9f9;
+        background: #fff;
         cursor: pointer;
         color: #333;
+        border-radius: 3px;
+        font-size: 13px;
     }
 
     .selection-btn.selected {
@@ -168,11 +186,116 @@ include_once __DIR__ . '/incs/top.php';
         font-weight: bold;
     }
 
-    main {
-        margin-top: 10rem;
+    /* Styling voor Product lijst items */
+    .product-list-entry {
+        padding: 8px 12px;
+        margin: 4px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        border-radius: 3px;
+        text-align: left;
+        cursor: pointer;
+        font-family: inherit;
+        line-height: 1.4;
+        box-sizing: border-box;
+        color: #333;
     }
 
-    /* Snackbar CSS */
+    .product-list-entry:hover {
+        background-color: #f5f5f5;
+    }
+
+    .product-item-name {
+        display: block;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+        pointer-events: none;
+    }
+
+    .product-item-view-action {
+        display: block;
+        font-size: 12px;
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    .product-item-view-action:hover {
+        text-decoration: underline;
+    }
+
+    /* Stijl voor formulierelementen (voorbeeld, pas aan naar je thema) */
+    #right-pane form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    #right-pane form input[type="text"],
+    #right-pane form input[type="number"],
+    #right-pane form textarea,
+    .ql-toolbar,
+    .ql-container {
+        margin-bottom: 15px;
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    #right-pane form input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    #right-pane form button {
+        padding: 10px 15px;
+        margin-right: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    #right-pane form button:hover {
+        background-color: #0056b3;
+    }
+
+    #right-pane form #delete-button {
+        background-color: #dc3545;
+    }
+
+    #right-pane form #delete-button:hover {
+        background-color: #c82333;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .input-row .form-group {
+        flex: 1;
+    }
+
+    .sticker-prijs-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .sticker-prijs-container>div {
+        flex: 1;
+    }
+
+
+    main {
+        margin-top: 10rem;
+        /* Pas aan als je menu een andere hoogte heeft */
+    }
+
     #snackbar {
         visibility: hidden;
         min-width: 250px;
@@ -220,30 +343,29 @@ include_once __DIR__ . '/incs/top.php';
 </style>
 
 <body>
-    <?php include_once __DIR__ . '/incs/menu.php'; ?>
+    <?php include_once __DIR__ . '/incs/menu.php'; // Zorg dat dit pad correct is 
+    ?>
     <main>
         <div id="snackbar"></div>
         <div class="container">
-            <!-- Linkerpaneel: selectie-component -->
             <div id="left-pane">
                 <h2>Producten</h2>
                 <div id="cats"></div>
                 <div id="subs"></div>
                 <div id="prods"></div>
             </div>
-            <!-- Rechterpaneel: bewerkformulier -->
             <div id="right-pane">
                 <h2>Product Beheren</h2>
-                <form>
+                <form onsubmit="return false;"> {/* Voorkom default form submit */}
                     <input type="hidden" id="product-id">
                     <div class="input-row">
                         <div class="form-group">
                             <label for="categorie">Categorie:</label>
-                            <input type="text" id="categorie" value="<?php echo htmlspecialchars($defaultCategory); ?>">
+                            <input type="text" id="categorie" value="<?php echo $defaultCategory; ?>">
                         </div>
                         <div class="form-group">
                             <label for="subcategorie">Subcategorie:</label>
-                            <input type="text" id="subcategorie" value="<?php echo htmlspecialchars($defaultSubcategory); ?>">
+                            <input type="text" id="subcategorie" value="<?php echo $defaultSubcategory; ?>">
                         </div>
                     </div>
                     <div class="input-row">
@@ -253,7 +375,7 @@ include_once __DIR__ . '/incs/top.php';
                         </div>
                         <div class="form-group">
                             <label for="aantal_per_doos">Aantal per doos:</label>
-                            <input type="number" id="aantal_per_doos" required>
+                            <input type="number" id="aantal_per_doos">
                         </div>
                     </div>
                     <div class="input-row">
@@ -268,39 +390,38 @@ include_once __DIR__ . '/incs/top.php';
                     </div>
                     <div class="input-row">
                         <div class="form-group">
-                            <label for="avatar">Fotolink:</label>
-                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+                            <label for="avatar">Productfoto:</label>
+                            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg">
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="form-group">
                             <div id="foto_preview_container">
-                                <img id="foto_preview" style="max-width: 100px; display: none;" alt="Foto preview" />
-                                <span id="foto_filename"></span>
+                                <img id="foto_preview" style="max-width: 100px; max-height:100px; display: none; border:1px solid #ccc; margin-top:5px;" alt="Foto preview" />
+                                <span id="foto_filename" style="display:block; margin-top:5px; font-size:0.9em;"></span>
                             </div>
                         </div>
                     </div>
-                    <div id="omschrijvingveld">
+                    <div id="omschrijvingveld" class="form-group">
                         <label for="omschrijving">Omschrijving:</label>
-                        <div id="omschrijving"></div>
+                        <div id="omschrijving"></div> {/* Quill editor */}
                     </div>
                     <div class="sticker-prijs-container">
-                        <div>
+                        <div class="form-group">
                             <label for="sticker_text">Sticker Tekst:</label>
-                            <div id="sticker_text"></div>
+                            <div id="sticker_text"></div> {/* Quill editor */}
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="prijsstaffel">Prijsstaffel:</label>
                             <textarea id="prijsstaffel" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="USP">USP</label>
-                        <textarea rows="6" cols="30" id="USP" placeholder="Elke regel wordt opgeslagen als een apart <p> element"></textarea>
+                        <label for="USP">USP's (elke regel een nieuwe USP):</label>
+                        <textarea rows="6" id="USP" placeholder="Elke regel wordt opgeslagen als een apart <p> element"></textarea>
                     </div>
                     <br>
-                    <!-- De "Bewaren" knop refresht de pagina -->
-                    <button type="button" id="save-button">Bewaren</button>
+                    <button type="button" id="save-button">Bewaren & Vernieuw</button>
                     <button type="button" id="new-button">Leegmaken</button>
                     <button type="button" id="copy-button">Kopieer</button>
                     <button type="button" id="delete-button">Verwijder</button>
@@ -309,7 +430,14 @@ include_once __DIR__ . '/incs/top.php';
         </div>
 
         <script>
+            let allProducts = [];
+            let selCat = "<?php echo $defaultCategory; ?>";
+            let selSub = "<?php echo $defaultSubcategory; ?>";
             let isEditingNewProduct = false;
+            let productPageExistence = {}; // Voor status van productpagina's
+
+            // Quill editors
+            var quillOmschrijving, quillSticker;
 
             function showSnackbar(message) {
                 const snackbar = document.getElementById('snackbar');
@@ -321,37 +449,41 @@ include_once __DIR__ . '/incs/top.php';
             }
 
             async function fetchProductById(id) {
-                const response = await fetch(`api_products.php?id=${id}`);
+                const response = await fetch(`api_products.php?id=${id}`); // Zorg dat dit pad correct is
+                if (!response.ok) throw new Error(`API product details faalde: ${response.status}`);
                 return await response.json();
             }
 
             async function saveProduct(data, isNew) {
                 const method = isNew ? 'POST' : 'PUT';
-                const response = await fetch('api_products.php', {
+                const response = await fetch('api_products.php', { // Zorg dat dit pad correct is
                     method: method,
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
+                if (!response.ok) throw new Error(`API save product faalde: ${response.status}`);
                 return await response.json();
             }
 
-            // resetForm behoudt categorie en subcategorie
             function resetForm() {
                 document.getElementById('product-id').value = '';
                 document.getElementById('TypeNummer').value = '';
-                quill.root.innerHTML = '';
-                quillSticker.root.innerHTML = '';
+                if (quillOmschrijving) quillOmschrijving.root.innerHTML = '';
+                if (quillSticker) quillSticker.root.innerHTML = '';
                 document.getElementById('prijsstaffel').value = '';
                 document.getElementById('aantal_per_doos').value = '';
                 document.getElementById('USP').value = '';
                 document.getElementById('leverbaar').checked = true;
                 document.getElementById('hoofd_product').value = '';
                 document.getElementById('foto_preview').style.display = 'none';
+                document.getElementById('foto_preview').src = '#';
                 document.getElementById('foto_filename').textContent = "";
+                document.getElementById('avatar').value = ''; // Reset file input
                 document.getElementById('save-button').classList.remove('hidden');
                 isEditingNewProduct = true;
+                // Categorie en subcategorie blijven behouden zoals in originele code
             }
 
             function wrapUSP(text) {
@@ -359,27 +491,43 @@ include_once __DIR__ . '/incs/top.php';
             }
 
             function stripP(html) {
+                if (!html) return "";
                 return html.replace(/<\/p>\s*<p>/g, "\n").replace(/<\/?p>/g, "").trim();
             }
 
-            async function autoSave() {
-                const id = document.getElementById('product-id').value;
-                if (!id || isEditingNewProduct) return;
-                const data = {
-                    id: id,
-                    categorie: document.getElementById('categorie').value,
-                    subcategorie: document.getElementById('subcategorie').value,
-                    TypeNummer: document.getElementById('TypeNummer').value,
-                    omschrijving: quill.root.innerHTML,
-                    sticker_text: quillSticker.root.innerHTML,
-                    prijsstaffel: document.getElementById('prijsstaffel').value,
-                    aantal_per_doos: document.getElementById('aantal_per_doos').value,
-                    USP: wrapUSP(document.getElementById('USP').value),
-                    leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
-                    hoofd_product: document.getElementById('hoofd_product').value
-                };
-                await saveProduct(data, false);
+            let autoSaveTimeout;
+
+            function triggerAutoSave() {
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(async () => {
+                    const id = document.getElementById('product-id').value;
+                    if (!id || isEditingNewProduct) return;
+
+                    console.log("Autosaving product ID:", id);
+                    const data = {
+                        id: id,
+                        categorie: document.getElementById('categorie').value,
+                        subcategorie: document.getElementById('subcategorie').value,
+                        TypeNummer: document.getElementById('TypeNummer').value,
+                        omschrijving: quillOmschrijving ? quillOmschrijving.root.innerHTML : '',
+                        sticker_text: quillSticker ? quillSticker.root.innerHTML : '',
+                        prijsstaffel: document.getElementById('prijsstaffel').value,
+                        aantal_per_doos: document.getElementById('aantal_per_doos').value,
+                        USP: wrapUSP(document.getElementById('USP').value),
+                        leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
+                        hoofd_product: document.getElementById('hoofd_product').value
+                        // Fotolink wordt niet meegestuurd bij autosave data; die wordt apart beheerd.
+                    };
+                    try {
+                        await saveProduct(data, false);
+                        // Optioneel: showSnackbar("Wijzigingen automatisch opgeslagen.");
+                    } catch (error) {
+                        console.error("Autosave error:", error);
+                        showSnackbar("Fout bij automatisch opslaan.");
+                    }
+                }, 1000); // Wacht 1 seconde na laatste wijziging
             }
+
 
             function detectNewProduct() {
                 if (!document.getElementById('product-id').value && !isEditingNewProduct) {
@@ -391,103 +539,307 @@ include_once __DIR__ . '/incs/top.php';
             document.getElementById('avatar').addEventListener('change', async (event) => {
                 const file = event.target.files[0];
                 if (!file) return;
+
                 const typeNummer = document.getElementById('TypeNummer').value;
                 if (!typeNummer) {
-                    showSnackbar("Selecteer eerst een product.");
+                    showSnackbar("Vul eerst een TypeNummer in of selecteer een bestaand product.");
+                    event.target.value = ''; // Reset file input
                     return;
                 }
+
                 const formData = new FormData();
                 formData.append('avatar', file);
+
                 try {
                     const response = await fetch(`producten_beheer.php?action=upload_image&product=${encodeURIComponent(typeNummer)}`, {
                         method: 'POST',
                         body: formData
                     });
                     const result = await response.json();
-                    if (result.success) {
-                        showSnackbar("Afbeelding succesvol geüpload en verkleind.");
-                        document.getElementById('foto_preview').src = result.image_url;
+                    if (result.success && result.image_url) {
+                        showSnackbar("Afbeelding succesvol geüpload.");
+                        document.getElementById('foto_preview').src = result.image_url + '?t=' + new Date().getTime(); // Cache buster
                         document.getElementById('foto_preview').style.display = 'block';
                         document.getElementById('foto_filename').textContent = file.name;
+                        // Trigger autosave als een bestaand product bewerkt wordt om de (impliciete) link op te slaan
+                        if (document.getElementById('product-id').value && !isEditingNewProduct) {
+                            triggerAutoSave();
+                        }
                     } else {
-                        showSnackbar("Fout bij het uploaden van de afbeelding: " + result.error);
+                        showSnackbar("Fout bij upload: " + (result.error || "Onbekende fout"));
                     }
                 } catch (error) {
-                    showSnackbar("Fout bij het uploaden van de afbeelding.");
+                    console.error("Upload error:", error);
+                    showSnackbar("Netwerkfout bij uploaden afbeelding.");
                 }
             });
 
-            var quill = new Quill('#omschrijving', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        [{
-                            'header': [1, 2, false]
-                        }],
-                        ['bold', 'italic', 'underline'],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
-                        ['link', 'blockquote', 'code-block'],
-                        [{
-                            'color': []
-                        }, {
-                            'background': []
-                        }]
-                    ]
-                }
-            });
+            async function initSelection() {
+                try {
+                    const resp = await fetch('api_products.php'); // Zorg dat dit pad correct is
+                    if (!resp.ok) throw new Error(`API producten faalde: ${resp.status}`);
+                    allProducts = await resp.json();
 
-            var quillSticker = new Quill('#sticker_text', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline'],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
-                        ['link']
-                    ]
+                    if (allProducts && allProducts.length > 0) {
+                        const typeNummers = allProducts.map(p => p.TypeNummer).filter(tn => tn && typeof tn === 'string' && tn.trim() !== '');
+                        if (typeNummers.length > 0) {
+                            try {
+                                const pageStatusResp = await fetch('check_pagina_status.php', { // Zorg dat dit pad correct is
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        typeNummers: typeNummers
+                                    })
+                                });
+                                if (!pageStatusResp.ok) throw new Error(`Check pagina status faalde: ${pageStatusResp.status}`);
+                                productPageExistence = await pageStatusResp.json();
+                                if (productPageExistence.error) {
+                                    console.error("Fout van check_pagina_status.php:", productPageExistence.error);
+                                    productPageExistence = {};
+                                }
+                            } catch (pageStatusError) {
+                                console.error("Fout bij ophalen paginastatus:", pageStatusError);
+                                productPageExistence = {}; // Ga door zonder deze info bij fout
+                            }
+                        }
+                    }
+                    renderCats();
+                } catch (e) {
+                    console.error('Fout bij laden producten of paginastatus:', e);
+                    showSnackbar('Fout bij laden producten.');
                 }
-            });
+            }
+
+            function renderCats() {
+                const c = document.getElementById('cats');
+                c.innerHTML = '<h3>Categorieën</h3>';
+                if (!allProducts || allProducts.length === 0) return;
+                const cats = [...new Set(allProducts.map(p => p.categorie).filter(cat => cat))];
+                cats.sort().forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.textContent = cat;
+                    btn.className = selCat === cat ? 'selection-btn selected' : 'selection-btn';
+                    btn.onclick = () => {
+                        selCat = cat;
+                        selSub = null;
+                        renderCats();
+                        renderSubs();
+                        clearProdsAndForm();
+                    };
+                    c.appendChild(btn);
+                });
+                if (selCat) renderSubs();
+                else clearProdsAndForm();
+            }
+
+            function renderSubs() {
+                const s = document.getElementById('subs');
+                s.innerHTML = '';
+                if (!selCat || !allProducts || allProducts.length === 0) return;
+                s.innerHTML = '<h4>Subcategorieën</h4>';
+                const subs = [...new Set(
+                    allProducts.filter(p => p.categorie === selCat).map(p => p.subcategorie).filter(sub => sub)
+                )];
+                subs.sort().forEach(sub => {
+                    const btn = document.createElement('button');
+                    btn.textContent = sub;
+                    btn.className = selSub === sub ? 'selection-btn selected' : 'selection-btn';
+                    btn.onclick = () => {
+                        selSub = sub;
+                        renderSubs();
+                        renderProds();
+                        resetFormFieldsOnly();
+                    };
+                    s.appendChild(btn);
+                });
+                if (selSub) renderProds();
+                else {
+                    clearProds();
+                    resetFormFieldsOnly();
+                }
+            }
+
+            function clearProdsAndForm() {
+                clearProds();
+                resetForm(); // Volledige reset als geen categorie/sub geselecteerd
+            }
+
+            function resetFormFieldsOnly() { // Reset alleen de product specifieke velden, niet categorie/subcategorie
+                document.getElementById('product-id').value = '';
+                document.getElementById('TypeNummer').value = '';
+                if (quillOmschrijving) quillOmschrijving.root.innerHTML = '';
+                if (quillSticker) quillSticker.root.innerHTML = '';
+                document.getElementById('prijsstaffel').value = '';
+                document.getElementById('aantal_per_doos').value = '';
+                document.getElementById('USP').value = '';
+                document.getElementById('leverbaar').checked = true;
+                document.getElementById('hoofd_product').value = '';
+                document.getElementById('foto_preview').style.display = 'none';
+                document.getElementById('foto_preview').src = '#';
+                document.getElementById('foto_filename').textContent = "";
+                document.getElementById('avatar').value = '';
+                document.getElementById('save-button').classList.remove('hidden');
+                isEditingNewProduct = true;
+            }
+
+
+            function renderProds() {
+                const p = document.getElementById('prods');
+                p.innerHTML = '';
+                if (!selCat || !selSub || !allProducts || allProducts.length === 0) return;
+
+                p.innerHTML = '<h4>Producten</h4>';
+                const prodsInSelection = allProducts
+                    .filter(prod => prod.categorie === selCat && prod.subcategorie === selSub)
+                    .sort((a, b) => (a.TypeNummer || "").localeCompare(b.TypeNummer || ""));
+
+                prodsInSelection.forEach(prod => {
+                    const productEntryButton = document.createElement('button');
+                    productEntryButton.className = 'product-list-entry';
+                    productEntryButton.type = 'button';
+                    productEntryButton.title = `Bewerk product: ${prod.TypeNummer}`;
+                    productEntryButton.onclick = async () => {
+                        try {
+                            const data = await fetchProductById(prod.id);
+                            document.getElementById('product-id').value = data.id || '';
+                            document.getElementById('categorie').value = data.categorie || selCat;
+                            document.getElementById('subcategorie').value = data.subcategorie || selSub;
+                            document.getElementById('TypeNummer').value = data.TypeNummer || '';
+                            if (quillOmschrijving) quillOmschrijving.root.innerHTML = data.omschrijving || '';
+                            if (quillSticker) quillSticker.root.innerHTML = data.sticker_text || '';
+                            document.getElementById('prijsstaffel').value = data.prijsstaffel || '';
+                            document.getElementById('aantal_per_doos').value = data.aantal_per_doos || '';
+                            document.getElementById('USP').value = stripP(data.USP || '');
+                            document.getElementById('leverbaar').checked = (data.leverbaar === 'ja');
+                            document.getElementById('hoofd_product').value = data.hoofd_product || '';
+
+                            const fotoPreview = document.getElementById('foto_preview');
+                            const fotoFilename = document.getElementById('foto_filename');
+                            if (data.image_url) { // Dit veld moet door je API voor productdetails worden geleverd
+                                fotoPreview.src = data.image_url + '?t=' + new Date().getTime();
+                                fotoPreview.style.display = 'block';
+                                fotoFilename.textContent = data.image_url.split('/').pop();
+                            } else {
+                                // Probeer een standaard pad als de API geen image_url geeft
+                                const defaultImgPath = `artikelen/${encodeURIComponent(data.TypeNummer)}/Pfoto.jpg`; // Aanname: JPG
+                                // Hier zou je kunnen proberen of dit bestand bestaat via een extra check,
+                                // of een placeholder tonen. Voor nu, leeg laten.
+                                fotoPreview.style.display = 'none';
+                                fotoPreview.src = '#';
+                                fotoFilename.textContent = '';
+                            }
+                            document.getElementById('avatar').value = '';
+                            document.getElementById('save-button').classList.add('hidden');
+                            isEditingNewProduct = false;
+                        } catch (e) {
+                            console.error('Fout bij ophalen productdetails:', e);
+                            showSnackbar('Fout bij ophalen productdetails.');
+                        }
+                    };
+
+                    const productNameDisplay = document.createElement('span');
+                    productNameDisplay.className = 'product-item-name';
+                    productNameDisplay.textContent = prod.TypeNummer || "Onbekend TypeNummer";
+                    productEntryButton.appendChild(productNameDisplay);
+
+                    if (prod.TypeNummer && productPageExistence[prod.TypeNummer] === true) {
+                        const productViewAction = document.createElement('span');
+                        productViewAction.className = 'product-item-view-action';
+                        productViewAction.innerHTML = 'Bekijk ↗';
+                        productViewAction.title = `Open productpagina: ${prod.TypeNummer}`;
+                        productViewAction.onclick = (event) => {
+                            event.stopPropagation();
+                            const productPageUrl = `artikelen/${encodeURIComponent(prod.TypeNummer)}/index.php`;
+                            window.open(productPageUrl, '_blank');
+                        };
+                        productEntryButton.appendChild(productViewAction);
+                    }
+                    p.appendChild(productEntryButton);
+                });
+            }
+
+            function clearProds() {
+                document.getElementById('prods').innerHTML = '';
+            }
 
             document.addEventListener('DOMContentLoaded', () => {
-
+                quillOmschrijving = new Quill('#omschrijving', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{
+                                'header': [1, 2, false]
+                            }],
+                            ['bold', 'italic', 'underline'],
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }],
+                            ['link', 'blockquote', 'code-block'],
+                            [{
+                                'color': []
+                            }, {
+                                'background': []
+                            }]
+                        ]
+                    }
+                });
+                quillSticker = new Quill('#sticker_text', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline'],
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }],
+                            ['link']
+                        ]
+                    }
+                });
 
                 document.querySelectorAll('#right-pane input, #right-pane textarea').forEach(element => {
+                    if (element.id === 'avatar') return; // Sla file input over voor autosave trigger
                     element.addEventListener('input', () => {
                         detectNewProduct();
-                        autoSave();
+                        triggerAutoSave();
                     });
                 });
-                quill.on('text-change', () => {
+                quillOmschrijving.on('text-change', () => {
                     detectNewProduct();
-                    autoSave();
+                    triggerAutoSave();
                 });
                 quillSticker.on('text-change', () => {
                     detectNewProduct();
-                    autoSave();
+                    triggerAutoSave();
                 });
+                document.getElementById('leverbaar').addEventListener('change', () => {
+                    detectNewProduct();
+                    triggerAutoSave();
+                });
+
 
                 document.getElementById('copy-button').addEventListener('click', async () => {
                     const productIdField = document.getElementById('product-id');
                     const typeNummerInput = document.getElementById('TypeNummer');
-                    if (!productIdField.value) {
-                        showSnackbar("Selecteer eerst een product om te kopiëren.");
+                    if (!typeNummerInput.value) { // Check TypeNummer ipv product-id, want dat is er misschien nog niet
+                        showSnackbar("Vul/selecteer een product om te kopiëren.");
                         return;
                     }
-                    if (!typeNummerInput.value.endsWith("-KOPIE")) {
-                        typeNummerInput.value = typeNummerInput.value + "-KOPIE";
+                    let newTypeNummer = typeNummerInput.value;
+                    if (!newTypeNummer.endsWith("-KOPIE")) {
+                        newTypeNummer = newTypeNummer + "-KOPIE";
                     }
-                    const data = {
+
+                    const data = { // Geen ID hier, want het is een nieuw product
                         categorie: document.getElementById('categorie').value,
                         subcategorie: document.getElementById('subcategorie').value,
-                        TypeNummer: document.getElementById('TypeNummer').value,
-                        omschrijving: quill.root.innerHTML,
+                        TypeNummer: newTypeNummer,
+                        omschrijving: quillOmschrijving.root.innerHTML,
                         sticker_text: quillSticker.root.innerHTML,
                         prijsstaffel: document.getElementById('prijsstaffel').value,
                         aantal_per_doos: document.getElementById('aantal_per_doos').value,
@@ -495,16 +847,29 @@ include_once __DIR__ . '/incs/top.php';
                         leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
                         hoofd_product: document.getElementById('hoofd_product').value
                     };
-                    const newProduct = await saveProduct(data, true);
-                    if (newProduct && newProduct.id) {
-                        document.getElementById('product-id').value = newProduct.id;
-                        isEditingNewProduct = true;
+                    try {
+                        const newProduct = await saveProduct(data, true); // isNew = true
+                        if (newProduct && newProduct.id) {
+                            showSnackbar(`Product gekopieerd als ${newTypeNummer} en opgeslagen.`);
+                            // Update de UI direct met de gekopieerde data
+                            document.getElementById('product-id').value = newProduct.id;
+                            document.getElementById('TypeNummer').value = newTypeNummer;
+                            isEditingNewProduct = false; // Je bewerkt nu dit "nieuwe" gekopieerde product
+                            document.getElementById('save-button').classList.add('hidden');
+
+                            // Voeg toe aan allProducts en productPageExistence (aanname: nieuwe kopie heeft nog geen pagina)
+                            allProducts.push({
+                                ...data,
+                                id: newProduct.id
+                            });
+                            productPageExistence[newTypeNummer] = false; // Nieuwe kopie heeft nog geen pagina
+                            renderProds(); // Her-render de productlijst
+                        } else {
+                            showSnackbar("Fout bij kopiëren: " + (newProduct.error || "Onbekende serverfout"));
+                        }
+                    } catch (e) {
+                        showSnackbar("Fout bij kopiëren: " + e.message);
                     }
-                    showSnackbar("Productgegevens gekopieerd en opgeslagen.");
-                    saveCategorySelection();
-                    setTimeout(() => {
-                        window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(data.categorie) + "&selectedSubcategory=" + encodeURIComponent(data.subcategorie);
-                    }, 1500);
                 });
 
                 document.getElementById('delete-button').addEventListener('click', async () => {
@@ -513,9 +878,9 @@ include_once __DIR__ . '/incs/top.php';
                         showSnackbar("Selecteer eerst een product om te verwijderen.");
                         return;
                     }
-                    if (!confirm("Weet je zeker dat je dit product wilt verwijderen?")) return;
+                    if (!confirm("Weet je zeker dat je dit product wilt verwijderen? Dit kan niet ongedaan worden gemaakt.")) return;
                     try {
-                        const response = await fetch('api_products.php', {
+                        const response = await fetch('api_products.php', { // Zorg dat dit pad correct is
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -527,157 +892,82 @@ include_once __DIR__ . '/incs/top.php';
                         const result = await response.json();
                         if (result.success) {
                             showSnackbar("Product succesvol verwijderd.");
-                            const cat = document.getElementById('categorie').value;
-                            const subcat = document.getElementById('subcategorie').value;
-                            saveCategorySelection();
-                            setTimeout(() => {
-                                window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(cat) + "&selectedSubcategory=" + encodeURIComponent(subcat);
-                            }, 1500);
+                            // Verwijder uit allProducts en productPageExistence
+                            const deletedTypeNummer = document.getElementById('TypeNummer').value;
+                            allProducts = allProducts.filter(p => p.id !== parseInt(productId));
+                            delete productPageExistence[deletedTypeNummer];
+
+                            resetForm();
+                            renderProds(); // Her-render de productlijst
+                            // Optioneel: herlaad categorie/subcategorie
+                            // window.location.href = `producten_beheer.php?selectedCategory=${encodeURIComponent(selCat)}&selectedSubcategory=${encodeURIComponent(selSub)}`;
                         } else {
-                            showSnackbar("Fout bij verwijderen: " + result.error);
+                            showSnackbar("Fout bij verwijderen: " + (result.error || "Onbekende serverfout"));
                         }
-                    } catch (error) {
-                        showSnackbar("Er is een fout opgetreden bij het verwijderen.");
+                    } catch (e) {
+                        showSnackbar("Fout bij verwijderen: " + e.message);
                     }
                 });
 
-                // Aanpassing: de save-knop refresht de pagina (geen extra save)
                 document.getElementById('save-button').addEventListener('click', () => {
-                    const cat = document.getElementById('categorie').value;
-                    const subcat = document.getElementById('subcategorie').value;
-                    window.location.href = "producten_beheer.php?selectedCategory=" + encodeURIComponent(cat) + "&selectedSubcategory=" + encodeURIComponent(subcat);
+                    // Deze knop slaat op en herlaadt de pagina om selecties te behouden
+                    // De autosave zou de data al moeten hebben opgeslagen als het een bestaand product is.
+                    // Als het een NIEUW product is (isEditingNewProduct = true), moeten we expliciet opslaan.
+                    if (isEditingNewProduct && document.getElementById('TypeNummer').value) {
+                        const data = {
+                            categorie: document.getElementById('categorie').value,
+                            subcategorie: document.getElementById('subcategorie').value,
+                            TypeNummer: document.getElementById('TypeNummer').value,
+                            omschrijving: quillOmschrijving.root.innerHTML,
+                            sticker_text: quillSticker.root.innerHTML,
+                            prijsstaffel: document.getElementById('prijsstaffel').value,
+                            aantal_per_doos: document.getElementById('aantal_per_doos').value,
+                            USP: wrapUSP(document.getElementById('USP').value),
+                            leverbaar: document.getElementById('leverbaar').checked ? 'ja' : 'nee',
+                            hoofd_product: document.getElementById('hoofd_product').value
+                        };
+                        saveProduct(data, true).then(newProd => {
+                            if (newProd && newProd.id) {
+                                showSnackbar("Nieuw product opgeslagen.");
+                                window.location.href = `producten_beheer.php?selectedCategory=${encodeURIComponent(selCat)}&selectedSubcategory=${encodeURIComponent(selSub)}`;
+                            } else {
+                                showSnackbar("Fout bij opslaan nieuw product: " + (newProd.error || "Onbekend"));
+                            }
+                        }).catch(err => showSnackbar("Fout: " + err.message));
+                    } else {
+                        window.location.href = `producten_beheer.php?selectedCategory=${encodeURIComponent(selCat)}&selectedSubcategory=${encodeURIComponent(selSub)}`;
+                    }
                 });
 
                 document.getElementById('new-button').addEventListener('click', resetForm);
 
-                // Optioneel: bewaar en herstel keuze via sessionStorage
-                function saveCategorySelection() {
-                    sessionStorage.setItem('selectedCategory', document.getElementById('categorie').value);
-                    sessionStorage.setItem('selectedSubcategory', document.getElementById('subcategorie').value);
+                function saveCategorySelectionToSession() {
+                    if (document.getElementById('categorie').value) sessionStorage.setItem('selectedCategory', document.getElementById('categorie').value);
+                    if (document.getElementById('subcategorie').value) sessionStorage.setItem('selectedSubcategory', document.getElementById('subcategorie').value);
                 }
 
-                function restoreCategorySelection() {
-                    const category = sessionStorage.getItem('selectedCategory');
-                    const subcategory = sessionStorage.getItem('selectedSubcategory');
-                    if (category !== null) {
-                        document.getElementById('categorie').value = category;
-                    }
-                    if (subcategory !== null) {
-                        document.getElementById('subcategorie').value = subcategory;
-                    }
+                function restoreCategorySelectionFromSession() {
+                    const storedCategory = sessionStorage.getItem('selectedCategory');
+                    const storedSubcategory = sessionStorage.getItem('selectedSubcategory');
+                    if (storedCategory) selCat = storedCategory;
+                    if (storedSubcategory) selSub = storedSubcategory;
+                    // De inputvelden worden gevuld door de PHP $defaultCategory/$defaultSubcategory,
+                    // maar selCat/selSub moeten overeenkomen voor de JS logica.
+                    document.getElementById('categorie').value = selCat;
+                    document.getElementById('subcategorie').value = selSub;
                 }
 
-                restoreCategorySelection();
+                window.addEventListener('beforeunload', saveCategorySelectionToSession);
+                restoreCategorySelectionFromSession(); // Bij laden
+                initSelection(); // Start het laden van data
             });
         </script>
-
-
-        <script>
-            let allProducts = [];
-            let selCat = "<?php echo htmlspecialchars($defaultCategory); ?>";
-            let selSub = "<?php echo htmlspecialchars($defaultSubcategory); ?>";
-
-            async function initSelection() {
-                try {
-                    const resp = await fetch('api_products.php');
-                    allProducts = await resp.json();
-                    renderCats();
-                } catch (e) {
-                    console.error('Fout bij laden producten:', e);
-                }
-            }
-
-            function renderCats() {
-                const c = document.getElementById('cats');
-                c.innerHTML = '<h3>Categorieën</h3>';
-                const cats = [...new Set(allProducts.map(p => p.categorie))];
-                cats.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.textContent = cat;
-                    btn.className = selCat === cat ? 'selection-btn selected' : 'selection-btn';
-                    btn.onclick = () => {
-                        selCat = cat;
-                        selSub = null;
-                        renderCats();
-                        renderSubs();
-                        clearProds();
-                    };
-                    c.appendChild(btn);
-                });
-                renderSubs();
-            }
-
-            function renderSubs() {
-                const s = document.getElementById('subs');
-                s.innerHTML = '';
-                if (!selCat) return;
-                s.innerHTML = '<h4>Subcategorieën</h4>';
-                const subs = [...new Set(
-                    allProducts
-                    .filter(p => p.categorie === selCat)
-                    .map(p => p.subcategorie)
-                )];
-                subs.forEach(sub => {
-                    const btn = document.createElement('button');
-                    btn.textContent = sub;
-                    btn.className = selSub === sub ? 'selection-btn selected' : 'selection-btn';
-                    btn.onclick = () => {
-                        selSub = sub;
-                        renderSubs();
-                        renderProds();
-                    };
-                    s.appendChild(btn);
-                });
-            }
-
-            function renderProds() {
-                const p = document.getElementById('prods');
-                p.innerHTML = '';
-                if (!selCat || !selSub) return;
-                p.innerHTML = '<h4>Producten</h4>';
-                const prods = allProducts.filter(prod =>
-                    prod.categorie === selCat && prod.subcategorie === selSub
-                );
-                prods.forEach(prod => {
-                    const btn = document.createElement('button');
-                    btn.textContent = prod.TypeNummer;
-                    btn.className = 'selection-btn';
-                    btn.onclick = async () => {
-                        try {
-                            const data = await fetch(`api_products.php?id=${prod.id}`).then(r => r.json());
-                            // vul formulier:
-                            document.getElementById('product-id').value = data.id;
-                            document.getElementById('categorie').value = data.categorie;
-                            document.getElementById('subcategorie').value = data.subcategorie;
-                            document.getElementById('TypeNummer').value = data.TypeNummer;
-                            quill.root.innerHTML = data.omschrijving;
-                            quillSticker.root.innerHTML = data.sticker_text || '';
-                            document.getElementById('prijsstaffel').value = data.prijsstaffel;
-                            document.getElementById('aantal_per_doos').value = data.aantal_per_doos;
-                            document.getElementById('USP').value = data.USP
-                                .replace(/<\/p>\s*<p>/g, "\n")
-                                .replace(/<\/?p>/g, '');
-                            document.getElementById('leverbaar').checked = (data.leverbaar === 'ja');
-                            document.getElementById('hoofd_product').value = data.hoofd_product || '';
-                            document.getElementById('save-button').classList.add('hidden');
-                        } catch (e) {
-                            console.error('Fout bij ophalen productdetails:', e);
-                        }
-                    };
-                    p.appendChild(btn);
-                });
-            }
-
-            function clearProds() {
-                document.getElementById('prods').innerHTML = '';
-            }
-
-            document.addEventListener('DOMContentLoaded', initSelection);
-        </script>
-
-
-
-
     </main>
-    <?php include_once __DIR__ . '/incs/bottom.php'; ?>
+    <?php include_once __DIR__ . '/incs/bottom.php'; // Zorg dat dit pad correct is 
+    ?>
 </body>
+
+</html>
+<?php
+ob_end_flush();
+?>

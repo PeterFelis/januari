@@ -443,10 +443,22 @@ header nav a:visited {
   display: block;
   width: 100%;
   height: auto;
+  margin: 0 auto;
 }
 
-.hero-image.has-text {
-  width: 66.6666%;
+.hero-section img.hero-image.has-text {
+  max-height: 90vh;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Mobiel optimalisatie */
+@media (max-width: 768px) {
+  .hero-section img.hero-image.has-text {
+      max-height: 80vh; /* Iets minder hoog op mobiel */
+  }
 }
 
 /* PNG variant: laat volledige afbeelding zien en bottom-align */
@@ -502,6 +514,9 @@ header nav a:visited {
     right: 50%;
     transform: translateX(50%);
   }
+  .arrow-box::after {
+    display: none !important;
+}
 }
 
 /* PNG-variant: contain + onderkant uitlijnen */

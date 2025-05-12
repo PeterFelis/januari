@@ -230,7 +230,7 @@ if (!empty($imageText)) {
             class="<?= $heroClass ?>">
         <?php if (!empty($imageText)): ?>
             <div class="arrow-box <?= $overLayout ? 'over-layout' : '' ?>">
-                <?= nl2br(htmlspecialchars($imageText)) ?>
+                <?= nl2br(strip_tags($imageText, '<br>')) ?>
             </div>
         <?php endif; ?>
     </section>

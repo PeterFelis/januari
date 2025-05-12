@@ -166,10 +166,46 @@ if (isset($_SESSION['klant_id'])) {
 
     /* Tablet (tot 1024px) → 2 kolommen, 3 items per rij */
     @media (max-width: 1024px) {
-        .logo {
-            height: 100%;
-            margin-top: 1rem;
-            margin-left: 1rem;
+        .hamburger {
+            display: block;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            color: black;
+            background: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .menu-items {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100vh;
+            width: 70vw;
+            max-width: 300px;
+            background: black;
+            /* zwart menu */
+            flex-direction: column;
+            padding: 4rem 1rem;
+            gap: 1.5rem;
+            transition: left 0.3s ease-in-out;
+            z-index: 900;
+        }
+
+        .menu-items a {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        body.menu-open .menu-items {
+            left: 0;
+        }
+
+        body.menu-open {
+            overflow: hidden;
         }
     }
 

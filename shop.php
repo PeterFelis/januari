@@ -7,7 +7,7 @@ $selCat = isset($_GET['category']) ? $_GET['category'] : '';
 $selSub = isset($_GET['subcategory']) ? $_GET['subcategory'] : '';
 
 $title = "Fetum - webshop";
-$statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
+$statusbalk = "Iets bestellen? Mailen of bellen werkt nog sneller";
 $menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
 ?>

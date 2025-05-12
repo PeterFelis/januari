@@ -70,7 +70,7 @@ include_once __DIR__ . '/incs/top.php';
         .news-container {
             column-count: 3;
             column-gap: 20px;
-            padding: 20px 0;
+            padding: 20px;
             max-width: 1200px;
             margin: 10rem auto;
         }
