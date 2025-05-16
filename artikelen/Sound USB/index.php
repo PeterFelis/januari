@@ -2,10 +2,10 @@
 session_start();
 $menu = "beheer";
 
-$title = "HP-305 comfort hoofdtelefoon";
+$title = "USB sound adapter met hoofdtelefoon en microfoon aansluiting";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
 $TypeNummerHoofd = "Sound USB";
-$TypeNummerZakjes = "null"; // Zorg dat dit typenummer in de database bestaat voor de variant
+$TypeNummerZakjes = null; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie
 include_once __DIR__ . '/../../incs/artikelkop.php';
@@ -38,21 +38,23 @@ if (!$variantProduct) {
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
             "titel titel titel titel titel titel"
-            "een een twee twee twee twee"
-            "usp usp twee twee twee twee"
-            "vier vier vijf vijf zes zes"
+            "een een een een een een"
+            "usp usp usp usp usp usp"
+            "vier vier vijf vijf vijf vijf"
             "drie drie zeven zeven zeven zeven"
-            "acht acht acht acht negen negen"
+            "zes zes zes zes zes zes"
             "tien tien tien tien tien tien"
             "twaalf twaalf elf elf elf elf"
             "dertien dertien elf elf elf elf";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 2fr 2fr 2fr auto 3fr 1fr 2fr 2fr;
-        height: 3000px;
+        grid-template-rows: 1fr 3fr 1fr 2fr auto 3fr;
+        height: 2000px;
     }
 </style>
 <script>
@@ -79,11 +81,9 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="3051.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="3dsound.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        <div class="twee">
-            <img class='hoog' src="305 met beest samen.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
+
 
         <div class="titel oranje">
             <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
@@ -103,39 +103,19 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
         <div class="vier">
-            <img class='hoog' src="3052.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="3d sound front.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        <div class="vijf"> <img class='hoog' src="3053.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
-        <div class="zes"><img class='hoog' src="3054.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+        <div class="vijf"> <img class='hoog' src="3dsound met 2 stekkers.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+        <div class="zes"><img class='hoog' src="3dsound met stekker en usb aangesloten.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
-        <div class="acht">
-            <img class='hoog' src="3055.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
-        <div class="negen">
-            <img class='hoog' src="hp-305 hangend uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
 
-        <div class="tien oranje">
-            <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>
-        </div>
 
-        <div class="elf">
-            <img class='hoog' src="305 in zakje 27-02-2025.png" alt='HP-305 in een zakje' loading="lazy">
-        </div>
 
-        <div class="twaalf oranje omschrijving">
-            <?php echo $variantProduct['omschrijving']; ?>
-        </div>
 
-        <div class="dertien oranje">
-            <?php
-            renderPriceComponent($variantProduct['prijsstaffel'], $variantProduct['aantal_per_doos'], 'variant', $variantProduct['TypeNummer']);
-            ?>
-        </div>
 
 
     </article>

@@ -248,18 +248,39 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
         margin-right: 5px;
     }
 
-    #right-pane form button {
+    #right-pane form .action-btn {
         padding: 10px 15px;
         margin-right: 10px;
-        background-color: #007bff;
-        color: white;
+        background: #007bff;
+        color: #fff;
         border: none;
         border-radius: 3px;
         cursor: pointer;
     }
 
-    #right-pane form button:hover {
-        background-color: #0056b3;
+    #right-pane form .action-btn:hover {
+        background: #0056b3;
+    }
+
+    #right-pane form .action-btn.danger {
+        background: #dc3545;
+    }
+
+    #right-pane form .action-btn.danger:hover {
+        background: #c82333;
+    }
+
+    /* Quill weer terug naar normaal uiterlijk */
+    .ql-toolbar button {
+        background: #fff;
+        /* wit in plaats van blauw */
+        border: 1px solid #ccc;
+        padding: 4px 6px;
+    }
+
+    .ql-toolbar button:hover,
+    .ql-toolbar button.ql-active {
+        background: #eee;
     }
 
     #right-pane form #delete-button {
@@ -283,11 +304,14 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
     .sticker-prijs-container {
         display: flex;
         gap: 20px;
-        margin-bottom: 15px;
+        align-items: flex-start;
+        /* kolommen beginnen bovenaan gelijk */
     }
 
     .sticker-prijs-container>div {
-        flex: 1;
+        flex: 1 1 0;
+        min-width: 0;
+        /* voorkomt dat de Quill-kolom de andere eruit duwt */
     }
 
 
@@ -356,7 +380,7 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
             </div>
             <div id="right-pane">
                 <h2>Product Beheren</h2>
-                <form onsubmit="return false;"> {/* Voorkom default form submit */}
+                <form onsubmit="return false;"> <!-- Voorkom default form submit -->
                     <input type="hidden" id="product-id">
                     <div class="input-row">
                         <div class="form-group">
@@ -404,12 +428,12 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
                     </div>
                     <div id="omschrijvingveld" class="form-group">
                         <label for="omschrijving">Omschrijving:</label>
-                        <div id="omschrijving"></div> {/* Quill editor */}
+                        <div id="omschrijving"></div> <!-- Quill editor -->
                     </div>
                     <div class="sticker-prijs-container">
                         <div class="form-group">
                             <label for="sticker_text">Sticker Tekst:</label>
-                            <div id="sticker_text"></div> {/* Quill editor */}
+                            <div id="sticker_text"></div> <!-- Quill editor -->
                         </div>
                         <div class="form-group">
                             <label for="prijsstaffel">Prijsstaffel:</label>
@@ -421,10 +445,10 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
                         <textarea rows="6" id="USP" placeholder="Elke regel wordt opgeslagen als een apart <p> element"></textarea>
                     </div>
                     <br>
-                    <button type="button" id="save-button">Bewaren & Vernieuw</button>
-                    <button type="button" id="new-button">Leegmaken</button>
-                    <button type="button" id="copy-button">Kopieer</button>
-                    <button type="button" id="delete-button">Verwijder</button>
+                    <button type="button" id="save-button" class="action-btn">Bewaren & Vernieuw</button>
+                    <button type="button" id="new-button" class="action-btn">Leegmaken</button>
+                    <button type="button" id="copy-button" class="action-btn">Kopieer</button>
+                    <button type="button" id="delete-button" class="action-btn danger">Verwijder</button>
                 </form>
             </div>
         </div>
@@ -581,7 +605,14 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
                     allProducts = await resp.json();
 
                     if (allProducts && allProducts.length > 0) {
-                        const typeNummers = allProducts.map(p => p.TypeNummer).filter(tn => tn && typeof tn === 'string' && tn.trim() !== '');
+                        const typeNummers = [
+                            ...new Set( // unieke waarden
+                                allProducts.flatMap(p => [
+                                    p.TypeNummer, // altijd eigen nummer
+                                    p.hoofd_product // én eventueel hoofdproduct
+                                ])
+                            )
+                        ].filter(tn => tn && typeof tn === 'string' && tn.trim() !== '');
                         if (typeNummers.length > 0) {
                             try {
                                 const pageStatusResp = await fetch('check_pagina_status.php', { // Zorg dat dit pad correct is
@@ -744,14 +775,20 @@ include_once __DIR__ . '/incs/top.php'; // Zorg dat dit pad correct is
                     productNameDisplay.textContent = prod.TypeNummer || "Onbekend TypeNummer";
                     productEntryButton.appendChild(productNameDisplay);
 
-                    if (prod.TypeNummer && productPageExistence[prod.TypeNummer] === true) {
+                    // bepaal eerst naar welke pagina we moeten linken
+                    const linkTypeNummer =
+                        (prod.hoofd_product && productPageExistence[prod.hoofd_product]) ?
+                        prod.hoofd_product :
+                        (productPageExistence[prod.TypeNummer] ? prod.TypeNummer : null);
+
+                    if (linkTypeNummer) {
                         const productViewAction = document.createElement('span');
                         productViewAction.className = 'product-item-view-action';
                         productViewAction.innerHTML = 'Bekijk ↗';
-                        productViewAction.title = `Open productpagina: ${prod.TypeNummer}`;
+                        productViewAction.title = `Open productpagina: ${linkTypeNummer}`;
                         productViewAction.onclick = (event) => {
                             event.stopPropagation();
-                            const productPageUrl = `artikelen/${encodeURIComponent(prod.TypeNummer)}/index.php`;
+                            const productPageUrl = `artikelen/${encodeURIComponent(linkTypeNummer)}/index.php`;
                             window.open(productPageUrl, '_blank');
                         };
                         productEntryButton.appendChild(productViewAction);

@@ -38,6 +38,10 @@ if (!$variantProduct) {
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
+
+
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
@@ -53,7 +57,66 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         grid-template-rows: 1fr 2fr 2fr 2fr auto 3fr 3fr;
         height: 2500px;
     }
+
+    /* ==================== TABLET  (max-width 1024 px) ==================== */
+    @media only screen and (max-width:1024px) {
+        .grid-container {
+            /* 4 kolommen, iets minder hoogte */
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr 3fr auto auto 2fr 1fr auto;
+            max-height: 2500px;
+
+            /*
+      Titel bovenaan, daaronder twee afbeeldingen naast elkaar (3 rijen hoog),
+      prijs + omschrijving op één rij, grote liggende foto full-width,
+      USP-blok onderaan.
+    */
+            grid-template-areas:
+                "titel titel titel titel"
+                "een twee twee twee"
+                "drie drie drie drie"
+                "zeven zeven zeven zeven"
+                "acht acht acht acht"
+                "usp usp usp usp"
+                "negen negen negen negen";
+
+            /* laat de content de hoogte bepalen */
+        }
+    }
+
+    /* ==================== MOBIEL  (max-width 600 px) ==================== */
+    @media only screen and (max-width:600px) {
+        .grid-container {
+            /* 2 kolommen, alles vrijwel full-width gestapeld */
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr 3fr 3fr auto auto 4fr 2fr 1fr;
+            max-height: 2000px;
+            /*
+      Eerst titel + USP (dicht bij elkaar),
+      dan afbeeldingen, prijs, tekst, liggende foto.
+      Elk blok vult de volle breedte (2 kolommen).
+    */
+            grid-template-areas:
+                "titel titel"
+                "een  een"
+                "twee twee"
+                "drie drie"
+                "zeven zeven"
+                "acht  acht"
+                "negen negen"
+                "usp  usp";
+            gap: 0.8rem;
+            /* wat compacter op mobiel */
+            height: auto;
+        }
+
+        /* Één tekstkolom op mobiel-screens */
+        .col2 {
+            column-count: 1 !important;
+        }
+    }
 </style>
+
 <script>
     window.isProductPage = true;
 </script>
@@ -112,7 +175,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
         <div class="negen geenpad">
-            <img class='hoog' src="liggend uitgeknipt groot.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="liggend uitgeknipt groot.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div id="usp" class='oranje'>

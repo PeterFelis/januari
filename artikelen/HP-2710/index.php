@@ -38,6 +38,8 @@ if (!$variantProduct) {
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
@@ -108,7 +110,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         <div class="vijf"> <img class='hoog' src="rood.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
         <div class="zes"><img class='hoog' src="zwart.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
-        <div class="zeven cols2 omschrijving oranje">
+        <div class="zeven col2 omschrijving oranje">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 

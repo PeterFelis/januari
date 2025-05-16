@@ -38,20 +38,22 @@ if (!$variantProduct) {
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
             "titel titel titel titel titel titel"
             "twee twee twee twee twee twee"
-            "vier vier vier usp usp usp"
+            "vier vier vier vier usp usp"
             "zeven zeven zeven zeven een een"
             "drie drie drie drie een een"
-            "acht acht acht acht een een"
+            "acht acht acht acht acht acht"
             "tien tien tien tien tien tien"
             "twaalf twaalf elf elf elf elf"
             "dertien dertien elf elf elf elf";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 4fr 4fr 2fr 2fr 3fr 1fr 2fr 2fr;
+        grid-template-rows: 1fr 3fr 2fr 4fr 1fr 3fr 1fr 1fr;
         height: 3000px;
     }
 </style>
@@ -105,8 +107,8 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         <div class="vier">
             <img class='hoog' src="2706 zwart.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-      
-       
+
+
         <div class="acht">
             <img class='hoog' src="zakjes.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
@@ -115,8 +117,8 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
-        
-       
+
+
 
         <div class="tien oranje">
             <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>

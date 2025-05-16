@@ -36,6 +36,16 @@ if (!$variantProduct) {
 // Zorg ervoor dat de renderPriceComponent functie beschikbaar is:
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
+
+// Controleer of er een PDF in deze directory staat
+$pdfBestanden = glob("*.pdf");
+$pdfLink = '';
+
+if (!empty($pdfBestanden)) {
+    // Neem de eerste PDF die gevonden wordt
+    $pdfLink = basename($pdfBestanden[0]);
+}
+
 ?>
 <link rel="stylesheet" href="../prod.css">
 <link rel="stylesheet" href="../responsive.css">
@@ -69,7 +79,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
                 "zeven zeven zeven zeven"
                 "acht acht acht acht"
                 "tien tien tien tien"
-                
+
                 "elf elf elf elf"
                 "twaalf twaalf twaalf twaalf"
                 "dertien dertien dertien dertien";
@@ -93,8 +103,8 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
                 "zeven zeven"
                 "acht acht"
                 "tien tien"
-                
-                
+
+
                 "twaalf twaalf"
                 "dertien dertien"
                 "elf elf";
@@ -117,6 +127,32 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         p {
             font-size: 1.4rem;
         }
+    }
+
+    .titel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .pdf-download a {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #ffffff;
+        /* Witte tekst in oranje balk */
+        font-size: 1.2rem;
+        gap: 6px;
+    }
+
+    .pdf-download a:hover {
+        text-decoration: underline;
+    }
+
+    .pdf-icon2 {
+        max-width: 18px;
+        max-height: 18px;
     }
 </style>
 <script>
@@ -150,8 +186,17 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         </div>
 
         <div class="titel oranje">
-            <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+            <h1 style="display: inline-block;"><?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+
+            <?php if ($pdfLink): ?>
+                <span class="pdf-download">
+                    <a href="<?= htmlspecialchars($pdfLink); ?>" target="_blank">
+                        <img class="pdf-icon2" src="/afbeeldingen/pdf.svg" alt="PDF"> download de PDF
+                    </a>
+                </span>
+            <?php endif; ?>
         </div>
+
 
         <div id="usp" class='oranje'>
             <?php echo $mainProduct['USP']; ?>
@@ -185,7 +230,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <img class='hoog' src="hp-112 vier.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
-        
+
 
         <div class="tien oranje">
             <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>

@@ -38,6 +38,9 @@ if (!$variantProduct) {
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
+
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
@@ -50,7 +53,62 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "usp usp usp usp usp usp";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 2fr 2fr 2fr auto 5fr;
-        height: 2500px;
+        max-height: 2500px;
+    }
+
+    /* ==================== TABLET  (max-width 1024 px) ==================== */
+    @media only screen and (max-width:1024px) {
+        .grid-container {
+            /* 4 kolommen, iets minder hoogte */
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr 3fr 2fr auto 2fr auto;
+            max-height: 2500px;
+
+            /*
+      Titel bovenaan, daaronder twee afbeeldingen naast elkaar (3 rijen hoog),
+      prijs + omschrijving op één rij, grote liggende foto full-width,
+      USP-blok onderaan.
+    */
+            grid-template-areas:
+                "titel titel titel titel"
+                "een   een   een een"
+                "twee  twee  twee  twee"
+                "drie  drie  usp usp"
+                "acht  acht  acht  acht"
+                "zeven zeven zeven zeven";
+            /* laat de content de hoogte bepalen */
+        }
+    }
+
+    /* ==================== MOBIEL  (max-width 600 px) ==================== */
+    @media only screen and (max-width:600px) {
+        .grid-container {
+            /* 2 kolommen, alles vrijwel full-width gestapeld */
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr 2fr 4fr 4fr auto auto 4fr auto;
+            max-height: 2000px;
+            /*
+      Eerst titel + USP (dicht bij elkaar),
+      dan afbeeldingen, prijs, tekst, liggende foto.
+      Elk blok vult de volle breedte (2 kolommen).
+    */
+            grid-template-areas:
+                "titel titel"
+                "usp   usp"
+                "een   een"
+                "twee  twee"
+                "drie  drie"
+                "acht  acht"
+                "zeven zeven";
+            gap: 0.8rem;
+            /* wat compacter op mobiel */
+            height: auto;
+        }
+
+        /* Één tekstkolom op mobiel-screens */
+        .col2 {
+            column-count: 1 !important;
+        }
     }
 </style>
 <script>
@@ -99,14 +157,12 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
 
-
-
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
         <div class="acht">
-            <img class='hoog' src="Liggend uitgeknipt bewerkt 13-03-2025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="Liggend uitgeknipt bewerkt 13-03-2025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
 
@@ -126,6 +182,3 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
     <?php include dirname(__DIR__, 2) . "/incs/bottom.php"; ?>
-</body>
-
-</html

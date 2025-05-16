@@ -382,7 +382,6 @@ header nav a:visited {
 }
 .hero-image {
   width: 100%;
-  laspect-ratio: 16/9;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

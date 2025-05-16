@@ -61,14 +61,13 @@ include_once __dir__ . '/incs/top.php';
         h1 {
             font-weight: 500;
             line-height: 1.2;
-            font-size: 6rem;
+            font-size: 40px;
 
         }
 
         p {
             margin: 0;
             padding: 0;
-
         }
 
         .tekstUSPsticker {
@@ -179,6 +178,7 @@ include_once __dir__ . '/incs/top.php';
             /* minimaliseer kop- en voetteksten */
         }
 
+        /*wat hieronder staat wordt gebruitk bij printen*/
         @media print {
 
             /* Verberg alles behalve de stickerContainer bij print */
@@ -203,6 +203,11 @@ include_once __dir__ . '/incs/top.php';
                 padding: 0;
             }
 
+            p {
+                font-size: 12px;
+                line-height: 1.2;
+            }
+
             .large {
                 margin-left: 10cm;
                 /* horizontaal 10 cm */
@@ -212,9 +217,9 @@ include_once __dir__ . '/incs/top.php';
             }
 
             .small {
-                margin-left: 12cm;
+                margin-left: 10cm;
                 /* horizontaal 10 cm */
-                margin-top: 5cm;
+                margin-top: 3cm;
                 /* verticaal   3 cm */
 
             }
@@ -396,6 +401,7 @@ include_once __dir__ . '/incs/top.php';
         <div>
         <h1>${selectedProduct.TypeNummer}</h1>
         <h1>${boxQty} stuks</h1></div>
+        
         <p class='tekstUSPsticker'>${selectedProduct.sticker_text || ''}</p>
     `;
                 container.appendChild(stickerDiv);
