@@ -57,7 +57,7 @@ if (!empty($pdfBestanden)) {
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
             "vier vier vijf vijf vijf vijf"
-            "drie drie drie zeven zeven zeven"
+            "drie drie zeven zeven zeven zeven"
             "acht acht acht acht acht acht"
             "tien tien tien tien tien tien"
             "twaalf twaalf twaalf elf elf elf"
@@ -129,31 +129,7 @@ if (!empty($pdfBestanden)) {
         }
     }
 
-    .titel {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .pdf-download a {
-        display: inline-flex;
-        align-items: center;
-        text-decoration: none;
-        color: #ffffff;
-        /* Witte tekst in oranje balk */
-        font-size: 1.2rem;
-        gap: 6px;
-    }
-
-    .pdf-download a:hover {
-        text-decoration: underline;
-    }
-
-    .pdf-icon2 {
-        max-width: 18px;
-        max-height: 18px;
-    }
+   
 </style>
 <script>
     window.isProductPage = true;

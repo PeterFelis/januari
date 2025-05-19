@@ -206,4 +206,35 @@ body {
     max-height: 90%;
 }
 
+ .titel {
+        position: relative;
+        /* Belangrijk voor absolute positionering van de pdf-download */
+        text-align: center;
+    }
 
+    .pdf-download {
+        position: absolute;
+        top: 50%;
+        left: 70%;
+        /* Verschuiving naar rechts, pas dit percentage naar wens aan */
+        transform: translateY(-50%);
+    }
+
+    .pdf-download a {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #ffffff;
+        /* Witte tekst in oranje balk */
+        font-size: 1.2rem;
+        gap: 6px;
+    }
+
+    .pdf-download a:hover {
+        text-decoration: underline;
+    }
+
+    .pdf-icon2 {
+        max-width: 18px;
+        max-height: 18px;
+    }
