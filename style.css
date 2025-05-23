@@ -111,25 +111,7 @@ header {
   position: relative;
   z-index: 100;
 }
-nav {
-  width: 90%;
-  max-width: 1024px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 4rem;
-}
-header nav a {
-  color: #fff;
-  transition: transform .2s;
-}
-header nav a:hover {
-  transform: scale(1.15);
-}
-header nav a:visited {
-  color: #fff;
-}
+
 .logo {
   height: 100%;
   position: relative;

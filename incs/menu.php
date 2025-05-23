@@ -108,7 +108,7 @@ if (isset($_SESSION['klant_id'])) {
 
     header nav a {
         color: white;
-        transition: transform 0.2s ease-in-out;
+        transition: transform 0.2s linear, text-shadow 0.2s linear, border-bottom 0.2s linear;
     }
 
     header nav a:visited {
@@ -116,7 +116,8 @@ if (isset($_SESSION['klant_id'])) {
     }
 
     header nav a:hover {
-        transform: scale(1.15);
+        transform: scaleX(1.10);
+        text-shadow: 1px 1px 2px #000;
     }
 
     .logo {

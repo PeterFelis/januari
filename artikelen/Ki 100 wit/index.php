@@ -37,6 +37,16 @@ if (!$variantProduct) {
 // Zorg ervoor dat de renderPriceComponent functie beschikbaar is:
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
+
+
+// Controleer of er een PDF in deze directory staat
+$pdfBestanden = glob("*.pdf");
+$pdfLink = '';
+
+if (!empty($pdfBestanden)) {
+    // Neem de eerste PDF die gevonden wordt
+    $pdfLink = basename($pdfBestanden[0]);
+}
 ?>
 
 <link rel="stylesheet" href="../prod.css">
@@ -142,7 +152,15 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         </div>
 
         <div class="titel oranje">
-            <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+            <h1 style="display: inline-block;"><?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+
+            <?php if ($pdfLink): ?>
+                <span class="pdf-download">
+                    <a href="<?= htmlspecialchars($pdfLink); ?>" target="_blank">
+                        <img class="pdf-icon2" src="/afbeeldingen/pdf.svg" alt="PDF"> download de PDF
+                    </a>
+                </span>
+            <?php endif; ?>
         </div>
 
 

@@ -38,6 +38,8 @@ if (!$variantProduct) {
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 ?>
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
@@ -46,10 +48,9 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "usp usp drie drie drie drie"
             "vier vier vijf vijf vijf vijf"
             "zeven zeven zeven zeven zeven zeven"
-            "een een een een een een";
-            
+            "een een een een een een";         
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 5fr auto 2fr auto 5fr;
+        grid-template-rows: 1fr 5fr auto 2fr auto 3fr;
         height: 3500px;
     }
 </style>
@@ -76,16 +77,17 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
     <article class='grid-container'>
-        <div class="een">
+        <div class="twee">
             <img class='hoog' src="HP-92driekwart bewerkt uitgeknipt 13032025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        <div class="twee">
+        <div class="een">
             <img class='breed' src="ingeklapt bewerkt uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
             <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
         </div>
+        
 
         <div id="usp" class='oranje'>
             <?php echo $mainProduct['USP']; ?>

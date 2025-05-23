@@ -69,18 +69,18 @@ body {
 }
 
 .grid-container .hoog {
-    width: auto;
-    max-height: 100%;
+    width: auto !important;
+    max-height: 100% !important;
 }
 
 .grid-container .breed {
-    max-width: 100%;
-    max-height: auto;
+    max-width: 100% !important;
+    height: auto !important;
 }
 
 /* Geen padding (bepaalde elementen) */
 .grid-container .geenpad {
-    padding: 0;
+    padding: 0 !important;
 }
 
 /* Oranje achtergrond */

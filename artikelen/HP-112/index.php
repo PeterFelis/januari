@@ -2,7 +2,7 @@
 session_start();
 $menu = "beheer";
 
-$title = "HP-112 comfort hoofdtelefoon 1 meter snoer 16-04";
+$title = "HP-112 comfort hoofdtelefoon 1 meter snoer";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
 $TypeNummerHoofd = "HP-112";
 $TypeNummerZakjes = "HP-112Z"; // Zorg dat dit typenummer in de database bestaat voor de variant
