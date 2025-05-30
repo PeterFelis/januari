@@ -53,7 +53,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "twaalf twaalf elf elf elf elf"
             "dertien dertien elf elf elf elf";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 3fr 2fr 4fr 1fr 3fr 1fr 1fr;
+        grid-template-rows: 1fr 4fr 3fr 4fr 3fr 3fr 1fr 1fr;
         height: 3000px;
     }
 </style>
@@ -97,7 +97,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer']);
             ?>
@@ -128,11 +128,11 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <img class='hoog' src="2706 rood in zakje  27-02-2025.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
-        <div class="twaalf oranje omschrijving">
+        <div class="twaalf oranje omschrijving col1">
             <?php echo $variantProduct['omschrijving']; ?>
         </div>
 
-        <div class="dertien oranje">
+        <div class="dertien prijs">
             <?php
             renderPriceComponent($variantProduct['prijsstaffel'], $variantProduct['aantal_per_doos'], 'variant', $variantProduct['TypeNummer']);
             ?>

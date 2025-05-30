@@ -89,7 +89,20 @@ body {
     color: white;
 }
 
+.grid-container .prijs {
+    background-color: var(--heellichtpaars);
+    font-size: small;
+}
+
+
+
 /* Als je in 2 kolommen tekst wilt op grote schermen */
+.grid-container .col1 {
+    display: block;
+    padding: 40px;
+}
+
+
 .grid-container .col2 {
     display: block;
     columns: 2;
