@@ -1,0 +1,10 @@
+02-06-2025
+========================================================
+
+er is een php file resize.php in de artikelen directory.
+Die resized alle afbeeldingen in de directories van arikelen naar max 1200 breed
+dit om een maat te kunnen gebruiken bij desktop en telefoon
+
+zo nu en dan runnen na het toevoegen van fotos
+reeds gerisezde fotos worden niet Aangepast
+

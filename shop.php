@@ -225,15 +225,32 @@ include_once __DIR__ . '/incs/top.php';
         }
 
         function getLowestPrice(prijsstaffel) {
-            return prijsstaffel.split('\n').reduce((min, lijn) => {
-                    const p = parseFloat(lijn.trim().split(' ')[1].replace(',', '.'));
-                    return (!isNaN(p) && p < min) ? p : min;
-                }, Infinity) !== Infinity ?
-                prijsstaffel.split('\n').reduce((min, lijn) => {
-                    const p = parseFloat(lijn.trim().split(' ')[1].replace(',', '.'));
-                    return (!isNaN(p) && p < min) ? p : min;
-                }, Infinity).toFixed(2) :
-                "n.v.t.";
+            // Als prijsstaffel leeg of null/undefined is, geef meteen "n.v.t." terug
+            if (!prijsstaffel || typeof prijsstaffel !== 'string' || prijsstaffel.trim() === "") {
+                return "n.v.t.";
+            }
+
+            // Splits op nieuwe regels, en zoek het laagste getal
+            const regels = prijsstaffel.split('\n');
+            let minPrijs = Infinity;
+            regels.forEach(lijn => {
+                // Splits de regel op spatie, pak het tweede woord (index 1) en vervang komma door punt
+                const delen = lijn.trim().split(' ');
+                if (delen.length >= 2) {
+                    const rawP = delen[1].replace(',', '.');
+                    const p = parseFloat(rawP);
+                    if (!isNaN(p) && p < minPrijs) {
+                        minPrijs = p;
+                    }
+                }
+            });
+
+            if (minPrijs === Infinity) {
+                // Er is geen geldig getal gevonden
+                return "n.v.t.";
+            }
+            // Rond af op twee decimalen en retourneer
+            return minPrijs.toFixed(2);
         }
 
         function equalizeHeights() {
