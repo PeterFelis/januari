@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Gegenereerd op: 02 jun 2025 om 13:04
+-- Gegenereerd op: 02 jun 2025 om 13:10
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -20,6 +20,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `fetum`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `crm_notes`
+--
+
+CREATE TABLE `crm_notes` (
+  `id` int NOT NULL,
+  `klant_id` int NOT NULL,
+  `datum` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `opmerking` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
