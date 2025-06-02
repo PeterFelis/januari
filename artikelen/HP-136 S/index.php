@@ -94,7 +94,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <?php echo $mainProduct['USP']; ?>
         </div>
 
-        <div class="drie">
+        <div class="drie prijs">
             <?php
             renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer']);
             ?>

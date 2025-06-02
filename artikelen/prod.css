@@ -4,6 +4,7 @@
 body {
     margin: 0;
     padding: 0;
+   
 }
 
 /* Basis grid layout voor grote schermen */
@@ -86,11 +87,22 @@ body {
 /* Oranje achtergrond */
 .grid-container .oranje {
     background-color: #EC7D10;
+    background-color: #2A5D77;
+    background-color: #5D738E;
+    background-color: #A5D6C5;
+    background-color: #E8D8C3;
+    background-color:#4E4B5C;
+    background-color: #D7F0EB;
+    background-color: #D8E3ED;
+    background-color: #5A3E77;
     color: white;
 }
 
 .grid-container .prijs {
     background-color: var(--heellichtpaars);
+    background-color: white;
+    border:1px solid var(--lichtpaars);
+    border-radius: 8px;
     font-size: small;
 }
 
@@ -250,4 +262,25 @@ body {
     .pdf-icon2 {
         max-width: 18px;
         max-height: 18px;
+    }
+
+
+       /* ===== Zwevende Terug‐knop ===== */
+    #backButton {
+        position: fixed;
+        top: 20px;          /* 20px vanaf de bovenkant */
+        left: 20px;         /* 20px vanaf de linkerzijde */
+        z-index: 9999;      /* zorg dat ‘ie boven andere elementen ligt */
+        padding: 10px 15px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: background-color 0.2s;
+    }
+    #backButton:hover {
+        background-color: #0056b3;
     }

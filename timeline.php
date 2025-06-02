@@ -101,7 +101,7 @@ include_once __DIR__ . '/incs/top.php';
                         <div class="timeline-year">1985</div>
                         <div class="timeline-content">
                             <h3>Start januari 1985 door A.J. Felis als Finland electronics</h3>
-                            <p>Import <a href="https://en.wikipedia.org/wiki/Finlux" target="_blank" rel="noopener noreferrer">Finlux kleuren televisies voor Retail</p>
+                            <p>Import <a href="https://en.wikipedia.org/wiki/Finlux" target="_blank" rel="noopener noreferrer">Finlux kleuren televisies voor Retail</a></p>
                         </div>
                     </div>
                     <!-- 1992 -->
@@ -147,7 +147,7 @@ include_once __DIR__ . '/incs/top.php';
                     <div class="timeline-item">
                         <div class="timeline-year">2015</div>
                         <div class="timeline-content">
-                            <h3><a href="https://nl.wikipedia.org/wiki/Honselersdijk" target="_blank" rel="noopener noreferrer">Verhuizing naar Honselersdijk</h3>
+                            <h3><a href="https://nl.wikipedia.org/wiki/Honselersdijk" target="_blank" rel="noopener noreferrer">Verhuizing naar Honselersdijk</a></h3>
                         </div>
                     </div>
                     <!-- 2019 -->
@@ -170,8 +170,9 @@ include_once __DIR__ . '/incs/top.php';
                     <div class="timeline-item">
                         <div class="timeline-year">2025</div>
                         <div class="timeline-content">
-                            <h3>Start samenwerking met XX</h3>
-                            <p>Totaal nieuwe website</p>
+                            <h3>Start samenwerking met <a href="https://shop.educorner.be/" target="_blank" rel="noopener noreferrer">educorner Belgie</h3></a>
+                            <p>Educorner vertegenwoordigt ons in Belgie, prijzen en condities gelijk aan Nederland</p>
+                            <p>En een Totaal nieuwe Fetum website. Met o.a. opnieuw VVV checkes en mogelijkheid tot automatische offerte</p>
                         </div>
                     </div>
                 </div>

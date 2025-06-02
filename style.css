@@ -222,8 +222,9 @@ header {
 /********** 5. BOVENLICHT **********/
 .bovenlicht {
   width: 100%;
-  padding: 4rem 0;
+  padding: 0rem 0;
   background: #C8E6C9;
+  height: auto;
 }
 .bovenlicht__wrapper {
   width: 90%;
@@ -239,7 +240,7 @@ header {
 }
 .bovenlicht__image {
   width: 100%;
-  min-height: 25rem;
+  min-height: 40rem;
   background-size: cover;
   background-position: center;
 }

@@ -2,7 +2,7 @@
 session_start();
 $menu = "beheer";
 
-$title = "HP-112 comfort hoofdtelefoon 1 meter snoer";
+$title = "i-900 comfort oortje verstevigd snoer";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
 $TypeNummerHoofd = "i-900";
 $TypeNummerZakjes = "i-900N"; // Zorg dat dit typenummer in de database bestaat voor de variant
@@ -56,13 +56,13 @@ if (!empty($pdfBestanden)) {
             "titel titel titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
-            "vier vier vijf vijf vijf vijf"
+            "vier vier vier vier vier vier"
             "drie drie zeven zeven zeven zeven"
-            "acht acht acht acht acht acht"
+            "acht acht acht negen negen negen"
             "tien tien tien tien tien tien"
-            "twaalf twaalf twaalf elf elf elf"
-            "dertien dertien dertien elf elf elf";
-        grid-template-rows: 1fr 3fr 2fr 6fr auto 5fr 1fr 1fr 4fr;
+            "elf elf elf elf elf elf"
+            "twaalf twaalf twaalf dertien dertien dertien";
+        grid-template-rows: 1fr 2fr 2fr 2fr auto 1fr 1fr 4fr auto;
         height: 3000px;
     }
 
@@ -153,10 +153,10 @@ if (!empty($pdfBestanden)) {
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="HP-112 een.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="oortje met snoer.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="twee geenpad">
-            <img class='breed' src="houten pc met 112.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="i-900 helemaal uitgeknipt.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -177,7 +177,7 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent(
                 $mainProduct['prijsstaffel'],
@@ -190,21 +190,21 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <div class="vier">
-            <img class='hoog' src="HP-112 drie.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="i-900 uitgeknipt zonder dopjes 08112022.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        <div class="vijf">
-            <img class='hoog' src="hp-112 twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
+
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
         <div class="acht">
-            <img class='hoog' src="hp-112 vier.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="volumeregeling.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
-
+        <div class="negen">
+            <img class='breed' src="stekkertje.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
 
         <div class="tien oranje">
             <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>
@@ -213,14 +213,14 @@ if (!empty($pdfBestanden)) {
 
 
         <div class="elf">
-            <img class='hoog' src="HP-112 in zakje.png" alt='HP-305 in een zakje' loading="lazy">
+            <img class='breed' src="i900 met zakje en geleachtergrond 08-11-2022.jpg" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
         <div class="twaalf oranje omschrijving col2">
             <?php echo $variantProduct['omschrijving']; ?>
         </div>
 
-        <div class="dertien oranje">
+        <div class="dertien prijs">
             <?php
             // Voor het variantproduct:
             renderPriceComponent(

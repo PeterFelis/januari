@@ -60,7 +60,7 @@ if (!empty($pdfBestanden)) {
             "drie drie zeven zeven zeven zeven"
             "acht acht acht elf elf elf"
             "twaalf twaalf twaalf twaalf twaalf twaalf";
-        grid-template-rows: 2fr 3fr 1fr 4fr auto 3fr 2fr ;
+        grid-template-rows: 2fr 3fr 1fr 4fr auto 3fr 3fr ;
         height: 3000px;
     }
 
@@ -176,7 +176,7 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent(
                 $mainProduct['prijsstaffel'],

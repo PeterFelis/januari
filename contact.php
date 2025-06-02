@@ -1,5 +1,6 @@
 <?php
 include_once __DIR__ . '/incs/sessie.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -351,7 +352,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <section class="section reverse">
                 <div class="text">
                     <div class="bol">
-                        <a href="https://www.bol.com/nl/nl/s/?searchtext=fetum" target="_blank" rel="noopener">
+                        <a href="https://www.bol.com/nl/nl/b/fetum/607014364/" target="_blank" rel="noopener">
                             <div class="bollogo">
                                 <img src="afbeeldingen/bolklein.png" alt="Fetum bij BOL">
                             </div>

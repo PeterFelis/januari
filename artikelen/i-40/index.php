@@ -2,10 +2,10 @@
 session_start();
 $menu = "beheer";
 
-$title = "i-900 comfort oortje verstevigd snoer";
+$title = "i-40 wit oortje met microfoon";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
 $TypeNummerHoofd = "i-40";
-$TypeNummerZakjes = "i-40N"; // Zorg dat dit typenummer in de database bestaat voor de variant
+$TypeNummerZakjes = Null; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie
 include_once __DIR__ . '/../../incs/artikelkop.php';
@@ -56,34 +56,27 @@ if (!empty($pdfBestanden)) {
             "titel titel titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
-            "vier vier vijf vijf vijf vijf"
             "drie drie zeven zeven zeven zeven"
             "acht acht acht acht acht acht"
             "tien tien tien tien tien tien"
             "twaalf twaalf twaalf elf elf elf"
             "dertien dertien dertien elf elf elf";
-        grid-template-rows: 1fr 3fr 2fr 6fr auto 5fr 1fr 1fr 4fr;
+        grid-template-rows: 1fr 4fr 2fr auto 5fr 1fr 1fr 4fr;
         height: 3000px;
     }
 
     /* Responsive aanpassingen per pagina */
     @media only screen and (max-width: 1024px) {
         .grid-container {
-            height: 3000px;
+            height: 2000px;
             grid-template-areas:
                 "titel titel titel titel"
                 "een een usp usp"
                 "twee twee twee twee"
                 "vier vier vijf vijf"
                 "drie drie drie drie"
-                "zeven zeven zeven zeven"
-                "acht acht acht acht"
-                "tien tien tien tien"
-
-                "elf elf elf elf"
-                "twaalf twaalf twaalf twaalf"
-                "dertien dertien dertien dertien";
-            grid-template-rows: 1fr 3fr 5fr 4fr auto auto 3fr 1fr 5fr 4fr auto auto;
+                "zeven zeven zeven zeven";
+            grid-template-rows: 1fr 3fr 5fr auto;
         }
     }
 
@@ -153,10 +146,10 @@ if (!empty($pdfBestanden)) {
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="HP-112 een.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="i-40 in doosje.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="twee geenpad">
-            <img class='breed' src="houten pc met 112.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="i40 portugal 16-12-2024 hangend andere hoek.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -177,7 +170,7 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent(
                 $mainProduct['prijsstaffel'],
@@ -189,49 +182,12 @@ if (!empty($pdfBestanden)) {
             ?>
         </div>
 
-        <div class="vier">
-            <img class='hoog' src="HP-112 drie.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
-        <div class="vijf">
-            <img class='hoog' src="hp-112 twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
-        <div class="acht">
-            <img class='hoog' src="hp-112 vier.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
 
-
-
-        <div class="tien oranje">
-            <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>
-        </div>
-
-
-
-        <div class="elf">
-            <img class='hoog' src="HP-112 in zakje.png" alt='HP-305 in een zakje' loading="lazy">
-        </div>
-
-        <div class="twaalf oranje omschrijving col2">
-            <?php echo $variantProduct['omschrijving']; ?>
-        </div>
-
-        <div class="dertien oranje">
-            <?php
-            // Voor het variantproduct:
-            renderPriceComponent(
-                $variantProduct['prijsstaffel'],
-                $variantProduct['aantal_per_doos'],
-                'variant',
-                $variantProduct['TypeNummer'],
-                'variant'
-            );
-            ?>
-        </div>
     </article>
 
     <div id="lightbox-overlay" class="lightbox-overlay">

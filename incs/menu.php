@@ -82,7 +82,29 @@ if (isset($_SESSION['klant_id'])) {
 <?php endif; ?>
 
 
+<!-- Voeg de Terug-knop toe, maar verberg hem standaard: -->
+<button
+    id="backButton"
+    style="display: none;"
+    onclick="
+            if (window.history.length > 1) {
+                history.back();
+            } else {
+                window.location.href = '/shop.php';
+            }
+        ">
+    ← Terug
+</button>
 
+<!-- Doe na het renderen van de knop een check op window.isProductPage: -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Zodra de pagina klaar is, kijk of isProductPage = true
+        if (window.isProductPage === true) {
+            document.getElementById('backButton').style.display = 'block';
+        }
+    });
+</script>
 
 <style>
     header {

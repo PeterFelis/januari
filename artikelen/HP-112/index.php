@@ -179,7 +179,7 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent(
                 $mainProduct['prijsstaffel'],
@@ -222,7 +222,7 @@ if (!empty($pdfBestanden)) {
             <?php echo $variantProduct['omschrijving']; ?>
         </div>
 
-        <div class="dertien oranje">
+        <div class="dertien prijs">
             <?php
             // Voor het variantproduct:
             renderPriceComponent(

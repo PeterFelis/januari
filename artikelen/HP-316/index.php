@@ -95,7 +95,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer']);
             ?>
@@ -124,7 +124,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         <?php echo $variantProduct['omschrijving']; ?>
         </div>
 
-        <div class="dertien oranje">
+        <div class="dertien prijs">
             <?php
             renderPriceComponent($variantProduct['prijsstaffel'], $variantProduct['aantal_per_doos'], 'variant', $variantProduct['TypeNummer']);
             ?>

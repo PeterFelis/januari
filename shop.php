@@ -101,6 +101,11 @@ include_once __DIR__ . '/incs/top.php';
         transform: scale(1.02);
     }
 
+
+
+
+
+
     /* ------ Layout & Breakpoints ------ */
 
     .shop-page main {
@@ -135,6 +140,8 @@ include_once __DIR__ . '/incs/top.php';
 
 <body class="shop-page">
     <?php include_once __DIR__ . '/incs/menu.php'; ?>
+
+
     <main>
         <div class="right-pane">
             <!-- Selectie-component container: Hiermee filter je de producten -->

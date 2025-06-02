@@ -2,7 +2,7 @@
 session_start();
 $menu = "beheer";
 
-$title = "BT-9 zwarte Bluetooth hoofdtelefoon"; 
+$title = "BT-9 zwarte Bluetooth hoofdtelefoon";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
 $TypeNummerHoofd = "BT-9";
 $TypeNummerZakjes = null; // Zorg dat dit typenummer in de database bestaat voor de variant
@@ -53,14 +53,14 @@ if (!empty($pdfBestanden)) {
     /* Desktop grid-indeling */
     .grid-container {
         grid-template-areas:
-            
+
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
             "titel titel titel titel titel titel"
             "vier vier vier vier vier vier"
             "drie drie zeven zeven zeven zeven"
             "acht acht acht elf elf elf";
-        grid-template-rows: 1fr 2fr 1fr 3fr auto 2fr ;
+        grid-template-rows: 1fr 2fr 1fr 3fr auto 2fr;
         height: 3000px;
     }
 
@@ -125,8 +125,6 @@ if (!empty($pdfBestanden)) {
             font-size: 1.4rem;
         }
     }
-
-   
 </style>
 <script>
     window.isProductPage = true;
@@ -176,7 +174,7 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent(
                 $mainProduct['prijsstaffel'],
@@ -191,7 +189,7 @@ if (!empty($pdfBestanden)) {
         <div class="vier">
             <img class='hoog' src="BT9een.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        
+
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
@@ -207,7 +205,7 @@ if (!empty($pdfBestanden)) {
         </div>
 
 
-        
+
     </article>
 
     <div id="lightbox-overlay" class="lightbox-overlay">
