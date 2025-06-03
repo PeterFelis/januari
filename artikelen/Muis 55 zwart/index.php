@@ -5,7 +5,7 @@ $menu = "beheer";
 $title = "Muis 55 zwart";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
 $TypeNummerHoofd = "Muis 55 zwart";
-$TypeNummerZakjes = Null; // Zorg dat dit typenummer in de database bestaat voor de variant
+$TypeNummerZakjes = "Muis 55 wit"; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie
 include_once __DIR__ . '/../../incs/artikelkop.php';
@@ -56,14 +56,13 @@ if (!empty($pdfBestanden)) {
             "titel titel titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
-            "vier vier vijf vijf vijf vijf"
+            "vier vier vier vijf vijf vijf"
             "drie drie zeven zeven zeven zeven"
-            "acht acht acht acht acht acht"
             "tien tien tien tien tien tien"
             "twaalf twaalf twaalf elf elf elf"
             "dertien dertien dertien elf elf elf";
-        grid-template-rows: 1fr 3fr 2fr 6fr auto 5fr 1fr 1fr 4fr;
-        height: 3000px;
+        grid-template-rows: 1fr 2fr 2fr 3fr auto 1fr 2fr auto;
+        height: 2000px;
     }
 
     /* Responsive aanpassingen per pagina */
@@ -128,8 +127,6 @@ if (!empty($pdfBestanden)) {
             font-size: 1.4rem;
         }
     }
-
-   
 </style>
 <script>
     window.isProductPage = true;
@@ -155,10 +152,10 @@ if (!empty($pdfBestanden)) {
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="HP-112 een.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="zwart bovenaf met kabel.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="twee geenpad">
-            <img class='breed' src="houten pc met 112.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="muis en kat.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -192,18 +189,14 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <div class="vier">
-            <img class='hoog' src="HP-112 drie.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="mui55 zwart.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="vijf">
-            <img class='hoog' src="hp-112 twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="muis55open.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
-        </div>
-
-        <div class="acht">
-            <img class='hoog' src="hp-112 vier.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
 
@@ -215,7 +208,7 @@ if (!empty($pdfBestanden)) {
 
 
         <div class="elf">
-            <img class='hoog' src="HP-112 in zakje.png" alt='HP-305 in een zakje' loading="lazy">
+            <img class='hoog' src="wit uitgeknipt van boven af met kabel.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
         <div class="twaalf oranje omschrijving col2">

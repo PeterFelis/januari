@@ -56,13 +56,10 @@ if (!empty($pdfBestanden)) {
             "titel titel titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
-            "vier vier vijf vijf vijf vijf"
             "drie drie zeven zeven zeven zeven"
-            "acht acht acht acht acht acht"
-            "tien tien tien tien tien tien"
-            "twaalf twaalf twaalf elf elf elf"
-            "dertien dertien dertien elf elf elf";
-        grid-template-rows: 1fr 3fr 2fr 6fr auto 5fr 1fr 1fr 4fr;
+            "vier vier vier vijf vijf vijf"
+            "acht acht acht acht acht acht";
+        grid-template-rows: 1fr 3fr 2fr auto 6fr 5fr;
         height: 3000px;
     }
 
@@ -77,13 +74,8 @@ if (!empty($pdfBestanden)) {
                 "vier vier vijf vijf"
                 "drie drie drie drie"
                 "zeven zeven zeven zeven"
-                "acht acht acht acht"
-                "tien tien tien tien"
-
-                "elf elf elf elf"
-                "twaalf twaalf twaalf twaalf"
-                "dertien dertien dertien dertien";
-            grid-template-rows: 1fr 3fr 5fr 4fr auto auto 3fr 1fr 5fr 4fr auto auto;
+                "acht acht acht acht";
+            grid-template-rows: 1fr 3fr 5fr 4fr auto auto 3fr 1fr;
         }
     }
 
@@ -128,8 +120,6 @@ if (!empty($pdfBestanden)) {
             font-size: 1.4rem;
         }
     }
-
-   
 </style>
 <script>
     window.isProductPage = true;
@@ -155,10 +145,10 @@ if (!empty($pdfBestanden)) {
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="HP-112 een.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="bovenaf uitgeknipt met kaartje bewerkt 15042025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="twee geenpad">
-            <img class='breed' src="houten pc met 112.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="onderkant en dongle uitgeknipt en bewerkt 15042025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -191,11 +181,11 @@ if (!empty($pdfBestanden)) {
             ?>
         </div>
 
-        <div class="vier">
-            <img class='hoog' src="HP-112 drie.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        <div class="vier nopad">
+            <img class='breed' src="doosje.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="vijf">
-            <img class='hoog' src="hp-112 twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="front.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="zeven omschrijving oranje col2">
@@ -203,37 +193,12 @@ if (!empty($pdfBestanden)) {
         </div>
 
         <div class="acht">
-            <img class='hoog' src="hp-112 vier.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="bovenaf uitgeknipt bewerkt 15042025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
 
 
-        <div class="tien oranje">
-            <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>
-        </div>
 
-
-
-        <div class="elf">
-            <img class='hoog' src="HP-112 in zakje.png" alt='HP-305 in een zakje' loading="lazy">
-        </div>
-
-        <div class="twaalf oranje omschrijving col2">
-            <?php echo $variantProduct['omschrijving']; ?>
-        </div>
-
-        <div class="dertien prijs">
-            <?php
-            // Voor het variantproduct:
-            renderPriceComponent(
-                $variantProduct['prijsstaffel'],
-                $variantProduct['aantal_per_doos'],
-                'variant',
-                $variantProduct['TypeNummer'],
-                'variant'
-            );
-            ?>
-        </div>
     </article>
 
     <div id="lightbox-overlay" class="lightbox-overlay">
