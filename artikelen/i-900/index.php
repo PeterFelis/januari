@@ -56,13 +56,14 @@ if (!empty($pdfBestanden)) {
             "titel titel titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
-            "vier vier vier vier vier vier"
+            "vier vier vier vier vijf vijf"
             "drie drie zeven zeven zeven zeven"
             "acht acht acht negen negen negen"
             "tien tien tien tien tien tien"
             "elf elf elf elf elf elf"
-            "twaalf twaalf twaalf dertien dertien dertien";
-        grid-template-rows: 1fr 2fr 2fr 2fr auto 1fr 1fr 4fr auto;
+            "twaalf twaalf twaalf dertien dertien dertien"
+            "veertien veertien veertien veertien veertien veertien";
+        grid-template-rows: 1fr 2fr 2fr 2fr auto 1fr 1fr 4fr auto 5fr; 
         height: 3000px;
     }
 
@@ -193,6 +194,9 @@ if (!empty($pdfBestanden)) {
             <img class='hoog' src="i-900 uitgeknipt zonder dopjes 08112022.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
+        <div class="vijf geenpad">
+            <img class='breed' src="i-900 liggend met wat props.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
@@ -231,6 +235,11 @@ if (!empty($pdfBestanden)) {
                 'variant'
             );
             ?>
+        </div>
+
+
+        <div class="veertien">
+            <img class='breed' src="hoesjes in 3 kleuren uitgeknipt.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
     </article>
 
