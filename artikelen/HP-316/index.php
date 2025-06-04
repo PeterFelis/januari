@@ -37,7 +37,19 @@ if (!$variantProduct) {
 // Zorg ervoor dat de renderPriceComponent functie beschikbaar is:
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
+
+// Controleer of er een PDF in deze directory staat
+$pdfBestanden = glob("*.pdf");
+$pdfLink = '';
+
+if (!empty($pdfBestanden)) {
+    // Neem de eerste PDF die gevonden wordt
+    $pdfLink = basename($pdfBestanden[0]);
+}
+
 ?>
+<link rel="stylesheet" href="../prod.css">
+<link rel="stylesheet" href="../responsive.css">
 <style>
     .grid-container {
         grid-template-areas:
@@ -86,7 +98,15 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         </div>
 
         <div class="titel oranje">
-            <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+            <h1 style="display: inline-block;"><?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+
+            <?php if ($pdfLink): ?>
+                <span class="pdf-download">
+                    <a href="<?= htmlspecialchars($pdfLink); ?>" target="_blank">
+                        <img class="pdf-icon2" src="/afbeeldingen/pdf.svg" alt="PDF"> download de PDF
+                    </a>
+                </span>
+            <?php endif; ?>
         </div>
 
         <div id="usp" class='oranje'>
@@ -120,13 +140,20 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <img class='hoog' src="316 in zakje 27-02-2025.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
-        <div class="twaalf oranje usp">
-        <?php echo $variantProduct['omschrijving']; ?>
+        <div class="twaalf oranje omschrijving">
+            <?php echo $variantProduct['omschrijving']; ?>
         </div>
 
         <div class="dertien prijs">
             <?php
-            renderPriceComponent($variantProduct['prijsstaffel'], $variantProduct['aantal_per_doos'], 'variant', $variantProduct['TypeNummer']);
+            // Voor het variantproduct:
+            renderPriceComponent(
+                $variantProduct['prijsstaffel'],
+                $variantProduct['aantal_per_doos'],
+                'variant',
+                $variantProduct['TypeNummer'],
+                'variant'
+            );
             ?>
         </div>
 

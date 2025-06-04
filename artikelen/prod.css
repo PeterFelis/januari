@@ -169,6 +169,10 @@ body {
 .veertien {
     grid-area: veertien;
 }
+.hero{
+    grid-area: hero;
+    }
+
 
 /* Price component styling */
 .price-component p {
