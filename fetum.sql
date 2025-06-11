@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Gegenereerd op: 09 jun 2025 om 15:59
+-- Host: 127.0.0.1
+-- Gegenereerd op: 11 jun 2025 om 18:03
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -24,6 +24,105 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `crm_notes`
+--
+
+CREATE TABLE `crm_notes` (
+  `id` int NOT NULL,
+  `klant_id` int NOT NULL,
+  `datum` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `opmerking` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `klanten`
+--
+
+CREATE TABLE `klanten` (
+  `id` int NOT NULL,
+  `naam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `extra_veld` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `algemeen_telefoonnummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `algemene_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `factuur_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `factuur_extra_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `factuur_straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `factuur_nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `factuur_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `factuur_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aflever_straat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aflever_nummer` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aflever_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aflever_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `land` varchar(50) NOT NULL DEFAULT 'Nederland'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `klanten`
+--
+
+INSERT INTO `klanten` (`id`, `naam`, `straat`, `nummer`, `postcode`, `plaats`, `extra_veld`, `algemeen_telefoonnummer`, `algemene_email`, `website`, `factuur_email`, `factuur_extra_info`, `factuur_straat`, `factuur_nummer`, `factuur_postcode`, `factuur_plaats`, `aflever_straat`, `aflever_nummer`, `aflever_postcode`, `aflever_plaats`, `aangemaakt_op`, `land`) VALUES
+(2, 'Fetum Company', 'Hoofdstraat', '1', '1234AB', 'Amsterdam', '', '', '', 'http://fetum.nl', '', '', '', '', '', '', '', '', '', '', '2025-02-15 14:54:53', 'Nederland'),
+(7, 'Jansschool', 'Couperuslaan', '56', '1422BE', 'Uithoorn', 'om de hoek bezorgen', '0125', 'verkoop@fetum.nl', 'http://www.fetum.nl', '', '', '', '', '', '', '', '', '', '', '2025-02-28 13:42:24', 'Nederland');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
+  `klant_id` int NOT NULL,
+  `contactpersoon_id` int NOT NULL,
+  `datum` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('offerte','bestelling') DEFAULT NULL,
+  `totaal_prijs` decimal(10,2) DEFAULT '0.00',
+  `afgehandeld` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `orders`
+--
+
+INSERT INTO `orders` (`id`, `klant_id`, `contactpersoon_id`, `datum`, `status`, `totaal_prijs`, `afgehandeld`) VALUES
+(35, 7, 8, '2025-03-04 21:30:33', 'bestelling', 616.20, 0),
+(36, 7, 8, '2025-03-05 19:36:20', 'bestelling', 970.78, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `aantal` int NOT NULL,
+  `prijs_per_stuk` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `aantal`, `prijs_per_stuk`) VALUES
+(34, 35, 3, 128, 3.92),
+(35, 36, 3, 96, 4.05),
+(36, 36, 2, 200, 2.03);
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `products`
 --
 
@@ -39,15 +138,15 @@ CREATE TABLE `products` (
   `USP` text,
   `sticker_text` text,
   `leverbaar` enum('ja','nee') NOT NULL DEFAULT 'ja',
-  `hoofd_product` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `hoofd_product` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `products`
 --
 
 INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschrijving`, `prijsstaffel`, `aantal_per_doos`, `aangemaakt_op`, `USP`, `sticker_text`, `leverbaar`, `hoofd_product`) VALUES
-(1, 'Hoofdtelefoons', 'Degelijk', 'HP-136 S', '<p><strong>Onze klassieke en betrouwbare HP-136</strong></p><p><br></p><p>Ontdek de vernieuwde HP-136, nu uitgerust met een afneembaar snoer, een handige bewaartas en een naamsticker, zodat altijd duidelijk is welke hoofdtelefoon van wie is.</p><p><br></p><p><strong>Comfort en design:</strong></p><p>De hoofdtelefoon heeft een metalen hoofdband bekleed met stof en verstelbare, zacht beklede oorschelpen. Het maximale volume is begrensd op 85 dB, wat veilig gebruik garandeert. De hoofdtelefoon zit zeer comfortabel en is geschikt voor urenlang probleemloos gebruik.</p><p><br></p><p><strong>Verpakking en accessoires:</strong></p><p>Per stuk verpakt in een zakje, of per 32 stuks in een overdoos.</p><p>Enkelzijdig afneembaar en vervangbaar, met een lengte van 1,2 meter.</p><p><br></p><p><strong>Type: </strong>Halfopen</p><p><br></p>', '32 7,86\n64 7,64\n128 7,24\n256 6.95', 32, '2024-12-27 15:59:45', '<p>Afneembaar snoer</p><p>Verstelbare oorschelpen</p><p>Nylon verstevigd snoer</p><p>Inclusief naamsticker</p>', '<p>Afneembaar 1,2 meter snoer,</p><p>Met naam sticker en bewaartas</p><p>Zachte hoofdband</p><p>Verstelbare zachte oorschelpen</p><p>max volume 85dB </p>', 'ja', NULL),
+(1, 'Hoofdtelefoons', 'Degelijk', 'HP-136S', '<p><strong>Onze klassieke en betrouwbare HP-136</strong></p><p><br></p><p>Ontdek de vernieuwde HP-136, nu uitgerust met een afneembaar snoer, een handige bewaartas en een naamsticker, zodat altijd duidelijk is welke hoofdtelefoon van wie is.</p><p><br></p><p><strong>Comfort en design:</strong></p><p>De hoofdtelefoon heeft een metalen hoofdband bekleed met stof en verstelbare, zacht beklede oorschelpen. Het maximale volume is begrensd op 85 dB, wat veilig gebruik garandeert. De hoofdtelefoon zit zeer comfortabel en is geschikt voor urenlang probleemloos gebruik.</p><p><br></p><p><strong>Verpakking en accessoires:</strong></p><p>Per stuk verpakt in een zakje, of per 32 stuks in een overdoos.</p><p>Enkelzijdig afneembaar en vervangbaar, met een lengte van 1,2 meter.</p><p><br></p><p><strong>Type: </strong>Halfopen</p><p><br></p>', '32 7,86\n64 7,64\n128 7,24\n256 6.95', 32, '2024-12-27 15:59:45', '<p>Afneembaar snoer</p><p>Verstelbare oorschelpen</p><p>Nylon verstevigd snoer</p><p>Inclusief naamsticker</p>', '<p>Afneembaar 1,2 meter snoer,</p><p>Met naam sticker en bewaartas</p><p>Zachte hoofdband</p><p>Verstelbare zachte oorschelpen</p><p>max volume 85dB </p>', 'ja', ''),
 (2, 'Hoofdtelefoons', 'Comfort', 'HP-305', '<h3>Comfortabele hoofdtelefoon voor een scherpe prijs</h3><h3><br></h3><p><strong>Eenzijdig snoer</strong> van 2 meter – raakt minder snel in de knoop en wordt niet snel in de mond genomen.</p><p><strong>3,5 mm rechte stekker</strong> – past altijd.</p><p><strong>Zachte oorschelpen en verstelbare hoofdband</strong> – voor een prettige pasvorm.</p><p><strong>Opklapbare oorschelpen</strong> – handig bij het opbergen.</p><p><br></p><p>Optioneel verkrijgbaar met een <strong>gerecyclede denim bewaartas</strong>, waarop een naam geschreven kan worden. Voorkomt dat het snoer in de knoop raakt.</p><p><br></p><p><strong>Verpakking:</strong></p><p>Per stuk in een zakje</p><p>Per 50 in een doos</p><p>Overdoos van 100 stuks</p><p><br></p><p><strong><span class=\"ql-cursor\">﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿</span></strong>Zonder blisterverpakking – compact en eenvoudig op te slaan.</p>', '50 2,29\n100 2,09\n200 2,03', 50, '2024-12-27 16:01:05', '<p>Uitstekende prijs-kwaliteitSverhouding</p><p>Lang, enkelzijdig snoer</p><p>Verstelbare hoofdband – past altijd comfortabel</p><p>Zachte, opklapbare oorschelpen</p>', '<p><strong>Comfort hoofdtelefoon</strong></p><p>2 meter snoer</p><p>Enkelzijdig snoer</p><p>Draaibare oorschelpen</p><p>Verstelbare hoofdband</p>', 'ja', ''),
 (3, 'Hoofdtelefoons', 'Nekband', 'HP-122', '<p><strong>Nekband Koptelefoon</strong></p><p><br></p><p><u>Specificaties:</u></p><p>Snoer:&nbsp;Robuust nylon, beschermd tegen beschadiging.</p><p>Elk hygiënisch verpakt in een nette opbergtas.</p><p>Minimalistische opslag zonder overbodig afval: Geen blister of extra doos.</p><p><br></p><p>Aantal: 32 stuks per doos.</p><p>Certificeringen:&nbsp;De koptelefoon is CE-gecertificeerd en voldoet aan zowel de RoHS als de Reach standaard.</p><p>Snoerlengte:&nbsp;1,8 meter, voorzien van een standaard 3,5 mm rechte stereo stekker.</p><p><br></p><p><u>Bijzonder geschikt voor</u>:</p><p>Scholen. De nekband koptelefoon is uitermate geschikt voor jongere kinderen dankzij zijn comfortabele pasvorm en duurzaamheid.</p><p><br></p><p>Uitstekende hoofdtelefoon voor school gebruik.</p><p><br></p>', '32 4,31\n64 4,05\n128 3,92', 32, '2025-01-06 13:26:28', '<p>Nekband uitvoering</p><p>Nylon verstevigd snoer</p><p>1,8 meter snoer</p><p>In bewaartas</p>', '<p>Nekband koptelefoon</p><p>1,8 meter snoer</p><p>degelijk</p>', 'ja', ''),
 (4, 'Hoofdtelefoons', 'Comfort', 'HP-316', '<h3><strong>HP-316 Ultrasound – Hoofdtelefoon van een hogere klasse</strong></h3><p><br></p><p>De HP-316 Ultrasound is een hoofdtelefoon met de best mogelijke geluidskwaliteit in deze klasse.</p><p><br></p><p>Met zijn <strong>uitstekende geluidskwaliteit</strong>, <strong>degelijkheid</strong> en <strong>comfortabele pasvorm</strong> is dit model uitermate geschikt voor situaties waar méér wordt gevraagd – zoals langdurig gebruik in het onderwijs, in de bibliotheek of waar dan ook.</p><p><br></p><p>✔️ <strong>Hoge geluidskwaliteit</strong> – helder en vol geluid, een klasse boven standaardmodellen</p><p>✔️ <strong>Robuuste bouwkwaliteit</strong> – ontwikkeld voor intensief dagelijks gebruik</p><p>✔️ <strong>1,8 meter enkelzijdig snoer</strong> – sterk en minder snel in de knoop</p><p>✔️ <strong>3,5 mm rechte stereostekker</strong> – werkt op vrijwel ieder apparaat</p><p>✔️ <strong>Zachte oorschelpen &amp; verstelbare hoofdband</strong> – comfortabel, ook bij langdurig dragen</p><p>✔️ <strong>Opklapbare oorschelpen</strong> – makkelijk op te bergen of mee te nemen</p><h3><br></h3><h3><strong>Verpakking en opties</strong></h3><ul><li>Per stuk in een zakje</li><li>50 stuks per doos, 100 stuks per overdoos</li><li><strong>Zonder blisterverpakking</strong> – compact en efficiënt</li><li><strong>Optioneel</strong> met gerecyclede denim bewaartas voorzien van naamlabelvlak</li></ul><p><br></p>', '50 3,39\n100 3,22\n200 3,02', 50, '2025-02-03 14:32:21', '<p>Ultrasound Hoofdtelefoon</p><p>Beste geluidskwaliteit in deze klasse</p><p>1,8 meter enkelzijdig snoer</p><p>Draaibare oorschelpen</p>', '<p><strong>Ultrasound Hoofdtelefoon</strong></p><p>1,8 meter snoer</p><p>Enkelzijdig snoer</p><p>Draaibare oorschelpen</p><p>Verstelbare hoofdband</p>', 'ja', ''),
@@ -85,9 +184,103 @@ INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschr
 (61, 'Muizen', 'Bedraad', 'Muis 55 wit', '<p>De Witte uitvoering van de compacte muis 55 zwart.</p><p><br></p><p>Net zo goed, maat een ander kleurtje</p>', '16 4,93\n32 4,32\n64 3,99', 16, '2025-06-02 15:19:44', '<p>Compacte USB muis</p><p>Witte Uitvoering</p><p>Witte muis met wit snoer</p>', '<p>Compacte USB muis</p><p>Witte Uitvoering</p><p>Responsive packaging</p><p><br></p>', 'ja', 'Muis 55 zwart'),
 (62, 'Muizen', 'Bluetooth', 'Muis 255 BT', '<h3><strong>Draadloze Bluetooth-muis – oplaadbaar en klaar voor de toekomst</strong></h3><p><br></p><p>Deze moderne Bluetooth-muis is een duurzaam alternatief voor standaard draadloze muizen.</p><p><br></p><p><strong>Geen batterijen meer nodig</strong>: dankzij de ingebouwde accu is de muis eenvoudig via USB op te laden.</p><p><br></p><p>✔️ <strong>Draadloos via Bluetooth</strong> – geen USB-ontvanger nodig</p><p>✔️ <strong>Oplaadbaar</strong> – milieuvriendelijk en kostenbesparend</p><p>✔️ Compact en degelijk ontwerp, geschikt voor dagelijks gebruik</p><p>✔️ Werkt met laptops, pc’s, tablets en Chromebooks</p><p>✔️ Zelf installerend – geen aparte software vereist</p><p>✔️ Per stuk verpakt in een doosje, geleverd per 16 in een overdoos</p><p><br></p><p><br></p>', '8 9,29\n16 8,79\n32 8,26', 10, '2025-06-02 15:20:00', '<p>Bluetooth</p><p>Oplaadbaar</p><p>Witte muis</p>', '<p>Bluetooth</p><p>Oplaadbaar</p><p>Witte muis</p>', 'ja', '');
 
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `settings`
+--
+
+CREATE TABLE `settings` (
+  `id` int NOT NULL,
+  `key_name` varchar(50) NOT NULL,
+  `value_text` text NOT NULL,
+  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `shopping_cart`
+--
+
+CREATE TABLE `shopping_cart` (
+  `id` int NOT NULL,
+  `klant_id` int NOT NULL,
+  `TypeNummer` varchar(50) NOT NULL,
+  `productType` varchar(50) NOT NULL,
+  `aantal` int NOT NULL,
+  `prijs_per_stuk` decimal(10,2) NOT NULL,
+  `totaal_prijs` decimal(10,2) NOT NULL,
+  `prijsstaffel` text NOT NULL,
+  `aantal_per_doos` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `voornaam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `achternaam` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `geslacht` enum('M','V','X') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `wachtwoord` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rol` enum('klant','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'klant',
+  `google_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `klant_id` int DEFAULT NULL,
+  `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
+  `confirmation_token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password_reset_token` varchar(32) DEFAULT NULL,
+  `password_reset_expires` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `users`
+--
+
+INSERT INTO `users` (`id`, `voornaam`, `achternaam`, `geslacht`, `email`, `wachtwoord`, `rol`, `google_id`, `avatar_url`, `klant_id`, `aangemaakt_op`, `email_confirmed`, `confirmation_token`, `password_reset_token`, `password_reset_expires`) VALUES
+(3, 'Peter', 'Felis', 'M', 'peter@felis.nl', '$2y$10$lXZTo/ZscHyU3Is7DDLEz.dDMh1dCkBGNZuoZRFBne4zF.WV1ozyG', 'admin', NULL, NULL, 2, '2025-02-15 14:54:53', 1, NULL, NULL, NULL),
+(8, 'Peter', 'Felis', 'M', 'verkoop@fetum.nl', '$2y$10$syRuJwfGvZR1C/42LfYpVuMvupUfR0zqhCcoTLvnKHcsPzG0BnKGa', 'klant', NULL, NULL, 7, '2025-02-28 13:42:24', 1, NULL, NULL, NULL);
+
 --
 -- Indexen voor geëxporteerde tabellen
 --
+
+--
+-- Indexen voor tabel `crm_notes`
+--
+ALTER TABLE `crm_notes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `klant_id` (`klant_id`);
+
+--
+-- Indexen voor tabel `klanten`
+--
+ALTER TABLE `klanten`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexen voor tabel `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `klant_id` (`klant_id`),
+  ADD KEY `contactpersoon_id` (`contactpersoon_id`);
+
+--
+-- Indexen voor tabel `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexen voor tabel `products`
@@ -96,14 +289,108 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexen voor tabel `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexen voor tabel `shopping_cart`
+--
+ALTER TABLE `shopping_cart`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `klant_id` (`klant_id`,`TypeNummer`);
+
+--
+-- Indexen voor tabel `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_email` (`email`),
+  ADD KEY `idx_google_id` (`google_id`),
+  ADD KEY `idx_klant_id` (`klant_id`);
+
+--
 -- AUTO_INCREMENT voor geëxporteerde tabellen
 --
+
+--
+-- AUTO_INCREMENT voor een tabel `crm_notes`
+--
+ALTER TABLE `crm_notes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT voor een tabel `klanten`
+--
+ALTER TABLE `klanten`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT voor een tabel `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT voor een tabel `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT voor een tabel `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+
+--
+-- AUTO_INCREMENT voor een tabel `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT voor een tabel `shopping_cart`
+--
+ALTER TABLE `shopping_cart`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT voor een tabel `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Beperkingen voor geëxporteerde tabellen
+--
+
+--
+-- Beperkingen voor tabel `crm_notes`
+--
+ALTER TABLE `crm_notes`
+  ADD CONSTRAINT `crm_notes_ibfk_1` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`);
+
+--
+-- Beperkingen voor tabel `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`contactpersoon_id`) REFERENCES `users` (`id`);
+
+--
+-- Beperkingen voor tabel `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Beperkingen voor tabel `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_users_klanten` FOREIGN KEY (`klant_id`) REFERENCES `klanten` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

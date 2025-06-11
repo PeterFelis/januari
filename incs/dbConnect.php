@@ -1,10 +1,10 @@
 <?php
 // Databaseverbinding
 // locaal ontwikkelen
-$host = 'localhost';
-$dbname = 'fetum';
-$user = 'root';
-$password = '';
+//$host = 'localhost';
+//$dbname = 'fetum';
+//$user = 'root';
+//$password = '';
 
 
 //hosting
@@ -16,10 +16,10 @@ $password = '';
 
 
 //hosting test op felis  11-04-2025
-// $host = 'sql214.hostingdiscounter.nl';
-// $dbname = 'company';
-// $user = 'peter';
-// $password = 'ErjED8nWfP';
+$host = 'sql214.hostingdiscounter.nl';
+$dbname = 'company';
+$user = 'peter';
+$password = 'ErjED8nWfP';
 
 
 

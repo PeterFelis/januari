@@ -5,8 +5,6 @@
 
 include_once __DIR__ . '/incs/sessie.php';
 
-include_once __DIR__ . '/incs/sessie.php';
-
 // 1% kans dat we de cleanup uitvoeren
 if (mt_rand(1, 100) === 1) {
     // bepaal waar sessies staan
