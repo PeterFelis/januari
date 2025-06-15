@@ -37,6 +37,16 @@ if (!$variantProduct) {
 // Zorg ervoor dat de renderPriceComponent functie beschikbaar is:
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
+// Controleer of er een PDF in deze directory staat
+$pdfBestanden = glob("*.pdf");
+$pdfLink = '';
+
+if (!empty($pdfBestanden)) {
+    // Neem de eerste PDF die gevonden wordt
+    $pdfLink = basename($pdfBestanden[0]);
+}
+
+
 ?>
 <link rel="stylesheet" href="../prod.css">
 <link rel="stylesheet" href="../responsive.css">
@@ -46,6 +56,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "een een titel titel titel titel"
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
+            "video video video video video video"
             "vier vier vijf vijf zes zes"
             "drie drie zeven zeven zeven zeven"
             "acht acht acht acht negen negen"
@@ -53,8 +64,8 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "twaalf twaalf elf elf elf elf"
             "dertien dertien elf elf elf elf";
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 2fr 2fr 2fr auto 4fr 1fr 2fr 2fr;
-        height: 3000px;
+        grid-template-rows: 1fr 2fr 2fr 4fr 2fr auto 4fr 1fr 2fr 2fr;
+        height: 3500px;
     }
 </style>
 <script>
@@ -88,7 +99,15 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         </div>
 
         <div class="titel oranje">
-            <h1> <?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+            <h1 style="display: inline-block;"><?php echo htmlspecialchars($mainProduct['TypeNummer']); ?></h1>
+
+            <?php if ($pdfLink): ?>
+                <span class="pdf-download">
+                    <a href="<?= htmlspecialchars($pdfLink); ?>" target="_blank">
+                        <img class="pdf-icon2" src="/afbeeldingen/pdf.svg" alt="PDF"> download de PDF
+                    </a>
+                </span>
+            <?php endif; ?>
         </div>
 
         <div id="usp" class='oranje'>
@@ -102,6 +121,64 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer']);
             ?>
         </div>
+
+
+        <div class="video" id="player-container">
+            <div id="player"></div>
+        </div>
+        <script>
+            // 1. Laad de IFrame API
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            var player;
+
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    videoId: 'fUiqolkanmw',
+                    playerVars: {
+                        rel: 0, // suppress “andere video’s” (zo veel als mogelijk)
+                        modestbranding: 1, // minder YouTube-logo
+                        controls: 1,
+                        // autoplay: 1, // als je direct wilt laten starten; niet altijd gewenst
+                    },
+                    events: {
+                        onReady: function(event) {
+                            // Probeer direct hogere kwaliteit in te stellen
+                            // Opties: 'hd1080', 'hd720', 'large', 'medium', etc.
+                            // YouTube kiest wat mogelijk is.
+                            event.target.setPlaybackQuality('hd1080');
+                        },
+                        onStateChange: function(event) {
+                            if (event.data === YT.PlayerState.ENDED) {
+                                // Zie punt 2: wat te doen aan eindscherm?
+                                hideEndScreen();
+                            }
+                        }
+                    }
+                });
+            }
+
+            function hideEndScreen() {
+                // Verberg iframe of toon iets anders zodra video klaar is:
+                var container = document.getElementById('player-container');
+                // Bijvoorbeeld: vervang door een poster-afbeelding of laat 'n “speel opnieuw” knop zien
+                container.innerHTML = '<div class="video-finished"> <button onclick="replay()">Nogmaals afspelen</button></div>';
+            }
+
+            function replay() {
+                player.seekTo(0);
+                player.playVideo();
+                // eventueel weer de oorspronkelijke embed tonen:
+                document.getElementById('player-container').innerHTML = '<div id="player"></div>';
+                // Re-initialiseer opnieuw via onYouTubeIframeAPIReady (of behoud referentie)
+                onYouTubeIframeAPIReady();
+            }
+        </script>
+
+
 
 
         <div class="vier">

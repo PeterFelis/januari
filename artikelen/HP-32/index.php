@@ -44,6 +44,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "een een twee twee twee twee"
             "usp usp twee twee twee twee"
             "hero hero hero hero hero hero"
+            "video video video video video video"
             "vier vier vijf vijf zes zes"
             "acht acht negen negen tien tien"
             "drie drie zeven zeven zeven zeven"
@@ -51,8 +52,8 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             "dertien dertien dertien dertien veertien veertien";
 
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 2fr 1fr 3fr 1fr 1fr auto 2fr 2fr;
-        height: 3000px;
+        grid-template-rows: 1fr 2fr 1fr 3fr 5fr 1fr 1fr auto 2fr 2fr;
+        height: 3500px;
     }
 </style>
 <script>
@@ -99,6 +100,62 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer']);
             ?>
         </div>
+
+
+        <div class="video" id="player-container">
+            <div id="player"></div>
+        </div>
+        <script>
+            // 1. Laad de IFrame API
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            var player;
+
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    videoId: 'ZwfBmgh0Ti8',
+                    playerVars: {
+                        rel: 0, // suppress “andere video’s” (zo veel als mogelijk)
+                        modestbranding: 1, // minder YouTube-logo
+                        controls: 1,
+                        // autoplay: 1, // als je direct wilt laten starten; niet altijd gewenst
+                    },
+                    events: {
+                        onReady: function(event) {
+                            // Probeer direct hogere kwaliteit in te stellen
+                            // Opties: 'hd1080', 'hd720', 'large', 'medium', etc.
+                            // YouTube kiest wat mogelijk is.
+                            event.target.setPlaybackQuality('hd1080');
+                        },
+                        onStateChange: function(event) {
+                            if (event.data === YT.PlayerState.ENDED) {
+                                // Zie punt 2: wat te doen aan eindscherm?
+                                hideEndScreen();
+                            }
+                        }
+                    }
+                });
+            }
+
+            function hideEndScreen() {
+                // Verberg iframe of toon iets anders zodra video klaar is:
+                var container = document.getElementById('player-container');
+                // Bijvoorbeeld: vervang door een poster-afbeelding of laat 'n “speel opnieuw” knop zien
+                container.innerHTML = '<div class="video-finished"> <button onclick="replay()">Nogmaals afspelen</button></div>';
+            }
+
+            function replay() {
+                player.seekTo(0);
+                player.playVideo();
+                // eventueel weer de oorspronkelijke embed tonen:
+                document.getElementById('player-container').innerHTML = '<div id="player"></div>';
+                // Re-initialiseer opnieuw via onYouTubeIframeAPIReady (of behoud referentie)
+                onYouTubeIframeAPIReady();
+            }
+        </script>
 
 
         <div class="hero geenpad">

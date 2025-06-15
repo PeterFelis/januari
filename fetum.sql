@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Gegenereerd op: 11 jun 2025 om 18:03
+-- Host: localhost:3306
+-- Gegenereerd op: 15 jun 2025 om 12:26
 -- Serverversie: 8.0.30
 -- PHP-versie: 8.1.10
 
@@ -31,7 +31,7 @@ CREATE TABLE `crm_notes` (
   `id` int NOT NULL,
   `klant_id` int NOT NULL,
   `datum` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `opmerking` text
+  `opmerking` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -62,7 +62,7 @@ CREATE TABLE `klanten` (
   `aflever_postcode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `aflever_plaats` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `land` varchar(50) NOT NULL DEFAULT 'Nederland'
+  `land` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Nederland'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `orders` (
   `klant_id` int NOT NULL,
   `contactpersoon_id` int NOT NULL,
   `datum` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('offerte','bestelling') DEFAULT NULL,
+  `status` enum('offerte','bestelling') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `totaal_prijs` decimal(10,2) DEFAULT '0.00',
   `afgehandeld` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -128,16 +128,16 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `aantal`, `prijs_per_
 
 CREATE TABLE `products` (
   `id` int NOT NULL,
-  `categorie` varchar(100) DEFAULT NULL,
-  `subcategorie` varchar(100) DEFAULT NULL,
-  `TypeNummer` varchar(100) NOT NULL,
-  `omschrijving` text,
-  `prijsstaffel` text NOT NULL,
+  `categorie` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subcategorie` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `TypeNummer` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `omschrijving` text COLLATE utf8mb4_unicode_ci,
+  `prijsstaffel` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `aantal_per_doos` int NOT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `USP` text,
-  `sticker_text` text,
-  `leverbaar` enum('ja','nee') NOT NULL DEFAULT 'ja',
+  `USP` text COLLATE utf8mb4_unicode_ci,
+  `sticker_text` text COLLATE utf8mb4_unicode_ci,
+  `leverbaar` enum('ja','nee') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ja',
   `hoofd_product` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -192,8 +192,8 @@ INSERT INTO `products` (`id`, `categorie`, `subcategorie`, `TypeNummer`, `omschr
 
 CREATE TABLE `settings` (
   `id` int NOT NULL,
-  `key_name` varchar(50) NOT NULL,
-  `value_text` text NOT NULL,
+  `key_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -206,16 +206,23 @@ CREATE TABLE `settings` (
 CREATE TABLE `shopping_cart` (
   `id` int NOT NULL,
   `klant_id` int NOT NULL,
-  `TypeNummer` varchar(50) NOT NULL,
-  `productType` varchar(50) NOT NULL,
+  `TypeNummer` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `productType` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `aantal` int NOT NULL,
   `prijs_per_stuk` decimal(10,2) NOT NULL,
   `totaal_prijs` decimal(10,2) NOT NULL,
-  `prijsstaffel` text NOT NULL,
+  `prijsstaffel` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `aantal_per_doos` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `shopping_cart`
+--
+
+INSERT INTO `shopping_cart` (`id`, `klant_id`, `TypeNummer`, `productType`, `aantal`, `prijs_per_stuk`, `totaal_prijs`, `prijsstaffel`, `aantal_per_doos`, `created_at`, `updated_at`) VALUES
+(19, 7, 'BT-7', 'main', 10, 20.00, 200.00, '5 22,00\n10 20,00\n20 18,00', 5, '2025-06-11 18:35:10', '2025-06-11 18:35:10');
 
 -- --------------------------------------------------------
 
@@ -237,7 +244,7 @@ CREATE TABLE `users` (
   `aangemaakt_op` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
   `confirmation_token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password_reset_token` varchar(32) DEFAULT NULL,
+  `password_reset_token` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password_reset_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -354,7 +361,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT voor een tabel `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT voor een tabel `users`

@@ -69,18 +69,45 @@ ob_start();
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Offerte <?php echo $order_id; ?></title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12pt; }
-        h1, h2 { text-align: center; }
-        .details, .totals { margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #333; padding: 5px; }
-        a { color: #0066cc; text-decoration: none; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        .details,
+        .totals {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #333;
+            padding: 5px;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
     </style>
 </head>
+
 <body>
     <h1>Offerte</h1>
     <h2>Offerte ID: <?php echo $order_id; ?></h2>
@@ -110,21 +137,21 @@ ob_start();
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($cart as $item):
-                $dozenAantal = ($item['aantal_per_doos'] > 0) ? intval($item['aantal'] / $item['aantal_per_doos']) : $item['aantal'];
-                $totaalStuks = $dozenAantal * $item['aantal_per_doos'];
-                // Absolute link per product; pas de URL-structuur aan indien nodig
-                $productUrl = "https://www.fetum.nl/artikelen/" . urlencode($item['TypeNummer']) . "/index.php";
-            ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($item['TypeNummer']); ?></td>
-                    <td><?php echo $dozenAantal; ?></td>
-                    <td><?php echo $totaalStuks; ?></td>
-                    <td>€<?php echo number_format($item['prijs_per_stuk'], 2, ',', '.'); ?></td>
-                    <td>€<?php echo number_format($item['totaal_prijs'], 2, ',', '.'); ?></td>
-                    <td><a href="<?php echo $productUrl; ?>">Bekijk product</a></td>
-                </tr>
-            <?php endforeach; ?>
+                <?php foreach ($cart as $item):
+                    $dozenAantal = ($item['aantal_per_doos'] > 0) ? intval($item['aantal'] / $item['aantal_per_doos']) : $item['aantal'];
+                    $totaalStuks = $dozenAantal * $item['aantal_per_doos'];
+                    // Absolute link per product; pas de URL-structuur aan indien nodig
+                    $productUrl = "https://www.fetum.nl/artikelen/" . urlencode($item['TypeNummer']) . "/index.php";
+                ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($item['TypeNummer']); ?></td>
+                        <td><?php echo $dozenAantal; ?></td>
+                        <td><?php echo $totaalStuks; ?></td>
+                        <td>€<?php echo number_format($item['prijs_per_stuk'], 2, ',', '.'); ?></td>
+                        <td>€<?php echo number_format($item['totaal_prijs'], 2, ',', '.'); ?></td>
+                        <td><a href="<?php echo $productUrl; ?>">Bekijk product</a></td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -136,6 +163,7 @@ ob_start();
         <p><strong>Totaal (incl. BTW): €<?php echo number_format($totalInclBtw, 2, ',', '.'); ?></strong></p>
     </div>
 </body>
+
 </html>
 <?php
 $html = ob_get_clean();
@@ -161,7 +189,7 @@ try {
     $mailCustomer->Host = 'mail225.hostingdiscounter.nl';
     $mailCustomer->SMTPAuth = true;
     $mailCustomer->Username = 'info@fetum.nl';
-    $mailCustomer->Password = 'rNqjQ2h4EC';
+    $mailCustomer->Password = 'kbQena8rpn';
     $mailCustomer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mailCustomer->Port = 587;
     $mailCustomer->isHTML(false);
@@ -181,7 +209,7 @@ try {
     $mailAdmin->Host = 'mail225.hostingdiscounter.nl';
     $mailAdmin->SMTPAuth = true;
     $mailAdmin->Username = 'info@fetum.nl';
-    $mailAdmin->Password = 'rNqjQ2h4EC';
+    $mailAdmin->Password = 'kbQena8rpn';
     $mailAdmin->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mailAdmin->Port = 587;
     $mailAdmin->isHTML(false);

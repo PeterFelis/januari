@@ -173,6 +173,34 @@ body {
     grid-area: hero;
     }
 
+.video {
+  grid-area: video;
+  position: relative;
+  height: 100%;
+  width:100%;
+  background-color: black;
+}
+#player {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.video-finished {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #000;
+  color: #fff;
+  height: 100%;
+  width: 100%;
+}
+.video-finished button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+}
+   
+
 
 /* Price component styling */
 .price-component p {

@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mail->Host       = 'mail225.hostingdiscounter.nl';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'info@fetum.nl';
-            $mail->Password   = 'rNqjQ2h4EC';
+            $mail->Password   = 'kbQena8rpn';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
             $mail->isHTML(false);
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mailCopy->Host       = 'mail225.hostingdiscounter.nl';
             $mailCopy->SMTPAuth   = true;
             $mailCopy->Username   = 'info@fetum.nl';
-            $mailCopy->Password   = 'rNqjQ2h4EC';
+            $mailCopy->Password   = 'kbQena8rpn';
             $mailCopy->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mailCopy->Port       = 587;
             $mailCopy->isHTML(false);
@@ -116,6 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     .contact-form {
         background: #f8f8f8;
         display: flex;
+        font-size: 1rem;
     }
 
     .contact-form form {
