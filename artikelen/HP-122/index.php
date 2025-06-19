@@ -80,7 +80,7 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
             <img class='hoog' src="hp-122.png" alt='hp-122.png' loading="lazy">
         </div>
         <div class="twee geenpad">
-            <img class='breed' src="hp-122 liggend.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='breed' src="hp122Liggend.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -104,10 +104,10 @@ include '../prijs_component.php';  // pas het pad aan als dat nodig is
         </div>
 
         <div class="elf geenpad">
-            <img class='hoog' src="122 met hoofd in oranje.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="122methoofdinoranje.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
-        <div class="zes"><img class='hoog' src="hp-122 staand.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
+        <div class="zes"><img class='hoog' src="hp122staand.png" alt='hp-136 hoofdtelefoon' loading="lazy"></div>
 
         <div class="zeven omschrijving oranje col2">
             <?php echo ($mainProduct['omschrijving']); ?>

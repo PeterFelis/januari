@@ -1,6 +1,6 @@
 <?php
 // shop.php
-//include_once __DIR__ . '/incs/sessie.php';
+include_once __DIR__ . '/incs/sessie.php';
 
 // Lees eventuele selectie uit de URL
 $selCat = isset($_GET['category']) ? $_GET['category'] : '';

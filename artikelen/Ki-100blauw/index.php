@@ -2,13 +2,14 @@
 session_start();
 $menu = "beheer";
 
-$title = "Muis 55 zwart";
+$title = "Ki 100 blauw kinder hoofdtelefoon";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
-$TypeNummerHoofd = "Muis 55 zwart";
-$TypeNummerZakjes = "Muis 55 wit"; // Zorg dat dit typenummer in de database bestaat voor de variant
+$TypeNummerHoofd = "Ki-100blauw";
+$TypeNummerZakjes = null; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie
 include_once __DIR__ . '/../../incs/artikelkop.php';
+
 
 // Haal de productdata op
 $mainProduct = getProductData($TypeNummerHoofd, $pdo);
@@ -36,7 +37,6 @@ if (!$variantProduct) {
 // Zorg ervoor dat de renderPriceComponent functie beschikbaar is:
 include '../prijs_component.php';  // pas het pad aan als dat nodig is
 
-
 // Controleer of er een PDF in deze directory staat
 $pdfBestanden = glob("*.pdf");
 $pdfLink = '';
@@ -47,87 +47,85 @@ if (!empty($pdfBestanden)) {
 }
 
 ?>
+
+
 <link rel="stylesheet" href="../prod.css">
 <link rel="stylesheet" href="../responsive.css">
 <style>
-    /* Desktop grid-indeling */
     .grid-container {
         grid-template-areas:
             "titel titel titel titel titel titel"
             "een een twee twee twee twee"
-            "usp usp twee twee twee twee"
-            "vier vier vier vijf vijf vijf"
+            "een een twee twee twee twee"
+            "een een twee twee twee twee"
             "drie drie zeven zeven zeven zeven"
-            "tien tien tien tien tien tien"
-            "twaalf twaalf twaalf elf elf elf"
-            "dertien dertien dertien elf elf elf";
-        grid-template-rows: 1fr 2fr 2fr 3fr auto 1fr 2fr auto;
-        height: 2000px;
+            "acht acht acht acht acht acht"
+            "negen negen negen negen negen negen"
+            "usp usp usp usp usp usp";
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 2fr 2fr 2fr auto 3fr 3fr;
+        height: 2500px;
     }
 
-    /* Responsive aanpassingen per pagina */
-    @media only screen and (max-width: 1024px) {
+    /* ==================== TABLET  (max-width 1024 px) ==================== */
+    @media only screen and (max-width:1024px) {
         .grid-container {
-            height: 3000px;
+            /* 4 kolommen, iets minder hoogte */
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr 3fr auto auto 2fr 1fr auto;
+            max-height: 2500px;
+
+            /*
+      Titel bovenaan, daaronder twee afbeeldingen naast elkaar (3 rijen hoog),
+      prijs + omschrijving op één rij, grote liggende foto full-width,
+      USP-blok onderaan.
+    */
             grid-template-areas:
                 "titel titel titel titel"
-                "een een usp usp"
-                "twee twee twee twee"
-                "vier vier vijf vijf"
+                "een twee twee twee"
                 "drie drie drie drie"
                 "zeven zeven zeven zeven"
                 "acht acht acht acht"
-                "tien tien tien tien"
+                "usp usp usp usp"
+                "negen negen negen negen";
 
-                "elf elf elf elf"
-                "twaalf twaalf twaalf twaalf"
-                "dertien dertien dertien dertien";
-            grid-template-rows: 1fr 3fr 5fr 4fr auto auto 3fr 1fr 5fr 4fr auto auto;
+            /* laat de content de hoogte bepalen */
         }
     }
 
-    /* Responsive aanpassingen per pagina */
-    @media only screen and (max-width: 600px) {
+    /* ==================== MOBIEL  (max-width 600 px) ==================== */
+    @media only screen and (max-width:600px) {
         .grid-container {
-            height: 2000px;
-            font-size: 1rem;
-            grid-template-rows: 1fr 2fr 5fr 2fr 2fr auto auto 3fr 1fr 1fr auto 3fr;
+            /* 2 kolommen, alles vrijwel full-width gestapeld */
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr 3fr 3fr auto auto 4fr 2fr 1fr;
+            max-height: 2000px;
+            /*
+      Eerst titel + USP (dicht bij elkaar),
+      dan afbeeldingen, prijs, tekst, liggende foto.
+      Elk blok vult de volle breedte (2 kolommen).
+    */
             grid-template-areas:
                 "titel titel"
-                "een usp"
+                "een  een"
                 "twee twee"
-                "vier vier"
-                "vijf vijf"
                 "drie drie"
                 "zeven zeven"
-                "acht acht"
-                "tien tien"
-
-
-                "twaalf twaalf"
-                "dertien dertien"
-                "elf elf";
+                "acht  acht"
+                "negen negen"
+                "usp  usp";
+            gap: 0.8rem;
+            /* wat compacter op mobiel */
+            height: auto;
         }
 
-        .grid-container .col2 {
-            columns: 1;
-        }
-
-
-        h1 {
-            font-size: 2.2em;
-        }
-
-        #usp {
-            font-size: 1.3rem;
-            line-height: 1.8rem;
-        }
-
-        p {
-            font-size: 1.4rem;
+        /* Één tekstkolom op mobiel-screens */
+        .col2 {
+            column-count: 1 !important;
         }
     }
 </style>
+
 <script>
     window.isProductPage = true;
 </script>
@@ -152,10 +150,10 @@ if (!empty($pdfBestanden)) {
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="zwart bovenaf met kabel.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="blauw linkekant hangend uitgeknipt bewerkt 16032025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
-        <div class="twee geenpad">
-            <img class='breed' src="muis en kat.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        <div class="twee">
+            <img class='hoog' src="blauw front uitgeknipt bewerkt 13032025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -171,63 +169,40 @@ if (!empty($pdfBestanden)) {
         </div>
 
 
-        <div id="usp" class='oranje'>
-            <?php echo $mainProduct['USP']; ?>
-        </div>
+
+
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
         <div class="drie prijs">
             <?php
-            renderPriceComponent(
-                $mainProduct['prijsstaffel'],
-                $mainProduct['aantal_per_doos'],
-                'main',
-                $mainProduct['TypeNummer'],
-                'main'
-            );
+            renderPriceComponent($mainProduct['prijsstaffel'], $mainProduct['aantal_per_doos'], 'main', $mainProduct['TypeNummer']);
             ?>
         </div>
 
-        <div class="vier">
-            <img class='hoog' src="mui55 zwart.png" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
-        <div class="vijf">
-            <img class='hoog' src="muis55open.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
+
+
+
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
         </div>
 
-
-
-        <div class="tien oranje">
-            <h1> <?php echo htmlspecialchars($variantProduct['TypeNummer']); ?></h1>
+        <div class="acht">
+            <img class='hoog' src="front met doosje uitgeknipt bewerkt 13032025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
 
-
-        <div class="elf">
-            <img class='hoog' src="wit uitgeknipt van boven af met kabel.png" alt='HP-305 in een zakje' loading="lazy">
+        <div class="negen geenpad">
+            <img class='breed' src="liggend uitgeknipt groot.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
-        <div class="twaalf oranje omschrijving col2">
-            <?php echo $variantProduct['omschrijving']; ?>
+        <div id="usp" class='oranje'>
+            <?php echo $mainProduct['USP']; ?>
         </div>
 
-        <div class="dertien prijs">
-            <?php
-            // Voor het variantproduct:
-            renderPriceComponent(
-                $variantProduct['prijsstaffel'],
-                $variantProduct['aantal_per_doos'],
-                'variant',
-                $variantProduct['TypeNummer'],
-                'variant'
-            );
-            ?>
-        </div>
+
     </article>
+
 
     <div id="lightbox-overlay" class="lightbox-overlay">
         <img id="lightbox-image" class="lightbox-image" src="" alt="Uitvergrote afbeelding">
@@ -235,7 +210,8 @@ if (!empty($pdfBestanden)) {
         <script src="../lightbox.js"></script>
     </div>
 
+
     <?php include dirname(__DIR__, 2) . "/incs/bottom.php"; ?>
 </body>
 
-</html>
+</html

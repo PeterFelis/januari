@@ -7,6 +7,16 @@ include_once __DIR__ . '/incs/sessie.php';
 $menu = "beheer";
 $title = "Winkelwagen";
 
+
+if (!isset($_SESSION['klant_id'])) {
+    // Optioneel: sla op waar de gebruiker vandaan kwam, zodat je na login kunt redirecten
+    $_SESSION['redirect_after_login'] = '/order_review.php';
+    header("Location: /loginForm.php");
+    exit();
+}
+
+
+
 if (isset($_SESSION['klant_id'])) {
     include_once __DIR__ . '/incs/dbConnect.php';
 
@@ -73,17 +83,21 @@ include_once __DIR__ . '../incs/top.php';
         width: 100%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
+
     .styled-table th,
     .styled-table td {
         padding: 12px 15px;
         text-align: left;
     }
+
     .styled-table tr {
         border-bottom: 1px solid #dddddd;
     }
+
     .styled-table tr:nth-of-type(even) {
         background-color: #f3f3f3;
     }
+
     .styled-table tr:last-of-type {
         border-bottom: 2px solid var(--heellichtpaars);
     }
@@ -97,21 +111,25 @@ include_once __DIR__ . '../incs/top.php';
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
     }
+
     .cart-layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 2rem;
         margin-bottom: 2rem;
     }
+
     .order-overview {
         background: #fafafa;
         border: 1px solid #e0e0e0;
         padding: 1.5rem;
         border-radius: 8px;
     }
+
     .order-overview p {
         margin: 0.5rem 0;
     }
+
     .gift-check {
         background: #fff3cd;
         border: 1px solid #ffeeba;
@@ -119,13 +137,16 @@ include_once __DIR__ . '../incs/top.php';
         border-radius: 8px;
         margin-top: 1.5rem;
     }
+
     .gift-check a {
         color: #0056b3;
         text-decoration: underline;
     }
+
     .cart-actions {
         margin-top: 1rem;
     }
+
     .cart-actions a {
         display: inline-block;
         padding: 0.75rem 1.5rem;
@@ -136,6 +157,7 @@ include_once __DIR__ . '../incs/top.php';
         font-weight: bold;
         transition: background 0.3s ease;
     }
+
     .cart-actions a:hover {
         background: linear-gradient(45deg, #0056b3, #0077cc);
     }
@@ -280,11 +302,16 @@ include_once __DIR__ . '../incs/top.php';
                     if (delen.length >= 2) {
                         var minAantal = parseInt(delen[0], 10);
                         var prijsPerStuk = parseFloat(delen[1].replace(',', '.'));
-                        tiers.push({ min: minAantal, prijs: prijsPerStuk });
+                        tiers.push({
+                            min: minAantal,
+                            prijs: prijsPerStuk
+                        });
                     }
                 }
             });
-            tiers.sort(function(a, b) { return a.min - b.min; });
+            tiers.sort(function(a, b) {
+                return a.min - b.min;
+            });
 
             var geldigePrijs = null;
             for (var i = 0; i < tiers.length; i++) {
@@ -334,7 +361,9 @@ include_once __DIR__ . '../incs/top.php';
 
             var orderForGift = subtotal;
             var giftThresholds = <?php echo json_encode($cadeauThresholds); ?>;
-            var keys = Object.keys(giftThresholds).map(Number).sort(function(a, b) { return a - b; });
+            var keys = Object.keys(giftThresholds).map(Number).sort(function(a, b) {
+                return a - b;
+            });
             var giftAmount = 0;
             var nextThresholdValue = null;
             for (var i = 0; i < keys.length; i++) {
@@ -371,10 +400,19 @@ include_once __DIR__ . '../incs/top.php';
             if (recordId) {
                 formData.append('cart[' + index + '][recordId]', recordId);
             }
-            fetch('/cart_update.php', { method: 'POST', body: formData })
-                .then(function(response) { return response.text(); })
-                .then(function(text) { console.log('Cart item ' + index + ' bijgewerkt (server).'); })
-                .catch(function(error) { console.error('Fout bij update:', error); });
+            fetch('/cart_update.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(text) {
+                    console.log('Cart item ' + index + ' bijgewerkt (server).');
+                })
+                .catch(function(error) {
+                    console.error('Fout bij update:', error);
+                });
         }
 
         // Remove functie; stuurt recordId mee als beschikbaar
@@ -384,10 +422,19 @@ include_once __DIR__ . '../incs/top.php';
             if (recordId) {
                 formData.append('recordId', recordId);
             }
-            fetch('/cart_update.php', { method: 'POST', body: formData })
-                .then(function(response) { return response.text(); })
-                .then(function(text) { location.reload(); })
-                .catch(function(error) { console.error('Fout bij verwijderen:', error); });
+            fetch('/cart_update.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(text) {
+                    location.reload();
+                })
+                .catch(function(error) {
+                    console.error('Fout bij verwijderen:', error);
+                });
         }
 
         // Bind eventlisteners aan de dozen-inputs
@@ -414,4 +461,5 @@ include_once __DIR__ . '../incs/top.php';
 
     <?php include_once __DIR__ . '../incs/bottom.php'; ?>
 </body>
+
 </html>

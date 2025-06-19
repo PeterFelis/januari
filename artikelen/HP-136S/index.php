@@ -7,7 +7,7 @@ $omschrijving = /* HTML zoals Quill heeft opgeslagen */
     $USP = /* HTML zoals Quill heeft opgeslagen */
 
     $title = "HP-136 S degelijke hoofdtelefoon";
-$TypeNummerHoofd = "HP-136 S";
+$TypeNummerHoofd = "HP-136S";
 $TypeNummerZakjes = null;
 
 include_once __DIR__ . '/../../incs/artikelkop.php';

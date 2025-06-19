@@ -42,11 +42,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Ontdek onze producten</h2>
         <div class="product-grid">
             <?php foreach ($products as $product): ?>
-                <a href="/artikelen/<?php echo rawurlencode($product['TypeNummer']); ?>/index.php" class="product-link">
+                <?php
+                // Bepaal de juiste mapnaam: hoofdproduct of eigen TypeNummer
+                $mapnaam = !empty($product['hoofd_product']) ? $product['hoofd_product'] : $product['TypeNummer'];
+                ?>
+                <a href="/artikelen/<?php echo rawurlencode($mapnaam); ?>/index.php" class="product-link">
                     <div class="product-card">
                         <h3><?php echo htmlspecialchars($product['TypeNummer']); ?></h3>
                         <div class="product-image">
-                            <img src="artikelen/<?php echo rawurlencode($product['TypeNummer']); ?>/Pfoto.png"
+                            <img src="artikelen/<?php echo rawurlencode($mapnaam); ?>/Pfoto.png"
                                 alt="<?php echo htmlspecialchars($product['TypeNummer']); ?>">
                         </div>
                         <p>vanaf prijs: <?php echo getLowestPrice($product['prijsstaffel']); ?></p>

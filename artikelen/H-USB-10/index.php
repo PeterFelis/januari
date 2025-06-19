@@ -2,10 +2,10 @@
 session_start();
 $menu = "beheer";
 
-$title = "Ear-USB 3 USB-C oortje in opbergdoosje";
+$title = "H-USB 10 USB hoofdtelefoon met microfoon";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
-$TypeNummerHoofd = "Ear-USB 3";
-$TypeNummerZakjes = Null; // Zorg dat dit typenummer in de database bestaat voor de variant
+$TypeNummerHoofd = "H-USB-10";
+$TypeNummerZakjes = null; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie
 include_once __DIR__ . '/../../incs/artikelkop.php';
@@ -54,14 +54,13 @@ if (!empty($pdfBestanden)) {
     .grid-container {
         grid-template-areas:
             "titel titel titel titel titel titel"
-            "een een een twee twee twee"
-            "zes zes zes zes zes zes"
-            "usp usp usp usp usp usp"
-            "vijf vijf vijf vijf vijf vijf"
-            "drie drie zeven zeven zeven zeven";
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 2fr 1fr 2fr auto;
-        max-height: 2500px;
+            "een een twee twee twee twee"
+            "usp usp twee twee twee twee"
+            "vier vier vier vijf vijf vijf"
+            "drie drie zeven zeven zeven zeven"
+            "acht acht acht elf elf elf";
+        grid-template-rows: 1fr 3fr 2fr 4fr auto 5fr;
+        height: 3000px;
     }
 
     /* Responsive aanpassingen per pagina */
@@ -151,10 +150,10 @@ if (!empty($pdfBestanden)) {
 
     <article class='grid-container'>
         <div class="een">
-            <img class='hoog' src="oortje on doosje, uitgeknipt, 17-12-2024 met nog een doosje erachter.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
         <div class="twee geenpad">
-            <img class='breed' src="oorje usb anda uitgeknipts 16-12-2024.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="hangendvanopzij.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="titel oranje">
@@ -170,17 +169,12 @@ if (!empty($pdfBestanden)) {
         </div>
 
 
-
-        <div class="zes geenpad">
-            <img class='hoogd' src="sfeerfoto.jpg" alt='hp-136 hoofdtelefoon' loading="lazy">
-        </div>
-
         <div id="usp" class='oranje'>
             <?php echo $mainProduct['USP']; ?>
         </div>
 
         <!-- In vak drie (of een andere gewenste grid area) gebruik je nu de prijscomponent -->
-        <div class="drie oranje">
+        <div class="drie prijs">
             <?php
             renderPriceComponent(
                 $mainProduct['prijsstaffel'],
@@ -192,13 +186,24 @@ if (!empty($pdfBestanden)) {
             ?>
         </div>
 
-
+        <div class="vier">
+            <img class='hoog' src="twee.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
         <div class="vijf">
-            <img class='hoog' src="scherpe foto front aanzicht met doosje 03-01-2025.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+            <img class='hoog' src="drie.png" alt='hp-136 hoofdtelefoon' loading="lazy">
         </div>
 
         <div class="zeven omschrijving oranje col2">
             <?php echo $mainProduct['omschrijving']; ?>
+        </div>
+
+        <div class="acht">
+            <img class='hoog' src="hangendmetkabel.png" alt='hp-136 hoofdtelefoon' loading="lazy">
+        </div>
+
+
+        <div class="elf">
+            <img class='hoog' src="vier.png" alt='HP-305 in een zakje' loading="lazy">
         </div>
 
 

@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once __DIR__ . '/incs/sessie.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -17,6 +22,15 @@ require 'PHPMailer/src/SMTP.php';
 
 $melding = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Honeypot check – als dit veld is ingevuld, dan is het waarschijnlijk spam
+    if (!empty($_POST['website'])) {
+        exit; // Stop de verwerking
+    }
+
+    $form_start = intval($_POST['form_start_time'] ?? 0);
+    if ($form_start === 0 || time() - $form_start < 4) {
+        exit; // Te snel verzonden → waarschijnlijk bot
+    }
     $naam = htmlspecialchars($_POST['naam'] ?? '');
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : '';
     $bericht = htmlspecialchars($_POST['bericht'] ?? '');
@@ -33,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mail->Host       = 'mail225.hostingdiscounter.nl';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'info@fetum.nl';
-            $mail->Password   = 'rNqjQ2h4EC';
+            $mail->Password   = 'kbQena8rpn';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
             $mail->isHTML(false);
@@ -55,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mailCopy->Host       = 'mail225.hostingdiscounter.nl';
             $mailCopy->SMTPAuth   = true;
             $mailCopy->Username   = 'info@fetum.nl';
-            $mailCopy->Password   = 'rNqjQ2h4EC';
+            $mailCopy->Password   = 'kbQena8rpn';
             $mailCopy->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mailCopy->Port       = 587;
             $mailCopy->isHTML(false);
@@ -122,6 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        font-size: 1rem;
     }
 
     .contact-form input,
@@ -237,6 +252,101 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         flex-direction: column;
         justify-content: center;
     }
+
+
+    .social-bol-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        padding: 3rem 2rem;
+        border-radius: 12px;
+        max-width: 1200px;
+        margin: 4rem auto;
+    }
+
+    .socials {
+        flex: 1;
+        min-width: 280px;
+    }
+
+    .socials h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .icons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .icons img {
+        width: 40px;
+        height: 40px;
+        padding: 6px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+    .icons a:hover img {
+        transform: scale(1.1);
+    }
+
+    .trustpilot {
+        margin-top: 1.5rem;
+        font-size: 1rem;
+    }
+
+    .trustpilot img.tp-logo {
+        height: 20px;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+    }
+
+    .bol-wrapper {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .bol-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .bol-link img {
+        height: 60px;
+        width: auto;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bol-link span {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+        .social-bol-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .bol-wrapper {
+            justify-content: flex-start;
+            margin-top: 2rem;
+        }
+    }
 </style>
 
 <body>
@@ -316,6 +426,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="contact-form">
                         <h3>Neem contact op</h3>
                         <form action="contact.php" method="post" id="contactForm">
+                            <!-- Honeypot veld -->
+                            <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
+                            <input type="hidden" name="form_start_time" value="<?= time(); ?>">
                             <input type="text" name="naam" placeholder="Uw naam" required>
                             <input type="email" name="email" placeholder="Uw e-mailadres" required>
                             <textarea name="bericht" placeholder="Uw bericht" rows="4" required></textarea>
@@ -345,55 +458,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </script>
 
 
-
-
     <section class="full-sectiontransparent">
         <main>
-            <section class="section reverse">
-                <div class="text">
-                    <div class="bol">
-                        <a href="https://www.bol.com/nl/nl/b/fetum/607014364/" target="_blank" rel="noopener">
-                            <div class="bollogo">
-                                <img src="afbeeldingen/bolklein.png" alt="Fetum bij BOL">
-                            </div>
-                            <div class="boltekst">
-                                ook te koop bij bol
-                            </div>
+
+            <section class="social-bol-wrapper">
+                <div class="socials">
+                    <h3>Volg ons</h3>
+                    <div class="icons">
+                        <a href="https://www.facebook.com/profile.php?id=100064868221019" target="_blank" aria-label="Facebook">
+                            <img src="afbeeldingen/icons/facebook-new.png" alt="Facebook">
+                        </a>
+                        <a href="https://www.google.com/search?q=Fetum" target="_blank" aria-label="Google Business">
+                            <img src="afbeeldingen/icons/google-logo.png" alt="Google">
+                        </a>
+                        <a href="https://www.linkedin.com/company/3049791/admin/dashboard/" target="_blank" aria-label="LinkedIn">
+                            <img src="afbeeldingen/icons/linkedin.png" alt="LinkedIn">
+                        </a>
+                        <a href="https://www.instagram.com/fetum.nl/?hl=en" target="_blank" aria-label="Instagram">
+                            <img src="afbeeldingen/icons/instagram-new--v1.png" alt="Instagram">
+                        </a>
+                    </div>
+                    <div class="trustpilot">
+                        <a href="https://nl.trustpilot.com/review/fetum.nl" target="_blank">
+                            Beoordeel ons op <img src="https://cdn.trustpilot.net/brand-assets/4.0.0/logo-white.svg" alt="Trustpilot" class="tp-logo">
                         </a>
                     </div>
                 </div>
-                <div class="text">
-                    <!-- TrustBox widget - Review Collector -->
-                    <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="67adb76cdb89fc000f8526d9" data-style-height="52px" data-style-width="100%">
-                        <a href="https://nl.trustpilot.com/review/fetum.nl" target="_blank" rel="noopener">Trustpilot</a>
-                    </div>
-                    <!-- End TrustBox widget -->
 
-                    <!-- Social icons -->
-                    <div class="social-icons">
-                        <!-- Facebook -->
-                        <a href="https://www.facebook.com/profile.php?id=100064868221019" target="_blank" rel="noopener">
-                            <img src="https://cdn.simpleicons.org/facebook" alt="Facebook Logo">
-                        </a>
-                        <!-- Google Business -->
-                        <a href="https://www.google.com/search?q=Fetum&stick=H4sIAAAAAAAA_-NgU1I1qDAxTzZNSUw2TjI2MzE2t7C0AgpZGqQmJyYZmRibmBoYWpouYmV1Sy0pzQUAo8NDUzEAAAA&hl=en-GB&mat=CZoDonTEXu6GElYBmzl_pcIVaeptVJu0UfBpd_msVTipXkjWhPMkLLdTOehpQY2YK4j_lTITmr9QvtrsEX38rbeYT633b6hzJ8TLEwhY5O4kH_zARNjTRLy4YWzDFwbJNg&authuser=0&sei=0tutZ_CrKJjY7_UPjJa7sAU" target="_blank" rel="noopener">
-                            <img src="https://cdn.simpleicons.org/google" alt="Google Business Logo">
-                        </a>
-                        <!-- LinkedIn -->
-                        <a href="https://www.linkedin.com/company/3049791/admin/dashboard/" target="_blank" rel="noopener">
-                            <img src="https://cdn.simpleicons.org/linkedin" alt="LinkedIn Logo">
-                        </a>
-
-                        <!-- Instagram -->
-                        <a href="https://www.instagram.com/fetum.nl/?hl=en" target="_blank" rel="noopener">
-                            <img src="https://cdn.simpleicons.org/instagram" alt="Instagram Logo">
-                        </a>
-                    </div>
+                <div class="bol-wrapper">
+                    <a href="https://www.bol.com/nl/nl/b/fetum/607014364/" target="_blank" class="bol-link">
+                        <img src="afbeeldingen/bolklein.png" alt="Fetum bij Bol.com">
+                        <span>Ook te koop bij bol</span>
+                    </a>
                 </div>
             </section>
+
         </main>
 
     </section>
+
 
 
 

@@ -4,7 +4,7 @@ $menu = "beheer";
 
 $title = "Ki 100 wit kinder hoofdtelefoon";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
-$TypeNummerHoofd = "Ki 100 wit";
+$TypeNummerHoofd = "Ki-100wit";
 $TypeNummerZakjes = null; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie

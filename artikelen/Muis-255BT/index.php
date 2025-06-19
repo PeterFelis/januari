@@ -2,9 +2,9 @@
 session_start();
 $menu = "beheer";
 
-$title = "Muis 255 BT Bluetooth oplaadbare muis";
+$title = "Muis-255 BT Bluetooth oplaadbare muis";
 // Stel de typenummers in voor het hoofdproduct en de variant met zakjes
-$TypeNummerHoofd = "Muis 255 BT";
+$TypeNummerHoofd = "Muis-255BT";
 $TypeNummerZakjes = Null; // Zorg dat dit typenummer in de database bestaat voor de variant
 
 // Include het artikelkop.php script voor databaseverbinding en de getProductData functie

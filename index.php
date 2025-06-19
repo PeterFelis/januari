@@ -20,7 +20,7 @@ if (mt_rand(1, 100) === 1) {
 }
 
 $title = "Fetum - Since 1985";
-$statusbalk = "Iets bestellen? Gewoon even mailen of bellen!";
+$statusbalk = "Iets bestellen? Eenvoudig in de webshop of even bellen of mailen";
 $menu = 'normaal';
 include_once __DIR__ . '/incs/top.php';
 include_once __DIR__ . '/incs/statusbalk.php';

@@ -1,0 +1,68 @@
+[12-Jun-2025 14:37:16 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:37:16 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:37:16 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:37:16 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:37:16 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:37:16 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:37:26 UTC] Fout bij versturen offerte naar klant: SMTP Error: Could not authenticate.
+[12-Jun-2025 14:37:33 UTC] Fout bij versturen offerte naar admin: SMTP Error: Could not authenticate.
+[12-Jun-2025 14:37:42 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:37:42 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:37:42 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:37:42 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:37:42 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:37:42 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:43:22 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:43:22 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:43:22 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:43:22 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:43:22 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:43:22 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:43:30 UTC] Fout bij versturen offerte naar klant: SMTP Error: Could not authenticate.
+[12-Jun-2025 14:43:37 UTC] Fout bij versturen offerte naar admin: SMTP Error: Could not authenticate.
+[12-Jun-2025 14:47:56 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:47:56 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:47:56 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:47:56 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:47:56 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:47:56 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:01 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:01 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:01 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:01 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:01 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:01 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:02 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:02 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:02 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:02 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:02 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:02 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:03 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:03 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:03 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:03 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:03 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:03 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:04 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:04 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:04 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:04 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:04 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:04 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:06 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:06 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 14:48:06 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:06 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 14:48:06 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:06 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 14:48:21 UTC] Fout bij versturen offerte naar klant: SMTP Error: Could not authenticate.
+[12-Jun-2025 14:48:28 UTC] Fout bij versturen offerte naar admin: SMTP Error: Could not authenticate.
+[12-Jun-2025 15:21:40 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/top.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 15:21:40 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/top.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 64
+[12-Jun-2025 15:21:40 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/menu.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 15:21:40 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/menu.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 145
+[12-Jun-2025 15:21:40 UTC] PHP Warning:  include_once(/var/www/domains/fetum.nl/www../incs/bottom.php): Failed to open stream: No such file or directory in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 15:21:40 UTC] PHP Warning:  include_once(): Failed opening '/var/www/domains/fetum.nl/www../incs/bottom.php' for inclusion (include_path='.:/usr/share/php') in /var/www/domains/fetum.nl/www/cart.php on line 415
+[12-Jun-2025 15:21:46 UTC] Fout bij versturen offerte naar klant: SMTP Error: Could not authenticate.
+[12-Jun-2025 15:21:53 UTC] Fout bij versturen offerte naar admin: SMTP Error: Could not authenticate.
